@@ -1,3 +1,11 @@
+<?php session_start(); ?>
+<?php
+if( isset($_SESSION["email"]) && $_SESSION["email"] )
+    {
+        header("Location: index.html");
+        exit;
+    }
+?>
 <?php
 
 include("registerheader.html");
@@ -143,35 +151,39 @@ include("registerheader.html");
             $semester = $_POST['semester'];
             $DOB = $_POST['DOB'];
             $gender = $_POST['sex'];
-   
             $file = $_FILES["file"]["name"];
             $password = $_POST['password'];
             $email_id = $_POST['email_id'];
-                if($stmt =$conn->prepare("INSERT INTO userdetails(firstname,secondname,course,semester,DOB,gender,photoAd) values(?,?,?,?,?,?,?)")) 
-                    {
-                        $stmt->bind_param('sssssss',$firstname,$lastname,$course,$semester,$DOB,$gender,$file);
-                        $result = $stmt->execute();
-                        $stmt->close();
-                        echo $result;
-                     }
+            if ($stmtt=$conn->prepare("INSERT INTO user(password, email, created_at) values(?,?,now())")) {
+              $stmtt->bind_param('ss', $password, $email_id);
+              $result = $stmtt->execute();
+              $stmtt->close();
+              if ($result) {
+                if ($stmt1 = $conn->prepare("SELECT id from user WHERE email = ? LIMIT 1")) {
+                  $stmt1->bind_param('s', $email_id);
+                  $stmt1->execute();
+                  $stmt1->bind_result($id);
+                  while ($stmt1->fetch())
+                    $row = array('id' => $id);
+                  $stmt1->close();
+                }
+                if($stmt =$conn->prepare("INSERT INTO userdetails(user_id, firstname, secondname, course, semester, DOB, gender, photoAd) values(?,?,?,?,?,?,?,?)")) {
+                $stmt->bind_param('isssssss', $row['id'], $firstname, $lastname, $course, $semester, $DOB, $gender, $file);
+                $result = $stmt->execute();
+                $stmt->close();
+                echo $result;
+                 }
                 else
-                    {
-                        echo "error with insertion";
-                     }
-                      if ($stmtt=$conn->prepare("INSERT INTO user(password,email,created_at) values(?,?,now())"))
-                    {
-                        $stmtt->bind_param('sss',$password,$email_id);
-                        $result = $stmtt->execute();
-                        $stmtt->close();
-                        echo $result;
-                     }
-                else
-                    {
-                        echo "error with insertion";
-
-            
-                    }
-        } 
+                  {
+                      echo "error with insertion 1";
+                   }
+                      }
+               }
+            else
+              {
+                echo "error with insertion 2";
+              }      
+        }
                
         ?>
 
@@ -197,23 +209,22 @@ include("registerheader.html");
                 } 
             else 
                 {
-                     echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-                     echo "Type: " . $_FILES["file"]["type"] . "<br>";
-                     echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-                     echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
+                 echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+                 echo "Type: " . $_FILES["file"]["type"] . "<br>";
+                 echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+                 echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
 
 
-                    if (file_exists("upload/" . $_FILES["file"]["name"])) 
-                        {
-                            echo $_FILES["file"]["name"] . " already exists. ";
-                        } 
-                    else 
-                        {
-                            move_uploaded_file($_FILES["file"]["tmp_name"],
-                           "upload/" . $_FILES["file"]["name"]);
-                            echo "Stored in: " . "upload/" . $_FILES["file"]["name"];
-                            echo $_POST["email_id"];
-                        }
+                if (file_exists("upload/" . $_FILES["file"]["name"])) 
+                    {
+                        echo $_FILES["file"]["name"] . " already exists. ";
+                    } 
+                else 
+                    {
+                        move_uploaded_file($_FILES["file"]["tmp_name"],
+                       "upload/" . $file);
+                        echo "Stored in: " . "upload/" . $_FILES["file"]["name"];
+                    }
                 }
        }    
      else 
@@ -222,8 +233,8 @@ include("registerheader.html");
        }
 
     echo ""; // here pre tag will come in double quotes.
-    print_r($_POST);  // show post data
-    print_r($_FILES);  // show files data
+    //print_r($_POST);  // show post data
+    //print_r($_FILES);  // show files data
     die; // die to stop execution. 
 
 ?>

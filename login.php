@@ -1,5 +1,12 @@
-
-<?php include('datasnap.php'); ?> 
+<?php session_start(); ?>
+<?php
+if( isset($_SESSION["email"]) && $_SESSION["email"] )
+    {
+        header("Location: index.html");
+        exit;
+    }
+?>
+<?php include('datasnap.php'); ?>
 
 <html lang="en">
 <head>
@@ -152,14 +159,12 @@ if (isset($_POST['submit'])) {
 
     // turn error reporting on, it makes life easier if you make typo in a variable name etc
     error_reporting(E_ALL);
-
-    session_start();
   
      //$queryy = "SELECT firstname FROM userdetails ";// AND password = $userPass";
 
        // $resultt = mysqli_query( $conn, $queryy);
        // $roww = mysqli_fetch_array($resultt);
-    if( isset($_SESSION["email"]) && $_SESSION["email"] )
+  /*  if( isset($_SESSION["email"]) && $_SESSION["email"] )
     {
         echo "You are already logged in, ".$_SESSION['email']."! <br> I'm Loggin you out M.R ..";
         unset( $_SESSION );
@@ -168,7 +173,7 @@ if (isset($_POST['submit'])) {
         // *** The empty quotes do nothing
         // exit("");
         exit;
-    }
+    }*/
 
     $loggedIn = false;
 
@@ -187,7 +192,7 @@ if (isset($_POST['submit'])) {
     {
         // User Entered fields
       
-        $query = "SELECT email FROM user WHERE email = '$userName' AND password = '$userPass'";// AND password = $userPass";
+        $query = "SELECT id FROM user WHERE email = '$userName' AND password = '$userPass'";// AND password = $userPass";
 
         $result = mysqli_query( $conn, $query);
 
@@ -204,7 +209,9 @@ if (isset($_POST['submit'])) {
             // *** My PERSONAL preference is to use {} every where, it just makes it easier if you add  
             // code into the condition later
             $loggedIn = true;
-          header("Location: index.html");
+            $_SESSION["email"] = $userName;
+            $_SESSION['id'] = $row['id'];
+          header("Location: seller.php");
         }
     }
 
@@ -215,8 +222,6 @@ if (isset($_POST['submit'])) {
         echo "</div>";
         $_SESSION["email"] = $userName;
     }
-    echo ""; // here pre tag will come in double quotes.
-    print_r($_POST);  // show post data
     
   }
 ?>

@@ -1,5 +1,4 @@
-
-
+<?php session_start(); ?>
 <!-- php starts here -->
 <?php
 include("header.html");
@@ -21,9 +20,9 @@ if(isset($_POST['sub']))
 
 
 //inserts seller details into ad table
-  if($stmt = $conn->prepare("INSERT INTO advertisement(description, price, language,category_id,created_at,updated_at) VALUES(?,?,?,?,now(),now())"))
+  if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, updated_at) VALUES(?,?,?,?,?,now(),now())"))
   {
-    $stmt->bind_param('sisi', $desc, $price, $lang,$cat);
+    $stmt->bind_param('isisi', $_SESSION['id'], $desc, $price, $lang, $cat);
     $stmt->execute();
     $stmt->close();
   }
