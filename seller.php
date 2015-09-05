@@ -17,19 +17,13 @@ if(isset($_POST['sub']))
   $cat = $_POST['cat'];
   $price = $_POST['price'];
   $lang = $_POST['lang'];
-  echo "$desc";
-/*if ($cat=="Graphic Design") 
-  $c=1;
-elseif ($cat=="Business")
-$c=2;
-elseif ($cat=="Programming & IT") 
-  $c=3;
-else
-  $c=4;*/
+
+
+
 //inserts seller details into ad table
-  if($stmt = $conn->prepare("INSERT INTO ads(Description, Price, lang) VALUES(?,?,?)"))
+  if($stmt = $conn->prepare("INSERT INTO advertisement(description, price, language,category_id,created_at,updated_at) VALUES(?,?,?,?,now(),now())"))
   {
-    $stmt->bind_param('sis', $desc, $price, $lang);
+    $stmt->bind_param('sisi', $desc, $price, $lang,$cat);
     $stmt->execute();
     $stmt->close();
   }
@@ -58,12 +52,15 @@ else
     <div class=".form-control:focus">
    <center> <label class="font-color">Pick a category:</label>
     <select name="cat" class="font-color">
-  <option value="b" >Business</option>
-  <option value="g">Graphic Design</option>
-  <option value="p">Programming & IT</option>
-  <option value="w">Writing & Translation</option>
-  <option value="v">Video & Audio</option>
-  <option value="o">Others</option>
+  <option value="1">Graphic Design</option>
+  <option value="2">Online Marketing</option>
+  <option value="3">Writing & Translation</option>
+  <option value="4">Video & Audio</option>
+  <option value="5">Programming & IT</option>
+  <option value="6">Advertising</option>
+  <option value="7">Business</option>
+  <option value="8">Academics</option>
+  <option value="9">Others</option>
 </select> </center>
   </div>
   <br> <br>
