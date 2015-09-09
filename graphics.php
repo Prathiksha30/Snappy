@@ -100,7 +100,7 @@ else
 <hr>
 <div class="container">
   <div class="row text-center">
-    <?php foreach ($details as $detail); ?>
+    <?php foreach ($rows as $row): ?>
       <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
         <div class="thumbnail"> <img src="<?php echo 'uploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
           <div class="caption">

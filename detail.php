@@ -1,7 +1,9 @@
 <?php include('datasnap.php'); ?>
 
 <?php
+
 $gig_id = $_GET['gig_id'];
+print $gig_id;
 global $conn;
 if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE category_id = ?")) {
   $stmt->bind_param('i', $gig_id); // Passing gig_id to select statment
