@@ -4,7 +4,7 @@ $host = "localhost";
 $db = "snapservices";
 $user = "root";
 
-$conn = new mysqli($host,$user,"",$db);
+$conn = new mysqli($host, $user, "", $db);
 global $conn;
 
 if(mysqli_connect_errno()) {
