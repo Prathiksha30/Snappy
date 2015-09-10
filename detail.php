@@ -70,6 +70,12 @@ else
            <button type="submit" class="btn-default btn btn-primary">Register</button>
            </a>
            </div>
+           <div class="navbar-form navbar-right">
+        <a href="logout.php">
+           <button type="submit" class="btn-default btn btn-primary">Log Out</button>
+           </a>
+           
+           </div>
      
     </div>
     <!-- /.navbar-collapse --> 

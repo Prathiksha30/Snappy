@@ -66,6 +66,12 @@ else
            <button type="submit" class="btn-default btn btn-primary">Register</button>
            </a>
            </div>
+           <div class="navbar-form navbar-right">
+        <a href="logout.php">
+           <button type="submit" class="btn-default btn btn-primary">Log Out</button>
+           </a>
+           
+           </div>
      
     </div>
     <!-- /.navbar-collapse --> 
@@ -100,7 +106,7 @@ else
 <hr>
 <div class="container">
   <div class="row text-center">
-    <?php foreach ($row as $rows): ?>
+    <?php foreach ($rows as $row): ?>
       <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
         <div class="thumbnail"> <img src="<?php echo 'uploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
           <div class="caption">
