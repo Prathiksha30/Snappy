@@ -40,6 +40,43 @@ function getUserName($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
+function getCredits($user_id)
+{
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT Credits FROM `orderdetails` WHERE user_id = ? ")) {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($Credits);
+        while ($stmt->fetch()) 
+        {
+          $rows[] = array('Credits' => $Credits);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+// getAllCompletedPurchases isnt correct
+function getAllCompletedPurchases($user_id)
+{
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT gig_id FROM `order` WHERE user_id = ? AND status = 'completed'")) {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($gig_id);
+        while ($stmt->fetch()) {
+          $rows[] = array('gig_id' => $gig_id);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+
 
 function getAllPendingPurchases($user_id)
 {
@@ -314,7 +351,19 @@ function getOrderDetails($user_id)
                           </div>
                           <div class="modal-body">
 
-                              Body goes here...
+                             
+                              <?php
+                                foreach (getAllCompletedPurchases($_SESSION['id']) as $completed):
+                              ?>
+                                  
+                                 <?php echo $completed['gig_id']; ?>
+                                 
+                                      <?php echo $completed['order_id']; ?>
+                                
+                                      <span class="badge bg-important"><?php echo $completed['status']; ?></span>
+                                  
+                              <?php endforeach; ?>
+                              
 
                           </div>
                           <div class="modal-footer">
@@ -328,7 +377,12 @@ function getOrderDetails($user_id)
 				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 					<div class="info-box green-bg">
 						<i class="fa fa-cubes"></i>
-						<div class="count">1000</div>
+						<div class="count">
+              <?php
+                $usercredit = getCredits($_SESSION['id']);
+                echo $usercredit[0]['Credits'];
+              ?>
+            </div>
 						<div class="title">Credits</div>
 					</div><!--/.info-box-->
 				</div><!--/.col-->
@@ -448,7 +502,7 @@ function getOrderDetails($user_id)
                           <div class="panel-body progress-panel">
                             <div class="row">
                               <div class="col-lg-8 task-progress pull-left">
-                                  <h1>Pending Purchased</h1>                                  
+                                  <h1>Pending Purchases</h1>                                  
                               </div>
                             </div>
                           </div>
