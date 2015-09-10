@@ -22,6 +22,25 @@ function getServicesPurchasedCount($user_id)
     }
 }
 
+function getUserName($user_id)
+{
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT firstname, secondname FROM `userdetails` WHERE user_id = ?")) 
+      	{
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($firstname, $secondname);
+        while ($stmt->fetch()) {
+          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+
 function getAllPendingPurchases($user_id)
 {
     global $conn;
@@ -103,7 +122,7 @@ function getOrderDetails($user_id)
             </div>
 
             <!--logo start-->
-            <a href="index.html" class="logo">Nice <span class="lite">Admin</span></a>
+            <a href="index.html" class="logo"> <span class="lite">Snap Services</span></a>
             <!--logo end-->
 
             <div class="nav search-row" id="top_menu">
@@ -125,9 +144,15 @@ function getOrderDetails($user_id)
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                <!-- image goes here -->
+                               <!--  <img alt="" src="img/avatar1_small.jpg"> -->
                             </span>
-                            <span class="username">Jenifer Smith</span>
+                            <span class="username">
+                            <?php
+                            	$name = getUserName(21);
+                            	echo $name[0]['firstname']." ".$name[0]['secondname'];
+                        	?>
+                            </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu extended logout">
@@ -135,24 +160,24 @@ function getOrderDetails($user_id)
                             <li class="eborder-top">
                                 <a href="#"><i class="icon_profile"></i> My Profile</a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="#"><i class="icon_mail_alt"></i> My Inbox</a>
-                            </li>
-                            <li>
+                            </li> -->
+                           <!--  <li>
                                 <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
-                            </li>
-                            <li>
+                            </li> -->
+                            <!-- <li>
                                 <a href="#"><i class="icon_chat_alt"></i> Chats</a>
-                            </li>
+                            </li> -->
                             <li>
                                 <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
                             </li>
                             <li>
-                                <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
+                                <a href="documentation.html"><i class="icon_key_alt"></i> Documents</a>
                             </li>
-                            <li>
+                           <!--  <li>
                                 <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </li>
                     <!-- user login dropdown end -->
@@ -266,13 +291,39 @@ function getOrderDetails($user_id)
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->
                 </div><!--/.col-->
-				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-					<div class="info-box brown-bg">
-						<i class="fa fa-shopping-cart"></i>
-                        <div class="count"><?php echo getServicesPurchasedCount($_SESSION['id']); ?></div>
-						<div class="title">Purchased</div>
-					</div><!--/.info-box-->
-				</div><!--/.col-->	
+                <a data-toggle="modal" href="#myModal" title="So that it can show all the purchase details">
+        				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        					<div class="info-box brown-bg">
+        						<i class="fa fa-shopping-cart"></i>
+        						<!-- remove this once the session is available -->
+        						<?php 
+        						$_SESSION['id']='21';
+        						?>
+        						<!-- remove this once the session is available -->
+                    <div class="count"><?php echo getServicesPurchasedCount($_SESSION['id']); ?></div>
+        						<div class="title">Purchased</div>
+        					</div><!--/.info-box-->
+        				</div><!--/.col-->	
+                </a>
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title">Purchase details</h4>
+                          </div>
+                          <div class="modal-body">
+
+                              Body goes here...
+
+                          </div>
+                          <div class="modal-footer">
+                              <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                              <button class="btn btn-success" type="button">Save changes</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 				
 				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 					<div class="info-box green-bg">
