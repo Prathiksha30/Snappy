@@ -233,8 +233,8 @@ include("registerheader.html");
        }
 
     echo ""; // here pre tag will come in double quotes.
-    print_r($_POST);  // show post data
-    print_r($_FILES);  // show files data
+    //print_r($_POST);  // show post data
+    //print_r($_FILES);  // show files data
     die; // die to stop execution. 
 
 ?>

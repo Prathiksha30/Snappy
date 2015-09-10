@@ -1,9 +1,13 @@
-<?php include('datasnap.php'); ?>
-<?php session_start(); ?>
+
+<?php session_start(); ?> 
 <!-- php starts here -->
 <?php
 include("header.html");
-
+include ("datasnap.php");
+if(mysqli_connect_errno()) {
+  echo "connection failed:" . mysqli_connect_errno();
+  exit();
+}
 if(isset($_POST['sub']))
 {
   $desc = $_POST['desc'];
@@ -11,12 +15,12 @@ if(isset($_POST['sub']))
   $price = $_POST['price'];
   $lang = $_POST['lang'];
   $Img = $_FILES["file"]["name"];
-  echo $Img;
 
 
 //inserts seller details into ad table
   if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, updated_at, img) VALUES(?, ?, ?, ?, ?, now(), now(), ?)"))
   {
+    echo "Done";
     $stmt->bind_param('isisis', $_SESSION['id'], $desc, $price, $lang, $cat, $Img);
     $stmt->execute();
     $stmt->close();
@@ -133,9 +137,10 @@ if(isset($_POST['sub']))
 <!-- CODE TO UPLOAD THE FILE -->
  <?php
 
-
+if(isset($_POST['sub']))
+{
     $allowedExts = array("gif", "jpeg", "jpg", "png");
-    $temp = explode(".", $_FILES["file"]["name"]);
+    $temp = explode(".", $_FILES["file"]["name"]); //breaking it into 2
     $extension = end($temp);
 
      if ((($_FILES["file"]["type"] == "image/gif")
@@ -153,12 +158,6 @@ if(isset($_POST['sub']))
                 } 
             else 
                 {
-                 echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-                 echo "Type: " . $_FILES["file"]["type"] . "<br>";
-                 echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-                 echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
-
-
                 if (file_exists("GigUploads/" . $_FILES["file"]["name"])) 
                     {
                         echo $_FILES["file"]["name"] . " already exists. ";
@@ -166,19 +165,15 @@ if(isset($_POST['sub']))
                 else 
                     {
                         move_uploaded_file($_FILES["file"]["tmp_name"],
-                       "upload/" . $Img);
-                        echo "Stored in: " . "GigUploads/" . $_FILES["file"]["name"];
+                       "GigUploads/" . $Img);
                     }
                 }
-       }    
+       }       
      else 
        {
              echo "Invalid file";
        }
+     }
 
-    echo ""; // here pre tag will come in double quotes.
-    //print_r($_POST);  // show post data
-    //print_r($_FILES);  // show files data
-    die; // die to stop execution. 
 
 ?>
