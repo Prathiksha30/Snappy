@@ -1,28 +1,27 @@
-<?php session_start(); ?>
+
+<?php session_start(); ?> 
 <!-- php starts here -->
 <?php
 include("header.html");
-
-$conn= new mysqli("localhost","root","","snapservices");
-if(mysqli_connect_error())
-{
-  echo "Error in database connection";
+include ("datasnap.php");
+if(mysqli_connect_errno()) {
+  echo "connection failed:" . mysqli_connect_errno();
   exit();
 }
-
 if(isset($_POST['sub']))
 {
   $desc = $_POST['desc'];
   $cat = $_POST['cat'];
   $price = $_POST['price'];
   $lang = $_POST['lang'];
-
+  $Img = $_FILES["file"]["name"];
 
 
 //inserts seller details into ad table
-  if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, updated_at) VALUES(?,?,?,?,?,now(),now())"))
+  if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, updated_at, img) VALUES(?, ?, ?, ?, ?, now(), now(), ?)"))
   {
-    $stmt->bind_param('isisi', $_SESSION['id'], $desc, $price, $lang, $cat);
+    echo "Done";
+    $stmt->bind_param('isisis', $_SESSION['id'], $desc, $price, $lang, $cat, $Img);
     $stmt->execute();
     $stmt->close();
   }
@@ -31,8 +30,6 @@ if(isset($_POST['sub']))
     echo "Error with insertion";
   }
 }
-
-
 ?>
 
 <br>
@@ -41,7 +38,7 @@ if(isset($_POST['sub']))
   <div class="row">
   <h3 class="font-color" align="center"> Please fill in the form to start Selling! </h6>
     <br><br>
-<form method="POST" action="">
+<form method="POST" action="" enctype="multipart/form-data">
   <div class=".form-control:focus">
     <label class="font-color"> I will ... </label>
     <textarea class=".form-control" rows="3" cols="172" name="desc"> </textarea>
@@ -65,7 +62,7 @@ if(isset($_POST['sub']))
   <br> <br>
    <div class=".form-control:focus">
     <label class="font-color">Add your image here:</label>
-    <input type="file" class="form-control" name="image">
+     <input type="file" name="file" id="file" class="form-control" size="80">
   </div>
   <br> <br>
     <div class=".form-control:focus">
@@ -137,3 +134,46 @@ if(isset($_POST['sub']))
 </body>
 </html>
 
+<!-- CODE TO UPLOAD THE FILE -->
+ <?php
+
+if(isset($_POST['sub']))
+{
+    $allowedExts = array("gif", "jpeg", "jpg", "png");
+    $temp = explode(".", $_FILES["file"]["name"]); //breaking it into 2
+    $extension = end($temp);
+
+     if ((($_FILES["file"]["type"] == "image/gif")
+     || ($_FILES["file"]["type"] == "image/jpeg")
+     || ($_FILES["file"]["type"] == "image/jpg")
+     || ($_FILES["file"]["type"] == "image/pjpeg")
+     || ($_FILES["file"]["type"] == "image/x-png")
+     || ($_FILES["file"]["type"] == "image/png"))
+     && ($_FILES["file"]["size"] < 20000)
+     && in_array($extension, $allowedExts)) 
+        {
+            if ($_FILES["file"]["error"] > 0) 
+                {
+                     echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+                } 
+            else 
+                {
+                if (file_exists("GigUploads/" . $_FILES["file"]["name"])) 
+                    {
+                        echo $_FILES["file"]["name"] . " already exists. ";
+                    } 
+                else 
+                    {
+                        move_uploaded_file($_FILES["file"]["tmp_name"],
+                       "GigUploads/" . $Img);
+                    }
+                }
+       }       
+     else 
+       {
+             echo "Invalid file";
+       }
+     }
+
+
+?>
