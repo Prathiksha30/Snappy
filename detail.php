@@ -5,19 +5,34 @@
 $gig_id = $_GET['gig_id'];
 
 global $conn;
-if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE category_id = ?")) {
+if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE category_id = ?")) 
+{
   $stmt->bind_param('i', $gig_id); // Passing gig_id to select statment
   $result = $stmt->execute();
   $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language); // Fetching results in an array
   while ($stmt->fetch()) {
-    $details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns
-  echo "Hello";
+    $details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
   }
   $stmt->close();
 }
 else
   echo "error";
 ?>
+
+<!--<?php 
+     if( $statment=$conn->prepare("SELECT  firstname, secondname, course from userdeatils WHERE user_id = ?"))
+     {
+      $res=$statment->execute();
+      $statment->bind_result($firstname, $secondname, $course);
+      while ($statment->fetch()) {
+        $userdetails= array('firstname' => $firstname, 'secondname' => $secondname );
+      }
+      $statment->close();
+     }
+     print_r($userdetails);
+
+?> -->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -109,16 +124,23 @@ else
 <h2 class="text-center text-primary">Graphics</h2>
 <hr>
 <div class="container">
-      <img src="uploads/<?php echo $details['img']; ?>">
-      <b><?php echo $details['price']; ?></b>
-      <p><?php echo $details['description']; ?></p>
+       <!-- <div class="thumbnail"> <img src="GigUploads/<?php echo $details['img']; ?>" alt="Thumbnail Image 1" height="200" width="400"> -->
+        
+       <img src="GigUploads/<?php echo $details['img']; ?>" alt="Thumbnail Image 1" height="200" width="400" align="left">
+      <strong>Seller Name: <?php echo $details['']; ?></strong>
+      <b>Price:<?php echo $details['price']; ?></b> <br>
+      <b>Description:<?php echo $details['description']; ?></b>
       <form action="" method="POST">
         <input type="hidden" name="gig_id" value="<?php echo $details['gig_id']; ?>">
+
+        <input type="submit" name="confirm" value="Confirm" class="btn btn-default">
       </form>
+  
   </div>
 </div>
 </div>
-
+<hr>
+<br>
 <footer class="text-center">
   <div class="container">
     <div class="row">
