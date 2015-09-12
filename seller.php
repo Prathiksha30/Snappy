@@ -62,7 +62,7 @@ if(isset($_POST['sub']))
   <br> <br>
    <div class=".form-control:focus">
     <label class="font-color">Add your image here:</label>
-     <input type="file" name="file" id="file" class="form-control" size="80">
+    <input type="file" name="file" id="file" size="80">
   </div>
   <br> <br>
     <div class=".form-control:focus">
@@ -137,8 +137,7 @@ if(isset($_POST['sub']))
 <!-- CODE TO UPLOAD THE FILE -->
  <?php
 
-if(isset($_POST['sub']))
-{
+
     $allowedExts = array("gif", "jpeg", "jpg", "png");
     $temp = explode(".", $_FILES["file"]["name"]); //breaking it into 2
     $extension = end($temp);
@@ -173,7 +172,7 @@ if(isset($_POST['sub']))
        {
              echo "Invalid file";
        }
-     }
+    
 
 
 ?>

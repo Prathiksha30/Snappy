@@ -2,37 +2,18 @@
 
 <?php
 
-$gig_id = $_GET['gig_id'];
-
 global $conn;
-if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE category_id = ?")) 
-{
-  $stmt->bind_param('i', $gig_id); // Passing gig_id to select statment
+if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE category_id = 4")) {
   $result = $stmt->execute();
-  $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language); // Fetching results in an array
+  $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
   while ($stmt->fetch()) {
-    $details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
+    $rows[] = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language);
   }
   $stmt->close();
 }
 else
   echo "error";
 ?>
-
-<!--<?php 
-     if( $statment=$conn->prepare("SELECT  firstname, secondname, course from userdeatils WHERE user_id = ?"))
-     {
-      $res=$statment->execute();
-      $statment->bind_result($firstname, $secondname, $course);
-      while ($statment->fetch()) {
-        $userdetails= array('firstname' => $firstname, 'secondname' => $secondname );
-      }
-      $statment->close();
-     }
-     print_r($userdetails);
-
-?> -->
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -124,26 +105,25 @@ else
     </div>
     </div>
 
-<h2 class="text-center text-primary">Graphics</h2>
+<h2 class="text-center text-primary">Video And Audio</h2>
 <hr>
 <div class="container">
-       <!-- <div class="thumbnail"> <img src="GigUploads/<?php echo $details['img']; ?>" alt="Thumbnail Image 1" height="200" width="400"> -->
-        
-       <img src="GigUploads/<?php echo $details['img']; ?>" alt="Thumbnail Image 1" height="200" width="400" align="left">
-      <strong>Seller Name: <?php echo $details['']; ?></strong>
-      <b>Price:<?php echo $details['price']; ?></b> <br>
-      <b>Description:<?php echo $details['description']; ?></b>
-      <form action="" method="POST">
-        <input type="hidden" name="gig_id" value="<?php echo $details['gig_id']; ?>">
-
-        <input type="submit" name="confirm" value="Confirm" class="btn btn-default">
-      </form>
-  
+  <div class="row text-center">
+    <?php foreach ($rows as $row): ?>
+      <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+        <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
+          <div class="caption">
+            <h3><?php echo $row['description']; ?></h3>
+            <!-- Passing the gig_id through the URL. Get the gig_id from the URL in the detail page using $_GET['gig_id'] -->
+            <p><a href="detail.php?gig_id=<?php echo $row['gig_id']; ?>" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Request</a></p>
+          </div>
+        </div>
+      </div>
+    <?php endforeach; ?>
   </div>
 </div>
 </div>
-<hr>
-<br>
+
 <footer class="text-center">
   <div class="container">
     <div class="row">

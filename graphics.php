@@ -81,12 +81,15 @@ else
 <div class="container">
 		<ul class="nav navbar-nav">
         <li class="active"><a href="#"><span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Graphics & Design</a></li>
-        <li><a href="#"> Online Marketing</a></li>
-        <li> <a href="#"> Writing & Translation </a></li>
-        <li> <a href="#"> Video & Audio </a></li>
-         <li><a href="#"> Programming & Tech</a></li>
-        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Subjects <span class="caret"></span></a>
+      <li><a href="graphics.php">Graphics & Design</a></li>
+        <li><a href="Online.php"> Online Marketing</a></li>
+        <li> <a href="writting.php"> Writing & Translation </a></li>
+        <li> <a href="VideoAudio.php"> Video & Audio </a></li>
+         <li><a href="Programming.php"> Programming & IT</a></li>
+         <li><a href="Advertising.php"> Advertising </a></li>
+         <li><a href="Buisness.php"> Buisness </a></li>
+         <li><a href="Academics.php"> Academics </a></li>
+        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Others <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#"> Mathematics </a></li>
             <li><a href="#"> Computer Science </a> </li>
@@ -94,7 +97,7 @@ else
             <li><a href="#"> Phsyics </a> </li>
             <li><a href="#"> Biology </a> </li>
           </ul>     
-          <li><a href="#"> Others</a></li>
+          
 </li> </ul> </div>
 
 <div class="container">
@@ -108,7 +111,7 @@ else
   <div class="row text-center">
     <?php foreach ($rows as $row): ?>
       <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-        <div class="thumbnail"> <img src="<?php echo 'uploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
+        <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
           <div class="caption">
             <h3><?php echo $row['description']; ?></h3>
             <!-- Passing the gig_id through the URL. Get the gig_id from the URL in the detail page using $_GET['gig_id'] -->
