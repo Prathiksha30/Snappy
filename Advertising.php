@@ -124,48 +124,7 @@ else
 </div>
 </div>
 
-<footer class="text-center">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-         <div class="container well">
-    <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
-        <div class="row">
-          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-            <div>
-              <ul class="list-unstyled">
-                <li> <a>About Us</a> </li>
-                <li> <a>Privacy Policy</a> </li>
-                <li> <a>FAQs</a> </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-4  col-xs-6">
-            <div>
-              
-            </div>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-            <div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-5"> 
-        <address>
-        <strong>Snap Services</strong><br>
-      </address>
-       
-        </div>
-    </div>
-  </div>
-      </div>
-    </div>
-  </div>
-</footer>
-<script src="js/jquery-1.11.2.min.js"></script> 
-<script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>
+<?php include('footer.html'); ?>
