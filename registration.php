@@ -54,7 +54,7 @@ include("registerheader.html");
                 <div>
                 Age:
                 <br>
-                <input type="date" name="DOB">
+                <input type="date" name="DOB" max="2001-12-31" >
                 </div>
 
                 <div>

@@ -62,7 +62,7 @@ if(isset($_POST['sub']))
   <br> <br>
    <div class=".form-control:focus">
     <label class="font-color">Add your image here:</label>
-     <input type="file" name="file" id="file" class="form-control" size="80">
+    <input type="file" name="file" id="file" size="80">
   </div>
   <br> <br>
     <div class=".form-control:focus">
@@ -86,59 +86,13 @@ if(isset($_POST['sub']))
 </div>
 </div>
 
-<footer class="text-center">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-         <div class="container well">
-    <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
-        <div class="row">
-          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-            <div>
-              <ul class="list-unstyled">
-                <li> <a>About Us</a> </li>
-                <li> <a>Privacy Policy</a> </li>
-                <li> <a>FAQs</a> </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-4  col-xs-6">
-            <div>
-              
-            </div>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-            <div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-5"> 
-        <address>
-        <strong>Snap Services</strong><br>
-        
-        <!--<abbr title="Phone">P:</abbr> (123) 456-7890 -->
-      </address>
-       
-        </div>
-    </div>
-  </div>
-      </div>
-    </div>
-  </div>
-</footer>
-<script src="js/jquery-1.11.2.min.js"></script> 
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
 
 <!-- CODE TO UPLOAD THE FILE -->
  <?php
 
-if(isset($_POST['sub']))
-{
+
     $allowedExts = array("gif", "jpeg", "jpg", "png");
     $temp = explode(".", $_FILES["file"]["name"]); //breaking it into 2
     $extension = end($temp);
@@ -149,7 +103,7 @@ if(isset($_POST['sub']))
      || ($_FILES["file"]["type"] == "image/pjpeg")
      || ($_FILES["file"]["type"] == "image/x-png")
      || ($_FILES["file"]["type"] == "image/png"))
-     && ($_FILES["file"]["size"] < 20000)
+     && ($_FILES["file"]["size"] < 100000)
      && in_array($extension, $allowedExts)) 
         {
             if ($_FILES["file"]["error"] > 0) 
@@ -173,7 +127,6 @@ if(isset($_POST['sub']))
        {
              echo "Invalid file";
        }
-     }
-
-
+    
 ?>
+<?php include('footer.html'); ?>

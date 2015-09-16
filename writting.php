@@ -3,7 +3,7 @@
 <?php
 
 global $conn;
-if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE category_id = 1")) {
+if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE category_id = 3")) {
   $result = $stmt->execute();
   $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
   while ($stmt->fetch()) {
@@ -81,7 +81,8 @@ else
 <div class="container">
 		<ul class="nav navbar-nav">
         <li class="active"><a href="#"><span class="sr-only">(current)</span></a></li>
-      <li><a href="graphics.php">Graphics & Design</a></li>
+       
+       <li><a href="graphics.php">Graphics & Design</a></li>
         <li><a href="Online.php"> Online Marketing</a></li>
         <li> <a href="writting.php"> Writing & Translation </a></li>
         <li> <a href="VideoAudio.php"> Video & Audio </a></li>
@@ -105,13 +106,13 @@ else
     </div>
     </div>
 
-<h2 class="text-center text-primary">Graphics and Design</h2>
+<h2 class="text-center text-primary">Writing and Translation</h2>
 <hr>
 <div class="container">
   <div class="row text-center">
     <?php foreach ($rows as $row): ?>
       <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-        <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
+        <div class="thumbnail"> <img src="<?php echo 'uploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
           <div class="caption">
             <h3><?php echo $row['description']; ?></h3>
             <!-- Passing the gig_id through the URL. Get the gig_id from the URL in the detail page using $_GET['gig_id'] -->
@@ -124,6 +125,48 @@ else
 </div>
 </div>
 
+<footer class="text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+         <div class="container well">
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
+        <div class="row">
+          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+            <div>
+              <ul class="list-unstyled">
+                <li> <a>About Us</a> </li>
+                <li> <a>Privacy Policy</a> </li>
+                <li> <a>FAQs</a> </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-4  col-xs-6">
+            <div>
+              
+            </div>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+            <div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-5"> 
+        <address>
+        <strong>Snap Services</strong><br>
+      </address>
+       
+        </div>
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="js/jquery-1.11.2.min.js"></script> 
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
-<?php include('footer.html'); ?>

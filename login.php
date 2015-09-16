@@ -1,3 +1,4 @@
+
 <?php session_start(); ?>
 <?php
 if( isset($_SESSION["email"]) && $_SESSION["email"] )
@@ -211,7 +212,7 @@ if (isset($_POST['submit'])) {
             $loggedIn = true;
             $_SESSION["email"] = $userName;
             $_SESSION['id'] = $row['id'];
-            header("Location: seller.php");
+           // header("Location: seller.php");
         }
     }
 

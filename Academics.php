@@ -1,4 +1,21 @@
+<?php include('datasnap.php'); ?>
 
+<?php
+
+global $conn;
+if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE category_id = 8")) {
+  $result = $stmt->execute();
+  $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
+  while ($stmt->fetch()) {
+    $rows[] = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language);
+  }
+  $stmt->close();
+}
+else
+  echo "error";
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -10,6 +27,13 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
 <nav>
@@ -33,12 +57,16 @@
         <button type="submit" class="btn btn-default btn-primary">Submit</button>
       </form>
       <div class="navbar-form navbar-right" >
+        <a href="login.php">
            <button type="submit" class="btn-default btn btn-primary">Sign In</button>
+           </a>
            </div>
 			<div class="navbar-form navbar-right">
+        <a href="registration.php">
            <button type="submit" class="btn-default btn btn-primary">Register</button>
+           </a>
            </div>
-      <div class="navbar-form navbar-right">
+           <div class="navbar-form navbar-right">
         <a href="logout.php">
            <button type="submit" class="btn-default btn btn-primary">Log Out</button>
            </a>
@@ -61,7 +89,7 @@
          <li><a href="Advertising.php"> Advertising </a></li>
          <li><a href="Buisness.php"> Buisness </a></li>
          <li><a href="Academics.php"> Academics </a></li>
-        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Subjects <span class="caret"></span></a>
+        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Others <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#"> Mathematics </a></li>
             <li><a href="#"> Computer Science </a> </li>
@@ -71,5 +99,32 @@
           </ul>     
           
 </li> </ul> </div>
+
+<div class="container">
+  <div class="row">  
+    </div>
+    </div>
+
+<h2 class="text-center text-primary">Academics</h2>
+<hr>
+<div class="container">
+  <div class="row text-center">
+    <?php foreach ($rows as $row): ?>
+      <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+        <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
+          <div class="caption">
+            <h3><?php echo $row['description']; ?></h3>
+            <!-- Passing the gig_id through the URL. Get the gig_id from the URL in the detail page using $_GET['gig_id'] -->
+            <p><a href="detail.php?gig_id=<?php echo $row['gig_id']; ?>" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Request</a></p>
+          </div>
+        </div>
+      </div>
+    <?php endforeach; ?>
+  </div>
+</div>
+</div>
+
+
 </body>
 </html>
+<?php include('footer.html'); ?>
