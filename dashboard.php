@@ -4,6 +4,46 @@ include('datasnap.php');
 ?>
 <!-- php starts here -->
 <?php
+function getServicesSoldCount($user_id)
+{
+    global $conn;
+    $sum = 0;
+    if ($stmt = $conn->prepare("SELECT gig_id FROM `advertisement` WHERE user_id = ?")) 
+    {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($gig_id);
+        while ($stmt->fetch()) 
+        {
+          $adv_gig_ID[] = array('gig_id' => $gig_id);
+          if ($stmtt = $conn->prepare("SELECT COUNT(*) FROM `order` WHERE status = 'completed' AND gig_id IN (SELECT gig_id FROM advertisement WHERE user_id= ?)"))
+         	{
+	          	$stmtt->bind_param("i", $user_id);
+	        	$stmtt->execute();
+	        	$stmtt->store_result();
+	        	$stmtt->bind_result($gig_id2);
+	        	while ($result = $stmtt->fetch()) 
+	       		 {
+	       		 	$sum = $sum + $gig_id2;
+	       		 	$rows[] = array('gig_id' => $gig_id2);
+	       		 }
+        	}
+        	else
+        	{
+        		printf("Error message: %s\n", $conn->error);
+        	}
+        }
+
+         $stmt->close();
+         $stmtt->close();
+		 return $rows;
+        
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
 
 function getServicesPurchasedCount($user_id)
 {
@@ -42,13 +82,13 @@ function getUserName($user_id)
 }
 function getCredits($user_id)
 {
-    global $conn;
-    if ($stmt = $conn->prepare("SELECT Credits FROM `orderdetails` WHERE user_id = ? ")) {
+     global $conn;
+    if ($stmt = $conn->prepare("SELECT Credits FROM `userdetails` WHERE user_id = ?")) 
+      	{
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $stmt->bind_result($Credits);
-        while ($stmt->fetch()) 
-        {
+        while ($stmt->fetch()) {
           $rows[] = array('Credits' => $Credits);
         }
         $stmt->close();
@@ -99,17 +139,21 @@ function getAllPendingPurchases($user_id)
 function getOrderDetails($user_id)
 {
     global $conn;
-    if ($stmt = $conn->prepare("SELECT order_id, status, confirmed, due_date, category_id, description, price, img, deliverytime FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE o.user_id = ? AND o.status = 'pending' ")) {
+    $rows = array();
+    if ($stmt = $conn->prepare("SELECT order_id, status, confirmed, due_date, category_id, description, price, img, deliverytime FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE o.user_id = ? AND o.status = 'pending' "))
+     {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $stmt->bind_result($order_id, $status, $confirmed, $due_date, $category_id, $description, $price, $img, $deliverytime);
-        while ($stmt->fetch()) {
+        while ($stmt->fetch()) 
+        {
           $rows[] = array('order_id' => $order_id, 'status' => $status, 'confirmed' => $confirmed, 'due_date' => $due_date, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime);
         }
         $stmt->close();
         return $rows;
     }
-    else {
+    else 
+    {
         printf("Error message: %s\n", $conn->error);
     }
 }
@@ -324,7 +368,9 @@ function getOrderDetails($user_id)
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box dark-bg">
                         <i class="fa fa-thumbs-o-up"></i>
-                        <div class="count">4.362</div>
+                        
+                    <div class="count"><?php echo getServicesSoldCount('21')[0]['gig_id']; ?></div>
+
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->
                 </div><!--/.col-->
@@ -333,11 +379,11 @@ function getOrderDetails($user_id)
         					<div class="info-box brown-bg">
         						<i class="fa fa-shopping-cart"></i>
         						<!-- remove this once the session is available -->
-        						<?php 
-        						$_SESSION['id']='21';
-        						?>
+        						<!-- <?php 
+        						// $_SESSION['id']='21';
+        						?>-->
         						<!-- remove this once the session is available -->
-                    <div class="count"><?php echo getServicesPurchasedCount($_SESSION['id']); ?></div>
+                    <div class="count"><?php echo getServicesPurchasedCount('21'); ?></div>
         						<div class="title">Purchased</div>
         					</div><!--/.info-box-->
         				</div><!--/.col-->	
@@ -379,8 +425,8 @@ function getOrderDetails($user_id)
 						<i class="fa fa-cubes"></i>
 						<div class="count">
               <?php
-                $usercredit = getCredits('21');
-                echo $usercredit[0]['Credits'];
+                $Credits = getCredits('21');
+                echo $Credits[0]['Credits'];
               ?>
             </div>
 						<div class="title">Credits</div>
@@ -509,12 +555,22 @@ function getOrderDetails($user_id)
                           <table class="table table-hover personal-task">
                               <tbody>
                               <?php
-                                foreach (getOrderDetails($_SESSION['id']) as $order):
+                                foreach (getOrderDetails(21) as $order):
                               ?>
                                 <tr>
                                   <td><?php echo $order['description']; ?></td>
                                   <td>
                                       <?php echo $order['price']; ?>
+                                  </td>
+                                   <td>
+                                      <span class="badge bg-success">
+                                        <?php 
+                                        if ( $order['confirmed']=='1' )
+                                          echo "Order confirmed";
+                                        else
+                                          echo "Order confirmation pending";
+                                        ?>
+                                      </span>
                                   </td>
                                   <td>
                                       <span class="badge bg-important"><?php echo $order['status']; ?></span>
