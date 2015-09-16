@@ -42,16 +42,16 @@ function getName($user_id)
 function getEmail($user_id)
 {
     global $conn;
-    if ($stmt = $conn->prepare("SELECT email, utype FROM `user` WHERE id = $user_id")) 
+    if ($stmt = $conn->prepare("SELECT email, utype FROM user WHERE id = ?")) 
         {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->bind_result($email, $utype);
         while ($stmt->fetch()) {
-          $rows[] = array('email' => $email, 'utype' => $utype);
+          $rowss[] = array('email' => $email, 'utype' => $utype);
         }
         $stmt->close();
-        return $rows;
+        return $rowss;
     }
     else {
             echo "Error";
@@ -101,10 +101,8 @@ function getCategory($category_id)
         
        <img src="<?php echo 'GigUploads/'.$details['img']; ?>" alt="Thumbnail Image 1" height="200" width="400" align="left">
        
-      <strong>Seller Name: <?php $name = getName($user_id);
-                              echo $name[0]['firstname']." ".$name[0]['secondname'] ?></strong> <br> <!-- ASK ASHISH WHY [0] is needed -->
-      <strong> Email ID: <?php 
-                                      ?></strong> <br>
+      <strong>Seller Name: <?php $name = getName($user_id); echo $name[0]['firstname']." ".$name[0]['secondname'] ?></strong> <br> <!-- ASK ASHISH WHY [0] is needed -->
+      <strong> Email ID: <?php echo $email['email'];?></strong> <br>
       <strong>Description:<?php echo $details['description']; ?></strong> <br>
       <strong>Price:<?php echo $details['price']; ?> </strong> <br>
       
