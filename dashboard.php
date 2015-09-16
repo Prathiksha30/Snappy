@@ -379,7 +379,7 @@ function getOrderDetails($user_id)
 						<i class="fa fa-cubes"></i>
 						<div class="count">
               <?php
-                $usercredit = getCredits($_SESSION['id']);
+                $usercredit = getCredits('21');
                 echo $usercredit[0]['Credits'];
               ?>
             </div>
