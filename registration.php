@@ -200,7 +200,7 @@ include("registerheader.html");
      || ($_FILES["file"]["type"] == "image/pjpeg")
      || ($_FILES["file"]["type"] == "image/x-png")
      || ($_FILES["file"]["type"] == "image/png"))
-     && ($_FILES["file"]["size"] < 20000)
+     && ($_FILES["file"]["size"] < 1000000)
      && in_array($extension, $allowedExts)) 
         {
             if ($_FILES["file"]["error"] > 0) 
