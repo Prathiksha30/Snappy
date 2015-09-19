@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,23 +40,34 @@
         </div>
         <button type="submit" class="btn btn-default btn-primary">Submit</button>
       </form>
-      <div class="navbar-form navbar-right" >
+      <?php
+    if(!$_SESSION["email"]) {
+      echo '<div class="navbar-form navbar-right" >
         <a href="login.php">
            <button type="submit" class="btn-default btn btn-primary">Sign In</button>
            </a>
            </div>
-			<div class="navbar-form navbar-right">
+      <div class="navbar-form navbar-right">
         <a href="registration.php">
            <button type="submit" class="btn-default btn btn-primary">Register</button>
            </a>
-           
-           </div>
-     <div class="navbar-form navbar-right">
+           </div>';
+         } 
+         else 
+         {
+          echo '<div class="navbar-form navbar-right">
         <a href="logout.php">
            <button type="submit" class="btn-default btn btn-primary">Log Out</button>
            </a>
            
-           </div>
+           </div>';
+         }
+    ?>
+        
+
+
+    
+          
     </div>
     <!-- /.navbar-collapse --> 
  

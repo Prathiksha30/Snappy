@@ -10,7 +10,7 @@ global $conn;
 if( isset($_SESSION["email"]) && $_SESSION["email"] )
     {
        session_destroy();
-      header("Location: index.html");
+      header("Location: index.php");
        exit;
     }
 ?>
