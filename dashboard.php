@@ -245,7 +245,7 @@ function getPurchaseDetails($user_id)
             </div>
 
             <!--logo start-->
-            <a href="index.html" class="logo"> <span class="lite">Snap Services</span></a>
+            <a href="index.php" class="logo"> <span class="lite">Snap Services</span></a>
             <!--logo end-->
 
             <div class="nav search-row" id="top_menu">
@@ -316,7 +316,7 @@ function getPurchaseDetails($user_id)
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">                
                   <li class="active">
-                      <a class="" href="index.html">
+                      <a class="" href="index.php">
                           <i class="icon_house_alt"></i>
                           <span>Dashboard</span>
                       </a>
@@ -398,7 +398,7 @@ function getPurchaseDetails($user_id)
 				<div class="col-lg-12">
 					<h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>
 						<li><i class="fa fa-laptop"></i>Dashboard</li>						  	
 					</ol>
 				</div>
