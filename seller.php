@@ -2,7 +2,7 @@
 <?php session_start(); ?> 
 <!-- php starts here -->
 <?php
-include("header.html");
+include("header.php");
 include ("datasnap.php");
 if(mysqli_connect_errno()) {
   echo "connection failed:" . mysqli_connect_errno();
