@@ -1,6 +1,6 @@
 <?php include('datasnap.php'); ?>
 
-<?php include('header.html') ?>
+<?php include('header.php') ?>
 
 <?php
 

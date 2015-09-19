@@ -34,34 +34,30 @@
           <a href="#"><i class="fa fa-cart-arrow-down fa-2x"></i></a> <!-- cart -->
           </div>
           
-    <!--Search button-->  <form class="navbar-form navbar-left" role="search">
+    <!--Search button-->  <form class="navbar-form navbar-left" role="search" method="POST">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" placeholder= "Search for gigs.." class="form-control" name = "search">
         </div>
-        <button type="submit" class="btn btn-default btn-primary">Submit</button>
+
+        <button type="submit" class="btn btn-default btn-primary" name="Submit">Submit</button>
       </form>
       <?php
-    if(!$_SESSION["email"]) {
-      echo '<div class="navbar-form navbar-right" >
-        <a href="login.php">
-           <button type="submit" class="btn-default btn btn-primary">Sign In</button>
-           </a>
-           </div>
-      <div class="navbar-form navbar-right">
-        <a href="registration.php">
-           <button type="submit" class="btn-default btn btn-primary">Register</button>
-           </a>
-           </div>';
-         } 
-         else 
-         {
-          echo '<div class="navbar-form navbar-right">
-        <a href="logout.php">
-           <button type="submit" class="btn-default btn btn-primary">Log Out</button>
-           </a>
-           
-           </div>';
-         }
+      if(!$_SESSION["email"]) {
+        echo '<div class="navbar-form navbar-right" >
+          <a href="login.php">
+             <button type="submit" class="btn-default btn btn-primary">Sign In</button>
+             </a>
+             </div>
+        <div class="navbar-form navbar-right">
+          <a href="registration.php">
+             <button type="submit" class="btn-default btn btn-primary">Register</button>
+             </a>
+             </div>';
+           } 
+      else 
+           {
+            echo '<div class="navbar-form navbar-right"> <a href="logout.php"> <button type="submit" class="btn-default btn btn-primary">Log Out</button> </a> </div>';
+           }
     ?>
         
 
@@ -259,3 +255,34 @@
 <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
+
+<!-- FOR SEARCH BAR -->
+<?php
+include('datasnap.php');
+?>
+<?php 
+global $conn;
+if(isset($_POST['Submit']))
+{
+    if($_POST['search']!="")
+    {
+        $search=$_POST['search'];
+        if($stmt = $conn-> prepare("SELECT * FROM advertisement WHERE description = '$search' "))
+        {
+            $stmt->bind_param('s',$search);
+            $result = $stmt->execute();
+            $stmt->$stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
+            while ($stmt->fetch()) 
+            {
+            $details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
+            }
+            $stmt->close();
+        }
+        else
+        {
+            echo "NO RESULTS FOUND!";
+        }
+
+    }
+}
+?>
