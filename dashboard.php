@@ -4,6 +4,24 @@ include('datasnap.php');
 ?>
 <!-- php starts here -->
 <?php
+function getCategoryname($category_id)
+{
+  global $conn;
+    if ($stmt = $conn->prepare("SELECT name FROM `category` WHERE category_id =$category_id")) 
+    {
+
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($name);
+        $stmt->fetch();
+        $stmt->close();
+        return $name;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+
 function getServicesSoldCount($user_id)
 {
     global $conn;
@@ -136,7 +154,31 @@ function getAllPendingPurchases($user_id)
     }
 }
 
-function getOrderDetails($user_id)
+
+
+function getSoldDetails($user_id)
+{
+    global $conn;
+    $rows = array();
+    if ($stmt = $conn->prepare("SELECT order_id, category_id, status, confirmed, deliverytime,description,price FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE a.user_id = ? AND o.status= 'pending' "))
+     {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($order_id, $category_id, $status, $confirmed,$deliverytime,$description,$price);
+        while ($stmt->fetch()) 
+        {
+          $rows[] = array('order_id' => $order_id, 'category_id' =>  $category_id, 'status' => $status, 'confirmed' => $confirmed,'deliverytime' => $deliverytime, 'description' => $description,'price' => $price);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else 
+    {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+
+function getPurchaseDetails($user_id)
 {
     global $conn;
     $rows = array();
@@ -253,9 +295,9 @@ function getOrderDetails($user_id)
                             <li>
                                 <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="documentation.html"><i class="icon_key_alt"></i> Documents</a>
-                            </li>
+                            </li> -->
                            <!--  <li>
                                 <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
                             </li> -->
@@ -444,11 +486,52 @@ function getOrderDetails($user_id)
                           <div class="panel-body progress-panel">
                             <div class="row">
                               <div class="col-lg-8 task-progress pull-left">
-                                  <h1>To Do Everyday</h1>
+                                  <h1>To Do </h1>
                               </div>
                             </div>
                           </div>
                           <table class="table table-hover personal-task">
+                              <tbody>
+                              <?php
+                                foreach (getSoldDetails(22) as $Sold):
+                                  
+                              ?>
+                                <tr>
+                                  <td><?php 
+                                   echo getCategoryname($Sold['category_id']);
+
+                                  ?></td>
+                                  <td>
+                                      <?php echo $Sold['description']; ?>
+                                  </td>
+                                  <td>
+                                      <?php echo $Sold['price']; ?>
+                                  </td>
+                                  <td>
+                                      <?php 
+                                        if ($Sold['confirmed'] == '0')
+                                          {
+                                            echo "not Confirmed";
+                                          }
+                                        else
+                                        {
+
+                                           
+                                            
+                                            echo "confirmed";
+                                          
+                                           
+                                        }
+                                      ?>
+                                  </td>
+
+                              
+                                 
+                                </tr>
+                              <?php endforeach; ?>
+                              </tbody>
+                          </table>
+                         <!--  <table class="table table-hover personal-task">
                               <tbody>
                               <tr>
                                   <td>Today</td>
@@ -538,7 +621,7 @@ function getOrderDetails($user_id)
                                   </td>
                               </tr>
                               </tbody>
-                          </table>
+                          </table> -->
                       </section>
                       <!--Project Activity end-->
                   </div>
@@ -555,17 +638,17 @@ function getOrderDetails($user_id)
                           <table class="table table-hover personal-task">
                               <tbody>
                               <?php
-                                foreach (getOrderDetails(21) as $order):
+                                foreach (getPurchaseDetails(21) as $purchase):
                               ?>
                                 <tr>
-                                  <td><?php echo $order['description']; ?></td>
+                                  <td><?php echo $purchase['description']; ?></td>
                                   <td>
-                                      <?php echo $order['price']; ?>
+                                      <?php echo $purchase['price']; ?>
                                   </td>
                                    <td>
                                       <span class="badge bg-success">
                                         <?php 
-                                        if ( $order['confirmed']=='1' )
+                                        if ( $purchase['confirmed']=='1' )
                                           echo "Order confirmed";
                                         else
                                           echo "Order confirmation pending";
@@ -573,7 +656,7 @@ function getOrderDetails($user_id)
                                       </span>
                                   </td>
                                   <td>
-                                      <span class="badge bg-important"><?php echo $order['status']; ?></span>
+                                      <span class="badge bg-important"><?php echo $purchase['status']; ?></span>
                                   </td>
                                 </tr>
                               <?php endforeach; ?>
