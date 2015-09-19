@@ -1,6 +1,6 @@
 <?php include('datasnap.php'); ?>
 
-<?php include('header.html') ?>
+<?php include('header.php') ?>
 
 <?php
 
@@ -42,24 +42,18 @@ function getName($user_id)
 function getEmail($user_id)
 {
     global $conn;
-<<<<<<< HEAD
-    if ($stmt = $conn->prepare("SELECT email, utype FROM user WHERE id = ?")) 
-=======
+
     if ($stmt = $conn->prepare("SELECT email FROM `user` WHERE id = $user_id")) 
->>>>>>> 2fe6e37794c2e4dbdca743ab3884b6c3fea63d51
+
         {
         //$stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->bind_result($email);
         while ($stmt->fetch()) {
-<<<<<<< HEAD
-          $rowss[] = array('email' => $email, 'utype' => $utype);
-=======
           $rows[] = array('email' => $email);
->>>>>>> 2fe6e37794c2e4dbdca743ab3884b6c3fea63d51
         }
         $stmt->close();
-        return $rowss;
+        return $rows;
     }
     else {
             echo "Error";
@@ -109,12 +103,9 @@ function getCategory($category_id)
         
        <img src="<?php echo 'GigUploads/'.$details['img']; ?>" alt="Thumbnail Image 1" height="200" width="400" align="left">
        
-<<<<<<< HEAD
-      <strong>Seller Name: <?php $name = getName($user_id); echo $name[0]['firstname']." ".$name[0]['secondname'] ?></strong> <br> <!-- ASK ASHISH WHY [0] is needed -->
-      <strong> Email ID: <?php echo $email['email'];?></strong> <br>
-      <strong>Description:<?php echo $details['description']; ?></strong> <br>
-      <strong>Price:<?php echo $details['price']; ?> </strong> <br>
-=======
+
+      
+
       <strong class="text-primary">Seller Name: <?php $name = getName($user_id);
                               echo $name[0]['firstname']." ".$name[0]['secondname'] ?></strong> <br> <!-- ASK ASHISH WHY [0] is needed -->
       <strong class="text-primary"> Email ID: <?php $name = getEmail($user_id);
@@ -122,7 +113,6 @@ function getCategory($category_id)
                                       ?></strong> <br>
       <strong class="text-primary">Description:<?php echo $details['description']; ?></strong> <br>
       <strong class="text-primary">Price:<?php echo $details['price']; ?> </strong> <br>
->>>>>>> 2fe6e37794c2e4dbdca743ab3884b6c3fea63d51
       
       <form action="" method="POST">
         <input type="hidden" name="gig_id" value="<?php echo $details['gig_id']; ?>">
