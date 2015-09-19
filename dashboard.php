@@ -272,7 +272,7 @@ function getPurchaseDetails($user_id)
                             </span>
                             <span class="username">
                             <?php
-                            	$name = getUserName(21);
+                            	$name = getUserName($_SESSION['id']);
                             	echo $name[0]['firstname']." ".$name[0]['secondname'];
                         	?>
                             </span>
@@ -411,12 +411,12 @@ function getPurchaseDetails($user_id)
                     <div class="info-box dark-bg">
                         <i class="fa fa-thumbs-o-up"></i>
                         
-                    <div class="count"><?php echo getServicesSoldCount('21')[0]['gig_id']; ?></div>
+                    <div class="count"><?php echo getServicesSoldCount($_SESSION['id'])[0]['gig_id']; ?></div>
 
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->
                 </div><!--/.col-->
-                <a data-toggle="modal" href="#myModal" title="So that it can show all the purchase details">
+                <a data-toggle="modal" href="#myModal1" title="So that it can show all the purchase details">
         				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
         					<div class="info-box brown-bg">
         						<i class="fa fa-shopping-cart"></i>
@@ -425,19 +425,19 @@ function getPurchaseDetails($user_id)
         						// $_SESSION['id']='21';
         						?>-->
         						<!-- remove this once the session is available -->
-                    <div class="count"><?php echo getServicesPurchasedCount('21'); ?></div>
+                    <div class="count"><?php echo getServicesPurchasedCount($_SESSION['id']); ?></div>
         						<div class="title">Purchased</div>
         					</div><!--/.info-box-->
         				</div><!--/.col-->	
                 </a>
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                       <div class="modal-content">
                           <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                              <h4 class="modal-title">Purchase details</h4>
+                              <h4 class="modaltitleP">Purchase details</h4>
                           </div>
-                          <div class="modal-body">
+                          <div class="modalbodyP">
 
                              
                               <?php
@@ -467,7 +467,7 @@ function getPurchaseDetails($user_id)
 						<i class="fa fa-cubes"></i>
 						<div class="count">
               <?php
-                $Credits = getCredits('21');
+                $Credits = getCredits($_SESSION['id']);
                 echo $Credits[0]['Credits'];
               ?>
             </div>
@@ -511,18 +511,62 @@ function getPurchaseDetails($user_id)
                                       <?php 
                                         if ($Sold['confirmed'] == '0')
                                           {
-                                            echo "not Confirmed";
+                                            ?>
+                                                            <!--  <div class="panel-body"> -->
+                                                                <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed
+                                                                </a>
+                                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                  <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                       <div class="modal-header">
+                                                                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                    <h4 class="modal-title">user details</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+
+                                                                Body goes here...
+
+                                                                         </div>
+                                                                          <div class="modal-footer">
+                                                                          <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                                                          <button class="btn btn-success" type="button">Save changes</button>
+                                                                         </div>
+                                                                         </div>
+                                                                     </div>
+                                                                     </div>
+                                                                  <!-- </div> -->
+                                            </td>
+                                            <?php
                                           }
                                         else
                                         {
+                                          ?>
+                                         <!--  <div class="panel-body"> -->
+                                                                <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed
+                                                                </a>
+                                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                  <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                       <div class="modal-header">
+                                                                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                    <h4 class="modal-title">User details</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
 
-                                           
-                                            
-                                            echo "confirmed";
-                                          
-                                           
-                                        }
-                                      ?>
+                                                                Body goes here...
+
+                                                                         </div>
+                                                                          <div class="modal-footer">
+                                                                          <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                                                          <button class="btn btn-success" type="button">Save changes</button>
+                                                                         </div>
+                                                                         </div>
+                                                                     </div>
+                                                                     </div>
+                                                                  <!-- </div>
+ --><!--  -->
+                                        <?php } ?>
+                                      
                                   </td>
 
                               
@@ -631,14 +675,14 @@ function getPurchaseDetails($user_id)
                           <div class="panel-body progress-panel">
                             <div class="row">
                               <div class="col-lg-8 task-progress pull-left">
-                                  <h1>Pending Purchases</h1>                                  
+                                  <h1>Services in transit</h1>                                  
                               </div>
                             </div>
                           </div>
                           <table class="table table-hover personal-task">
                               <tbody>
                               <?php
-                                foreach (getPurchaseDetails(21) as $purchase):
+                                foreach (getPurchaseDetails($_SESSION['id']) as $purchase):
                               ?>
                                 <tr>
                                   <td><?php echo $purchase['description']; ?></td>
