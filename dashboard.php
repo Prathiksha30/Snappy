@@ -4,6 +4,24 @@ include('datasnap.php');
 ?>
 <!-- php starts here -->
 <?php
+function getCategoryname($category_id)
+{
+  global $conn;
+    if ($stmt = $conn->prepare("SELECT name FROM `category` WHERE category_id =$category_id")) 
+    {
+
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($name);
+        $stmt->fetch();
+        $stmt->close();
+        return $name;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+
 function getServicesSoldCount($user_id)
 {
     global $conn;
@@ -136,7 +154,31 @@ function getAllPendingPurchases($user_id)
     }
 }
 
-function getOrderDetails($user_id)
+
+
+function getSoldDetails($user_id)
+{
+    global $conn;
+    $rows = array();
+    if ($stmt = $conn->prepare("SELECT order_id, category_id, status, confirmed, deliverytime,description,price FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE a.user_id = ? AND o.status= 'pending' "))
+     {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($order_id, $category_id, $status, $confirmed,$deliverytime,$description,$price);
+        while ($stmt->fetch()) 
+        {
+          $rows[] = array('order_id' => $order_id, 'category_id' =>  $category_id, 'status' => $status, 'confirmed' => $confirmed,'deliverytime' => $deliverytime, 'description' => $description,'price' => $price);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else 
+    {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+
+function getPurchaseDetails($user_id)
 {
     global $conn;
     $rows = array();
@@ -230,7 +272,7 @@ function getOrderDetails($user_id)
                             </span>
                             <span class="username">
                             <?php
-                            	$name = getUserName(21);
+                            	$name = getUserName($_SESSION['id']);
                             	echo $name[0]['firstname']." ".$name[0]['secondname'];
                         	?>
                             </span>
@@ -253,9 +295,9 @@ function getOrderDetails($user_id)
                             <li>
                                 <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="documentation.html"><i class="icon_key_alt"></i> Documents</a>
-                            </li>
+                            </li> -->
                            <!--  <li>
                                 <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
                             </li> -->
@@ -369,12 +411,12 @@ function getOrderDetails($user_id)
                     <div class="info-box dark-bg">
                         <i class="fa fa-thumbs-o-up"></i>
                         
-                    <div class="count"><?php echo getServicesSoldCount('21')[0]['gig_id']; ?></div>
+                    <div class="count"><?php echo getServicesSoldCount($_SESSION['id'])[0]['gig_id']; ?></div>
 
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->
                 </div><!--/.col-->
-                <a data-toggle="modal" href="#myModal" title="So that it can show all the purchase details">
+                <a data-toggle="modal" href="#myModal1" title="So that it can show all the purchase details">
         				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
         					<div class="info-box brown-bg">
         						<i class="fa fa-shopping-cart"></i>
@@ -383,19 +425,19 @@ function getOrderDetails($user_id)
         						// $_SESSION['id']='21';
         						?>-->
         						<!-- remove this once the session is available -->
-                    <div class="count"><?php echo getServicesPurchasedCount('21'); ?></div>
+                    <div class="count"><?php echo getServicesPurchasedCount($_SESSION['id']); ?></div>
         						<div class="title">Purchased</div>
         					</div><!--/.info-box-->
         				</div><!--/.col-->	
                 </a>
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                       <div class="modal-content">
                           <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                              <h4 class="modal-title">Purchase details</h4>
+                              <h4 class="modaltitleP">Purchase details</h4>
                           </div>
-                          <div class="modal-body">
+                          <div class="modalbodyP">
 
                              
                               <?php
@@ -425,7 +467,7 @@ function getOrderDetails($user_id)
 						<i class="fa fa-cubes"></i>
 						<div class="count">
               <?php
-                $Credits = getCredits('21');
+                $Credits = getCredits($_SESSION['id']);
                 echo $Credits[0]['Credits'];
               ?>
             </div>
@@ -444,11 +486,96 @@ function getOrderDetails($user_id)
                           <div class="panel-body progress-panel">
                             <div class="row">
                               <div class="col-lg-8 task-progress pull-left">
-                                  <h1>To Do Everyday</h1>
+                                  <h1>To Do </h1>
                               </div>
                             </div>
                           </div>
                           <table class="table table-hover personal-task">
+                              <tbody>
+                              <?php
+                                foreach (getSoldDetails(22) as $Sold):
+                                  
+                              ?>
+                                <tr>
+                                  <td><?php 
+                                   echo getCategoryname($Sold['category_id']);
+
+                                  ?></td>
+                                  <td>
+                                      <?php echo $Sold['description']; ?>
+                                  </td>
+                                  <td>
+                                      <?php echo $Sold['price']; ?>
+                                  </td>
+                                  <td>
+                                      <?php 
+                                        if ($Sold['confirmed'] == '0')
+                                          {
+                                            ?>
+                                                            <!--  <div class="panel-body"> -->
+                                                                <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed
+                                                                </a>
+                                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                  <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                       <div class="modal-header">
+                                                                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                    <h4 class="modal-title">user details</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+
+                                                                Body goes here...
+
+                                                                         </div>
+                                                                          <div class="modal-footer">
+                                                                          <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                                                          <button class="btn btn-success" type="button">Save changes</button>
+                                                                         </div>
+                                                                         </div>
+                                                                     </div>
+                                                                     </div>
+                                                                  <!-- </div> -->
+                                            </td>
+                                            <?php
+                                          }
+                                        else
+                                        {
+                                          ?>
+                                         <!--  <div class="panel-body"> -->
+                                                                <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed
+                                                                </a>
+                                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                  <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                       <div class="modal-header">
+                                                                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                    <h4 class="modal-title">User details</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+
+                                                                Body goes here...
+
+                                                                         </div>
+                                                                          <div class="modal-footer">
+                                                                          <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                                                          <button class="btn btn-success" type="button">Save changes</button>
+                                                                         </div>
+                                                                         </div>
+                                                                     </div>
+                                                                     </div>
+                                                                  <!-- </div>
+ --><!--  -->
+                                        <?php } ?>
+                                      
+                                  </td>
+
+                              
+                                 
+                                </tr>
+                              <?php endforeach; ?>
+                              </tbody>
+                          </table>
+                         <!--  <table class="table table-hover personal-task">
                               <tbody>
                               <tr>
                                   <td>Today</td>
@@ -538,7 +665,7 @@ function getOrderDetails($user_id)
                                   </td>
                               </tr>
                               </tbody>
-                          </table>
+                          </table> -->
                       </section>
                       <!--Project Activity end-->
                   </div>
@@ -548,24 +675,24 @@ function getOrderDetails($user_id)
                           <div class="panel-body progress-panel">
                             <div class="row">
                               <div class="col-lg-8 task-progress pull-left">
-                                  <h1>Pending Purchases</h1>                                  
+                                  <h1>Services in transit</h1>                                  
                               </div>
                             </div>
                           </div>
                           <table class="table table-hover personal-task">
                               <tbody>
                               <?php
-                                foreach (getOrderDetails(21) as $order):
+                                foreach (getPurchaseDetails($_SESSION['id']) as $purchase):
                               ?>
                                 <tr>
-                                  <td><?php echo $order['description']; ?></td>
+                                  <td><?php echo $purchase['description']; ?></td>
                                   <td>
-                                      <?php echo $order['price']; ?>
+                                      <?php echo $purchase['price']; ?>
                                   </td>
                                    <td>
                                       <span class="badge bg-success">
                                         <?php 
-                                        if ( $order['confirmed']=='1' )
+                                        if ( $purchase['confirmed']=='1' )
                                           echo "Order confirmed";
                                         else
                                           echo "Order confirmation pending";
@@ -573,7 +700,7 @@ function getOrderDetails($user_id)
                                       </span>
                                   </td>
                                   <td>
-                                      <span class="badge bg-important"><?php echo $order['status']; ?></span>
+                                      <span class="badge bg-important"><?php echo $purchase['status']; ?></span>
                                   </td>
                                 </tr>
                               <?php endforeach; ?>
