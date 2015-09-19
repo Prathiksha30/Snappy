@@ -411,7 +411,7 @@ function getPurchaseDetails($user_id)
                     <div class="info-box dark-bg">
                         <i class="fa fa-thumbs-o-up"></i>
                         
-                    <div class="count"><?php echo getServicesSoldCount($_SESSION['id'])[0]['gig_id']; ?></div>
+                    <div class="count"> <?php echo getServicesSoldCount($_SESSION['id'])[0]['gig_id']; ?></div>
 
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->

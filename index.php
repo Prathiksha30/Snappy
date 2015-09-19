@@ -101,23 +101,8 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
            
            </div>';
          }
-=======
-      if(!$_SESSION["email"]) {
-        echo '<div class="navbar-form navbar-right" >
-          <a href="login.php">
-             <button type="submit" class="btn-default btn btn-primary">Sign In</button>
-             </a>
-             </div>
-        <div class="navbar-form navbar-right">
-          <a href="registration.php">
-             <button type="submit" class="btn-default btn btn-primary">Register</button>
-             </a>
-             </div>';
-           } 
-      else 
-           {
-            echo '<div class="navbar-form navbar-right"> <a href="logout.php"> <button type="submit" class="btn-default btn btn-primary">Log Out</button> </a> </div>';
-           }
+
+     
 
     ?>
         
