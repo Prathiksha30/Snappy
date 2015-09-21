@@ -1,4 +1,24 @@
 <?php session_start(); ?>
+<?php include("datasnap.php") ?>
+<?php function getUserName($user_id)
+{
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT firstname, secondname FROM `userdetails` WHERE user_id = ?")) 
+        {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($firstname, $secondname);
+        while ($stmt->fetch()) {
+          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+?>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -48,6 +68,9 @@
         }
         else
          {
+
+        $name = getUserName($_SESSION['id']);
+        echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
           echo '<div class="navbar-form navbar-right">
         <a href="seller.php">
 
