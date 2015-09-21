@@ -201,7 +201,7 @@ if (isset($_POST['submit'])) {
 
         $row = mysqli_fetch_array($result);
 
-        if(!$row){
+        if (!$row) {
             echo "<div>";
             echo "No existing user or wrong password.";
             echo "</div>";
@@ -212,17 +212,17 @@ if (isset($_POST['submit'])) {
             $loggedIn = true;
             $_SESSION["email"] = $userName;
             $_SESSION['id'] = $row['id'];
-           // header("Location: seller.php");
+            header("Location: dashboard.php");
         }
     }
 
-    if ( !$loggedIn )
+/*    if ( !$loggedIn )
    {
         echo "<div>";
         echo "You have been logged in as $email!";
         echo "</div>";
         $_SESSION["email"] = $userName;
-    }
+    }*/
     
   }
 ?>
