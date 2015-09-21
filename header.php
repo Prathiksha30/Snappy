@@ -33,7 +33,7 @@
 </head>
 <body>
 <nav>
-  <div class="container"> 
+  <div class="containerheader"> 
     
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -43,7 +43,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     
           <div class="navbar-text pull-right">
-          <a href="#"><i class="fa fa-cart-arrow-down fa-2x"></i></a> <!-- cart -->
+          <a href="#"> <IMG class="flaticon" src="img/savings5.png"> </a><!-- cart -->
           </div>
           
     <!--Search button-->  <form class="navbar-form navbar-left" role="search">

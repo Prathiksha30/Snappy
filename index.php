@@ -120,17 +120,10 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
            </a>
            
            </div>';
-         }
-
-     
+         }  
 
     ?>
-        
-
-
-    
-          
-    </div>
+  </div>
     <!-- /.navbar-collapse --> 
  
   <!-- /.container-fluid --> 
@@ -148,7 +141,7 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
          <li><a href="Academics.php"> Academics </a></li>
         <li> <a href="#"> Others </a></li> 
       </ul> 
- </div>
+</div>
 
 
 <div class="container">
@@ -181,7 +174,7 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
     </div>
     </div>
 
-<h2 class="text-center text-primary" >RECOMMENDED SERVICES</h2>
+<h2 class="text-center text-primary">RECOMMENDED SERVICES</h2>
 <hr>
 <div class="container">
   <div class="row text-center">
