@@ -79,6 +79,24 @@ function getServicesPurchasedCount($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
+// function getUserdetails($user_id)
+// {
+//     global $conn;
+//     if ($stmt = $conn->prepare("SELECT firstname, secondname FROM `userdetails` WHERE user_id = ?")) 
+//         {
+//         $stmt->bind_param("i", $user_id);
+//         $stmt->execute();
+//         $stmt->bind_result($firstname, $secondname);
+//         while ($stmt->fetch()) {
+//           $rows[] = array('firstname' => $firstname, 'secondname' => $secondname);
+//         }
+//         $stmt->close();
+//         return $rows;
+//     }
+//     else {
+//         printf("Error message: %s\n", $conn->error);
+//     }
+// }
 
 function getUserName($user_id)
 {
@@ -117,6 +135,7 @@ function getCredits($user_id)
     }
 }
 // getAllCompletedPurchases isnt correct
+
 function getAllCompletedPurchases($user_id)
 {
     global $conn;
@@ -293,7 +312,7 @@ function getPurchaseDetails($user_id)
                                 <a href="#"><i class="icon_chat_alt"></i> Chats</a>
                             </li> -->
                             <li>
-                                <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
+                                <a href="logout.php"><i class="icon_key_alt"></i> Log Out</a>
                             </li>
                             <!-- <li>
                                 <a href="documentation.html"><i class="icon_key_alt"></i> Documents</a>
@@ -523,7 +542,7 @@ function getPurchaseDetails($user_id)
                                                                         </div>
                                                                         <div class="modal-body">
 
-                                                                Body goes here...
+                                                                          getUserdetails
 
                                                                          </div>
                                                                           <div class="modal-footer">
