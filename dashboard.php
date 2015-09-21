@@ -4,22 +4,21 @@ include('datasnap.php');
 ?>
 <!-- php starts here -->
 <?php
-function getCategoryname($category_id)
+function getCategoryName($category_id)
 {
   global $conn;
-    if ($stmt = $conn->prepare("SELECT name FROM `category` WHERE category_id =$category_id")) 
-    {
-
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($name);
-        $stmt->fetch();
-        $stmt->close();
-        return $name;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }
+  if ($stmt = $conn->prepare("SELECT name FROM `category` WHERE category_id =$category_id")) 
+  {
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($name);
+    $stmt->fetch();
+    $stmt->close();
+    return $name;
+  }
+  else {
+      printf("Error message: %s\n", $conn->error);
+  }
 }
 
 function getServicesSoldCount($user_id)
@@ -79,6 +78,24 @@ function getServicesPurchasedCount($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
+/*function getUserdetails($user_id)
+{
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT firstname, secondname FROM `userdetails` WHERE user_id = ?")) 
+        {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($firstname, $secondname);
+        while ($stmt->fetch()) {
+          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}*/
 
 function getUserName($user_id)
 {
@@ -98,43 +115,64 @@ function getUserName($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
+
 function getCredits($user_id)
 {
-     global $conn;
-    if ($stmt = $conn->prepare("SELECT Credits FROM `userdetails` WHERE user_id = ?")) 
-      	{
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $stmt->bind_result($Credits);
-        while ($stmt->fetch()) {
-          $rows[] = array('Credits' => $Credits);
-        }
-        $stmt->close();
-        return $rows;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }
-}
-// getAllCompletedPurchases isnt correct
-function getAllCompletedPurchases($user_id)
-{
     global $conn;
-    if ($stmt = $conn->prepare("SELECT gig_id FROM `order` WHERE user_id = ? AND status = 'completed'")) {
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $stmt->bind_result($gig_id);
-        while ($stmt->fetch()) {
-          $rows[] = array('gig_id' => $gig_id);
-        }
-        $stmt->close();
-        return $rows;
+    if ($stmt = $conn->prepare("SELECT Credits FROM `userdetails` WHERE user_id = ?"))
+    {
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      $stmt->bind_result($Credits);
+      while ($stmt->fetch()) {
+        $rows[] = array('Credits' => $Credits);
+      }
+      $stmt->close();
+      return $rows;
     }
     else {
         printf("Error message: %s\n", $conn->error);
     }
 }
 
+function getAdvertisementDetails($gig_id)
+{
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT category_id, description, price FROM advertisement WHERE gig_id = ?")) 
+    {
+      $stmt->bind_param("i", $gig_id);
+      $stmt->execute();
+      $stmt->bind_result($category_id, $description, $price);
+      while ($stmt->fetch()) {
+        $rows = array('category_id' => $category_id, 'description' => $description, 'price' => $price);
+      }
+      $stmt->close();
+      return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+
+// getAllCompletedPurchases isnt correct
+function getAllCompletedPurchases($user_id)
+{
+  global $conn;
+  if ($stmt = $conn->prepare("SELECT gig_id FROM `order` WHERE user_id = ? AND status = 'completed'"))
+  {
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($gig_id);
+    while ($stmt->fetch()) {
+      $rows[] = array('gig_id' => $gig_id);
+    }
+    $stmt->close();
+    return $rows;
+  }
+  else {
+    printf("Error message: %s\n", $conn->error);
+  }
+}
 
 function getAllPendingPurchases($user_id)
 {
@@ -153,8 +191,6 @@ function getAllPendingPurchases($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
-
-
 
 function getSoldDetails($user_id)
 {
@@ -198,6 +234,10 @@ function getPurchaseDetails($user_id)
     {
         printf("Error message: %s\n", $conn->error);
     }
+}
+
+if (isset($_POST['confirm_order_id'])) {
+  echo "request confirmed";
 }
 
 ?>
@@ -245,7 +285,7 @@ function getPurchaseDetails($user_id)
             </div>
 
             <!--logo start-->
-            <a href="index.html" class="logo"> <span class="lite">Snap Services</span></a>
+            <a href="index.php" class="logo"> <span class="lite">Snap Services</span></a>
             <!--logo end-->
 
             <div class="nav search-row" id="top_menu">
@@ -293,7 +333,7 @@ function getPurchaseDetails($user_id)
                                 <a href="#"><i class="icon_chat_alt"></i> Chats</a>
                             </li> -->
                             <li>
-                                <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
+                                <a href="logout.php"><i class="icon_key_alt"></i> Log Out</a>
                             </li>
                             <!-- <li>
                                 <a href="documentation.html"><i class="icon_key_alt"></i> Documents</a>
@@ -312,11 +352,11 @@ function getPurchaseDetails($user_id)
 
       <!--sidebar start-->
       <aside>
-          <div id="sidebar"  class="nav-collapse">
+          <div id="sidebar" class="nav-collapse">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">                
                   <li class="active">
-                      <a class="" href="index.html">
+                      <a class="" href="index.php">
                           <i class="icon_house_alt"></i>
                           <span>Dashboard</span>
                       </a>
@@ -398,8 +438,8 @@ function getPurchaseDetails($user_id)
 				<div class="col-lg-12">
 					<h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-						<li><i class="fa fa-laptop"></i>Dashboard</li>						  	
+						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>
+						<li><i class="fa fa-laptop"></i>Dashboard</li>
 					</ol>
 				</div>
 			</div>
@@ -411,7 +451,7 @@ function getPurchaseDetails($user_id)
                     <div class="info-box dark-bg">
                         <i class="fa fa-thumbs-o-up"></i>
                         
-                    <div class="count"><?php echo getServicesSoldCount($_SESSION['id'])[0]['gig_id']; ?></div>
+                    <div class="count"> <?php $count = getServicesSoldCount($_SESSION['id']); echo $count[0]['gig_id']; ?></div>
 
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->
@@ -421,8 +461,7 @@ function getPurchaseDetails($user_id)
         					<div class="info-box brown-bg">
         						<i class="fa fa-shopping-cart"></i>
         						<!-- remove this once the session is available -->
-        						<!-- <?php 
-        						// $_SESSION['id']='21';
+        						<!-- <?php
         						?>-->
         						<!-- remove this once the session is available -->
                     <div class="count"><?php echo getServicesPurchasedCount($_SESSION['id']); ?></div>
@@ -438,21 +477,18 @@ function getPurchaseDetails($user_id)
                               <h4 class="modaltitleP">Purchase details</h4>
                           </div>
                           <div class="modalbodyP">
-
-                             
                               <?php
                                 foreach (getAllCompletedPurchases($_SESSION['id']) as $completed):
-                              ?>
-                                  
-                                 <?php echo $completed['gig_id']; ?>
-                                 
-                                      <?php echo $completed['order_id']; ?>
-                                
-                                      <span class="badge bg-important"><?php echo $completed['status']; ?></span>
-                                  
-                              <?php endforeach; ?>
-                              
-
+                                  $advertisement_details = getAdvertisementDetails($completed['gig_id']);
+                                ?>
+                                  <?php // echo $completed['gig_id']; ?>
+                                  <?php echo getCategoryName($advertisement_details['category_id']); ?>
+                                  <?php echo $advertisement_details['description']; ?>
+                                  <?php echo $advertisement_details['price']; ?>
+                                  <?php // echo $completed['order_id']; ?>
+                                  <br>
+                                  <span class="badge bg-important"><?php echo $completed['status']; ?></span>
+                                <?php endforeach; ?>
                           </div>
                           <div class="modal-footer">
                               <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
@@ -493,12 +529,12 @@ function getPurchaseDetails($user_id)
                           <table class="table table-hover personal-task">
                               <tbody>
                               <?php
-                                foreach (getSoldDetails(22) as $Sold):
+                                foreach (getSoldDetails($_SESSION["id"]) as $Sold):
                                   
                               ?>
                                 <tr>
                                   <td><?php 
-                                   echo getCategoryname($Sold['category_id']);
+                                   echo getCategoryName($Sold['category_id']);
 
                                   ?></td>
                                   <td>
@@ -512,29 +548,32 @@ function getPurchaseDetails($user_id)
                                         if ($Sold['confirmed'] == '0')
                                           {
                                             ?>
-                                                            <!--  <div class="panel-body"> -->
-                                                                <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed
-                                                                </a>
-                                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                  <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                       <div class="modal-header">
-                                                                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                                    <h4 class="modal-title">user details</h4>
-                                                                        </div>
-                                                                        <div class="modal-body">
+                                              <!-- <a class="btn btn-success" data-toggle="modal" href="#myModal">Confirm</a> -->
+                                              <form method="POST" action="">
+                                                <input type="hidden" name="confirm_order_id" value="<?php echo $Sold['order_id']; ?>">
+                                                <input type="submit" value="Confirm" class="btn btn-success">
+                                              </form>
+                                              <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed</a>
+                                              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                  <div class="modal-content">
+                                                     <div class="modal-header">
+                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                  <h4 class="modal-title">user details</h4>
+                                                      </div>
+                                                      <div class="modal-body">
 
-                                                                Body goes here...
+                                                        getUserdetails
 
-                                                                         </div>
-                                                                          <div class="modal-footer">
-                                                                          <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-                                                                          <button class="btn btn-success" type="button">Save changes</button>
-                                                                         </div>
-                                                                         </div>
-                                                                     </div>
-                                                                     </div>
-                                                                  <!-- </div> -->
+                                                       </div>
+                                                        <div class="modal-footer">
+                                                        <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                                        <button class="btn btn-success" type="button">Save changes</button>
+                                                       </div>
+                                                       </div>
+                                                   </div>
+                                                   </div>
+                                                <!-- </div> -->
                                             </td>
                                             <?php
                                           }
@@ -542,28 +581,28 @@ function getPurchaseDetails($user_id)
                                         {
                                           ?>
                                          <!--  <div class="panel-body"> -->
-                                                                <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed
-                                                                </a>
-                                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                  <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                       <div class="modal-header">
-                                                                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                                    <h4 class="modal-title">User details</h4>
-                                                                        </div>
-                                                                        <div class="modal-body">
+                                          <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed
+                                          </a>
+                                          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                 <div class="modal-header">
+                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                              <h4 class="modal-title">User details</h4>
+                                                  </div>
+                                                  <div class="modal-body">
 
-                                                                Body goes here...
+                                          Body goes here...
 
-                                                                         </div>
-                                                                          <div class="modal-footer">
-                                                                          <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-                                                                          <button class="btn btn-success" type="button">Save changes</button>
-                                                                         </div>
-                                                                         </div>
-                                                                     </div>
-                                                                     </div>
-                                                                  <!-- </div>
+                                                   </div>
+                                                    <div class="modal-footer">
+                                                    <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                                    <button class="btn btn-success" type="button">Save changes</button>
+                                                   </div>
+                                                   </div>
+                                               </div>
+                                               </div>
+                                            <!-- </div>
  --><!--  -->
                                         <?php } ?>
                                       

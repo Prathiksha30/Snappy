@@ -1,4 +1,25 @@
-<?php session_start(); ?>
+<?php session_start(); 
+function getUserName($user_id)
+{
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT firstname, secondname FROM `userdetails` WHERE user_id = ?")) 
+        {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($firstname, $secondname);
+        while ($stmt->fetch()) {
+          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+?>
+<?php include('datasnap.php');
+global $conn; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +39,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+   
 </head>
 <body>
 <nav>
@@ -42,22 +64,46 @@
         <button type="submit" class="btn btn-default btn-primary" name="Submit">Submit</button>
       </form>
       <?php
-      if(!$_SESSION["email"]) {
-        echo '<div class="navbar-form navbar-right" >
-          <a href="login.php">
-             <button type="submit" class="btn-default btn btn-primary">Sign In</button>
-             </a>
-             </div>
-        <div class="navbar-form navbar-right">
-          <a href="registration.php">
-             <button type="submit" class="btn-default btn btn-primary">Register</button>
-             </a>
-             </div>';
-           } 
-      else 
-           {
-            echo '<div class="navbar-form navbar-right"> <a href="logout.php"> <button type="submit" class="btn-default btn btn-primary">Log Out</button> </a> </div>';
-           }
+
+    if(!$_SESSION["email"]) {
+      echo '<div class="navbar-form navbar-right" >
+        <a href="login.php">
+           <button type="submit" class="btn-default btn btn-primary">Sign In</button>
+           </a>
+           </div>
+      <div class="navbar-form navbar-right">
+        <a href="registration.php">
+           <button type="submit" class="btn-default btn btn-primary">Register</button>
+           </a>
+           </div>';
+         
+        }
+        else
+         {
+         
+
+$name = getUserName($_SESSION['id']);
+echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
+
+         echo  ' <div class="navbar-form navbar-right">
+        <a href="seller.php">
+
+
+           <button type="submit" class="btn-default btn btn-primary">Start Selling</button>
+           </a>
+           
+           </div>
+          <div class="navbar-form navbar-right">
+        <a href="logout.php">
+
+           <button type="submit" class="btn-default btn btn-primary">Log Out</button>
+           </a>
+           
+           </div>';
+         }
+
+     
+
     ?>
         
 
