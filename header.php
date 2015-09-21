@@ -38,7 +38,7 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="#">Snap Services</a></div>
+      <a class="navbar-brand" href="index.php">Snap Services</a></div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     
@@ -105,15 +105,8 @@
          <li><a href="Advertising.php"> Advertising </a></li>
          <li><a href="Buisness.php"> Buisness </a></li>
          <li><a href="Academics.php"> Academics </a></li>
-        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Subjects <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"> Mathematics </a></li>
-            <li><a href="#"> Computer Science </a> </li>
-            <li><a href="#"> Chemistry </a> </li>
-            <li><a href="#"> Phsyics </a> </li>
-            <li><a href="#"> Biology </a> </li>
-          </ul>     
-          
-</li> </ul> </div>
+        <li> <a href="#"> Others </a></li> 
+    </ul>
+ </div>
 </body>
 </html>

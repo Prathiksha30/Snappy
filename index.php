@@ -20,6 +20,26 @@ function getUserName($user_id)
 ?>
 <?php include('datasnap.php');
 global $conn; ?>
+
+<!-- For the Recommended Services thing -->
+
+<?php 
+global $conn;
+if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement")) 
+{
+  //$stmt->bind_param('i', $gig_id); // Passing gig_id to select statment
+  $result = $stmt->execute();
+  $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language); // Fetching results in an array
+  while ($stmt->fetch()) {
+    $details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
+   
+  }
+  $stmt->close();
+}
+else
+  echo "error";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,16 +146,9 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
          <li><a href="Advertising.php"> Advertising </a></li>
          <li><a href="Buisness.php"> Buisness </a></li>
          <li><a href="Academics.php"> Academics </a></li>
-        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Others <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"> Mathematics </a></li>
-            <li><a href="#"> Computer Science </a> </li>
-            <li><a href="#"> Chemistry </a> </li>
-            <li><a href="#"> Phsyics </a> </li>
-            <li><a href="#"> Biology </a> </li>
-          </ul>     
-          
-</li> </ul> </div>
+        <li> <a href="#"> Others </a></li> 
+      </ul> 
+ </div>
 
 
 <div class="container">
@@ -172,8 +185,24 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
 <hr>
 <div class="container">
   <div class="row text-center">
-    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-      <div class="thumbnail"> <img src="img/logo.jpg" alt="Thumbnail Image 1" height="200" width="400">
+    <?php $i=0;
+      
+      for ($i=0; $i < 6; $i++) { 
+                
+      ?>
+      <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+        <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$details[$i]['img']; ?>" alt="<?php echo $details[$i]['description']; ?>" height="200" width="400">
+          <div class="caption">
+            <h3><?php echo $details['description']; ?></h3>
+            <!-- Passing the gig_id through the URL. Get the gig_id from the URL in the detail page using $_GET['gig_id'] -->
+            <p><a href="detail.php?gig_id=<?php echo $details['gig_id']; ?>" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Request</a></p>
+          </div>
+        </div>
+      </div>
+    <?php } ?>
+  </div>
+    <!-- <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6"> -->
+     <!--  <div class="thumbnail"> <img src="img/logo.jpg" alt="Thumbnail Image 1" height="200" width="400">
         <div class="caption">
           <h3>Designing</h3>
           <p>I will design a logo for your website</p>
@@ -199,8 +228,8 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
           <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a> </p>
         </div>
       </div>
-    </div>
-    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6 hidden-lg hidden-md hidden-sm">
+    </div> -->
+   <!--  <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6 hidden-lg hidden-md hidden-sm">
       <div class="thumbnail"> <img src="img/magento.jpeg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
         <div class="caption">
           <h3>Business</h3>
@@ -209,8 +238,8 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
         </div>
       </div>
     </div>
-  </div>
-  <div class="row text-center hidden-xs">
+  </div> -->
+  <!-- <div class="row text-center hidden-xs">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
       <div class="thumbnail"> <img src="img/phpfix.jpg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
         <div class="caption">
@@ -238,67 +267,13 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
         </div>
       </div>
     </div>
-  </div>
-  <nav class="text-center">
-    <!-- Add class .pagination-lg for larger blocks or .pagination-sm for smaller blocks-->
-    <ul class="pagination">
-      <li> <a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
-      <li class="active"><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      
-      <li> <a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
-    </ul>
-  </nav>
-</div>
+  </div> -->
+  
+
 
  
+<?php include('footer.html'); ?>
 
-<footer class="text-center">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-         <div class="container well">
-    <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
-        <div class="row">
-          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-            <div>
-              <ul class="list-unstyled">
-                <li> <a>About Us</a> </li>
-                <li> <a>Privacy Policy</a> </li>
-                <li> <a>FAQs</a> </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-4  col-xs-6">
-            <div>
-              
-            </div>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-            <div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-5"> 
-        <address>
-        <strong>Snap Services</strong><br>
-        
-        <!--<abbr title="Phone">P:</abbr> (123) 456-7890 -->
-      </address>
-       
-        </div>
-    </div>
-  </div>
-      </div>
-    </div>
-  </div>
-</footer>
-<script src="js/jquery-1.11.2.min.js"></script> 
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
 
@@ -332,3 +307,4 @@ if(isset($_POST['Submit']))
     }
 }
 ?>
+

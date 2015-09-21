@@ -64,10 +64,9 @@ function getEmail($user_id)
 //NOT WORKING ?
 function getCategory($category_id)
 {
-  global $conn;
+  /*global $conn;
   if($stmt = $conn->prepare("SELECT name FROM `category` WHERE category_id = $category_id"))
-  {
-   // $stmt->bind_param("i", $category_id);  
+  { 
     $stmt->execute();
     $stmt->bind_result($name);
     while ($stmt->fetch) {
@@ -76,6 +75,16 @@ function getCategory($category_id)
     echo "Name: ".$row[0]['name'];
     $stmt->close();
     return $row;
+  }*/
+  global $conn;
+  if ($stmt = $conn->prepare("SELECT name FROM `category` WHERE category_id =$category_id")) 
+  {
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($name);
+    $stmt->fetch();
+    $stmt->close();
+    return $name;
   }
   else
   {
@@ -95,8 +104,7 @@ function getCategory($category_id)
     </div>
     </div>
 
-<h2 class="text-center text-primary"> <?php  $cat = getCategory($category_id);
-                                        echo $cat[0]['name']; ?>  </h2>
+<h2 class="text-center text-primary"> <?php  echo getCategory($category_id); ?>  </h2>
 <hr>
 <div class="container">
        <!-- <div class="thumbnail"> <img src="GigUploads/<?php echo $details['img']; ?>" alt="Thumbnail Image 1" height="200" width="400"> -->
@@ -130,3 +138,21 @@ function getCategory($category_id)
 </html>
 
 <?php include('footer.html'); ?>
+
+<?php 
+  /*global $conn;
+  if(isset($_POST['confirm']))
+  {
+
+    if($stmt = $conn->prepare("INSERT INTO order(user_id, gig_id, status, created_at) VALUES(?, ?, ?, now())"))
+  {
+    $status="pending";
+    $stmt->bind_param('', );
+    $stmt->execute();
+    $stmt->close();
+  }
+  else
+    echo "Error with insertion into order table!";
+  }*/
+?>
+
