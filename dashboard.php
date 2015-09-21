@@ -439,7 +439,7 @@ if (isset($_POST['confirm_order_id'])) {
 					<h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>
-						<li><i class="fa fa-laptop"></i>Dashboard</li>						  	
+						<li><i class="fa fa-laptop"></i>Dashboard</li>
 					</ol>
 				</div>
 			</div>
@@ -451,7 +451,7 @@ if (isset($_POST['confirm_order_id'])) {
                     <div class="info-box dark-bg">
                         <i class="fa fa-thumbs-o-up"></i>
                         
-                    <div class="count"> <?php echo getServicesSoldCount($_SESSION['id'])[0]['gig_id']; ?></div>
+                    <div class="count"> <?php $count = getServicesSoldCount($_SESSION['id']); echo $count[0]['gig_id']; ?></div>
 
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->
@@ -461,8 +461,7 @@ if (isset($_POST['confirm_order_id'])) {
         					<div class="info-box brown-bg">
         						<i class="fa fa-shopping-cart"></i>
         						<!-- remove this once the session is available -->
-        						<!-- <?php 
-        						// $_SESSION['id']='21';
+        						<!-- <?php
         						?>-->
         						<!-- remove this once the session is available -->
                     <div class="count"><?php echo getServicesPurchasedCount($_SESSION['id']); ?></div>

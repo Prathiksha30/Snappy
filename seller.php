@@ -1,5 +1,5 @@
 
-<?php session_start(); ?> 
+
 <!-- php starts here -->
 <?php
 include("header.php");
@@ -123,10 +123,7 @@ if(isset($_POST['sub']))
                     }
                 }
        }       
-     else 
-       {
-             echo "Invalid file";
-       }
+    
     
 ?>
 <?php include('footer.html'); ?>
