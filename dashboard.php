@@ -256,8 +256,19 @@ if (isset($_POST['drop_order_id'])) {
   echo "request rejected";
 }
 
-if (isset($_POST['confirm_order_id'])) {
-  echo "request confirmed";
+if (isset($_POST['confirm_order_id'])) 
+{
+  // global $conn;
+  //   $rows = array();
+  //   if($stmt = $conn->prepare("UPDATE `order` SET comfirmed='1' WHERE order_id=confirm_order_id"))
+  //   {
+  //     $stmt->bind_param("i", $user_id);
+  //     $stmt->execute();
+  //   }
+  //   else
+  //   {
+  //     printf("Error message: %s\n", $conn->error);
+  //   }
 }
 
 ?>
@@ -548,6 +559,11 @@ if (isset($_POST['confirm_order_id'])) {
                           </div>
                           <table class="table table-hover personal-task">
                               <tbody>
+                              <th>Gig category</th>
+                              <th>Gig Description</th>
+                              <th>Credits</th>
+
+
                               <?php
                                 foreach (getSoldDetails($_SESSION["id"]) as $Sold):
                                   
@@ -810,10 +826,20 @@ if (isset($_POST['confirm_order_id'])) {
                           </div>
                           <table class="table table-hover personal-task">
                               <tbody>
+                              <th>Gig Category</th>
+                              <th>Gig Desciption</th>
+                              <th>Credit</th>
+                              <th>Confirm status</th>
+                              <th>Delivery Status</th>
                               <?php
                                 foreach (getPurchaseDetails($_SESSION['id']) as $purchase):
                               ?>
                                 <tr>
+                                  <td>
+                                  <?php $category_id=$purchase['category_id']; 
+                                   echo getCategoryName(category_id);
+                                  ?>
+                                  </td>
                                   <td><?php echo $purchase['description']; ?></td>
                                   <td>
                                       <?php echo $purchase['price']; ?>
