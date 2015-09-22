@@ -31,7 +31,7 @@ if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, pr
   $result = $stmt->execute();
   $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language); // Fetching results in an array
   while ($stmt->fetch()) {
-    $details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
+    $details[] = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
    
   }
   $stmt->close();
@@ -178,17 +178,14 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
 <hr>
 <div class="container">
   <div class="row text-center">
-    <?php $i=0;
-      
-      for ($i=0; $i < 6; $i++) { 
-                
-      ?>
+    <?php for ($i=0; $i < 6; $i++) 
+    { ?>
       <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
         <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$details[$i]['img']; ?>" alt="<?php echo $details[$i]['description']; ?>" height="200" width="400">
           <div class="caption">
-            <h3><?php echo $details['description']; ?></h3>
+            <h3><?php echo $details[$i]['description']; ?></h3>
             <!-- Passing the gig_id through the URL. Get the gig_id from the URL in the detail page using $_GET['gig_id'] -->
-            <p><a href="detail.php?gig_id=<?php echo $details['gig_id']; ?>" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Request</a></p>
+            <p><a href="detail.php?gig_id=<?php echo $details[$i]['gig_id']; ?>" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Request</a></p>
           </div>
         </div>
       </div>

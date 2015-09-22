@@ -67,7 +67,7 @@
          
         }
         else
-         {
+        {
 
         $name = getUserName($_SESSION['id']);
         echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
