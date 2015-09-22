@@ -33,7 +33,7 @@
 </head>
 <body>
 <nav>
-  <div class="container"> 
+  <div class="containerheader"> 
     
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -43,7 +43,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     
           <div class="navbar-text pull-right">
-          <a href="#"><i class="fa fa-cart-arrow-down fa-2x"></i></a> <!-- cart -->
+          <a href="#"> <IMG class="flaticon" src="img/savings5.png"> </a><!-- cart -->
           </div>
           
     <!--Search button-->  <form class="navbar-form navbar-left" role="search">
@@ -67,7 +67,7 @@
          
         }
         else
-         {
+        {
 
         $name = getUserName($_SESSION['id']);
         echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
@@ -105,15 +105,8 @@
          <li><a href="Advertising.php"> Advertising </a></li>
          <li><a href="Buisness.php"> Buisness </a></li>
          <li><a href="Academics.php"> Academics </a></li>
-        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Subjects <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#"> Mathematics </a></li>
-            <li><a href="#"> Computer Science </a> </li>
-            <li><a href="#"> Chemistry </a> </li>
-            <li><a href="#"> Phsyics </a> </li>
-            <li><a href="#"> Biology </a> </li>
-          </ul>     
-          
-</li> </ul> </div>
+        <li> <a href="#"> Others </a></li> 
+    </ul>
+ </div>
 </body>
 </html>
