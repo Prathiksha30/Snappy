@@ -78,16 +78,16 @@ function getServicesPurchasedCount($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
-/*function getUserdetails($user_id)
+function getUserdetails($user_id)
 {
     global $conn;
-    if ($stmt = $conn->prepare("SELECT firstname, secondname FROM `userdetails` WHERE user_id = ?")) 
+    if ($stmt = $conn->prepare("SELECT firstname, secondname, course, semester, mobile, email  FROM `userdetails` ud LEFT JOIN `user` u ON ud.user_id=u.id WHERE ud.user_id = ?")) 
         {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($firstname, $secondname);
+        $stmt->bind_result($firstname, $secondname, $course, $semester, $mobile, $email);
         while ($stmt->fetch()) {
-          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname);
+          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname, 'course' => $course, 'semester' => $semester, 'mobile' => $mobile, 'email' => $email);
         }
         $stmt->close();
         return $rows;
@@ -95,7 +95,7 @@ function getServicesPurchasedCount($user_id)
     else {
         printf("Error message: %s\n", $conn->error);
     }
-}*/
+}
 
 function getUserName($user_id)
 {
@@ -191,6 +191,23 @@ function getAllPendingPurchases($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
+function getUseridInToDomodal($order_id)
+{
+  global $conn;
+    $rows = array();
+    if ($stmt = $conn->prepare("SELECT user_id FROM `order` WHERE order_id = ?"))
+     {
+        $stmt->bind_param("i", $order_id);
+        $stmt->execute();
+        $stmt->bind_result($user_id);
+        while ($stmt->fetch()) 
+        {
+          $rows = array('user_id' => $user_id);
+        }
+        $stmt->close();
+        return $rows;
+      }
+}
 
 function getSoldDetails($user_id)
 {
@@ -234,6 +251,9 @@ function getPurchaseDetails($user_id)
     {
         printf("Error message: %s\n", $conn->error);
     }
+}
+if (isset($_POST['drop_order_id'])) {
+  echo "request rejected";
 }
 
 if (isset($_POST['confirm_order_id'])) {
@@ -456,7 +476,7 @@ if (isset($_POST['confirm_order_id'])) {
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->
                 </div><!--/.col-->
-                <a data-toggle="modal" href="#myModal1" title="So that it can show all the purchase details">
+                <a data-toggle="modal" href="#myModal" title="So that it can show all the purchase details">
         				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
         					<div class="info-box brown-bg">
         						<i class="fa fa-shopping-cart"></i>
@@ -469,7 +489,7 @@ if (isset($_POST['confirm_order_id'])) {
         					</div><!--/.info-box-->
         				</div><!--/.col-->	
                 </a>
-                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                       <div class="modal-content">
                           <div class="modal-header">
@@ -545,16 +565,13 @@ if (isset($_POST['confirm_order_id'])) {
                                   </td>
                                   <td>
                                       <?php 
-                                        if ($Sold['confirmed'] == '0')
+                                        if ($Sold['confirmed'] != '0')
                                           {
                                             ?>
                                               <!-- <a class="btn btn-success" data-toggle="modal" href="#myModal">Confirm</a> -->
-                                              <form method="POST" action="">
-                                                <input type="hidden" name="confirm_order_id" value="<?php echo $Sold['order_id']; ?>">
-                                                <input type="submit" value="Confirm" class="btn btn-success">
-                                              </form>
-                                              <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed</a>
-                                              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                              
+                                              <a class="btn btn-success" data-toggle="modal" href="#myModal2">Confirmed</a>
+                                              <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                   <div class="modal-content">
                                                      <div class="modal-header">
@@ -562,28 +579,62 @@ if (isset($_POST['confirm_order_id'])) {
                                                                   <h4 class="modal-title">user details</h4>
                                                       </div>
                                                       <div class="modal-body">
-
-                                                        getUserdetails
-
-                                                       </div>
+                                                        <table>
+                                                          <?php
+                                                          $o_id=$Sold['order_id'];
+                                                          $u_id_array=getUseridInToDomodal($o_id);
+                                                          $u_id = $u_id_array['user_id'];
+                                                          ?>
+                                                          <th>Fisrt Name</th>
+                                                          <th>Second Name</th>
+                                                          <th>Course</th>
+                                                          <th>Semester</th>
+                                                          <th>Mobile Number</th>
+                                                          <th>Email ID</th>
+                                                          <tr>
+                                                            <?php $userdetail = getUserdetails($u_id);?>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['firstname'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['secondname'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['course'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['semester'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['mobile'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['email'];?>
+                                                            </td>
+                                                          </tr>
+                                                    </table>
+                                                      </div>
                                                         <div class="modal-footer">
                                                         <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-                                                        <button class="btn btn-success" type="button">Save changes</button>
+                                                        <!-- <form method="POST" action="">
+                                                          <input type="hidden" name="confirm_order_id" value="<?php echo $Sold['order_id']; ?>">
+                                                          <input type="submit" value="Confirm" class="btn btn-success">
+                                                        </form> -->
                                                        </div>
                                                        </div>
                                                    </div>
                                                    </div>
                                                 <!-- </div> -->
-                                            </td>
+                                           <!--  </td> -->
                                             <?php
                                           }
                                         else
                                         {
                                           ?>
                                          <!--  <div class="panel-body"> -->
-                                          <a class="btn btn-success" data-toggle="modal" href="#myModal">not Confirmed
+                                          <a class="btn btn-success" data-toggle="modal" href="#myModal1">Not Confirmed
                                           </a>
-                                          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                          <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                               <div class="modal-content">
                                                  <div class="modal-header">
@@ -592,18 +643,57 @@ if (isset($_POST['confirm_order_id'])) {
                                                   </div>
                                                   <div class="modal-body">
 
-                                          Body goes here...
+                                                    <table>
+                                                          <?php
+                                                          $o_id=$Sold['order_id'];
+                                                          $u_id_array=getUseridInToDomodal($o_id);
+                                                          $u_id = $u_id_array['user_id'];
+                                                          ?>
+                                                          <th>Fisrt Name</th>
+                                                          <th>Second Name</th>
+                                                          <th>Course</th>
+                                                          <th>Semester</th>
+                                                          <th>Mobile Number</th>
+                                                          <th>Email ID</th>
+                                                          <tr>
+                                                            <?php $userdetail = getUserdetails($u_id);?>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['firstname'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['secondname'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['course'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['semester'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['mobile'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['email'];?>
+                                                            </td>
+                                                          </tr>
+                                                    </table>
 
                                                    </div>
                                                     <div class="modal-footer">
-                                                    <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-                                                    <button class="btn btn-success" type="button">Save changes</button>
+                                                     <button data-dismiss="modal" class="btn btn-default" type="button" style="display:inline;">Close</button>
+                                                    <form method="POST" action="" style="display:inline;">
+                                                      <input type="hidden" name="drop_order_id" value="<?php echo $Sold['order_id']; ?>">
+                                                      <input type="submit" value="Reject" class="btn btn-success">
+                                                    </form>
+                                                    <form method="POST" action="" style="display:inline;">
+                                                      <input type="hidden" name="confirm_order_id" value="<?php echo $Sold['order_id']; ?>">
+                                                      <input type="submit" value="Accept" class="btn btn-success">
+                                                    </form>
                                                    </div>
                                                    </div>
                                                </div>
                                                </div>
-                                            <!-- </div>
- --><!--  -->
+                                           
                                         <?php } ?>
                                       
                                   </td>
