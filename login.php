@@ -64,8 +64,8 @@ if( isset($_SESSION["email"]) && $_SESSION["email"] )
             </div>
             <div>
             
-
-            <button class="btn btn-info btn-lg btn-block" type="submit"  >Signup  <a href="registration.php"></button>
+                    <a href="registration.php" >
+            <button class="btn btn-info btn-lg btn-block" type="button" >Signup  </button>
             </a>
             </div>
       </form>
