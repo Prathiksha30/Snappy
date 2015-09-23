@@ -137,8 +137,9 @@ function getCredits($user_id)
 
 function getAdvertisementDetails($gig_id)
 {
+    echo $gig_id;
     global $conn;
-    if ($stmt = $conn->prepare("SELECT category_id, description, price FROM advertisement WHERE gig_id = ?")) 
+    if ($stmt = $conn->prepare("SELECT category_id, description, price FROM advertisement WHERE gig_id = ? ")) 
     {
       $stmt->bind_param("i", $gig_id);
       $stmt->execute();
@@ -154,7 +155,43 @@ function getAdvertisementDetails($gig_id)
     }
 }
 
-// getAllCompletedPurchases isnt correct
+function getAllCompletedSales($user_id)
+{
+  global $conn;
+  if ($stmt = $conn->prepare("SELECT order_id FROM `advertisement` a LEFT JOIN `order` o ON o.gig_id=a.gig_id WHERE a.user_id = ? AND o.status = 'completed'"))
+  {
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($order_id);
+    while ($stmt->fetch()) {
+      $rows[] = array('order_id' => $order_id);
+    }
+    $stmt->close();
+    return $rows;
+  }
+  else {
+    printf("Error message: %s\n", $conn->error);
+  }
+}
+function getGigID($order_id)
+{
+  global $conn;
+  if ($stmt = $conn->prepare("SELECT gig_id FROM `order` WHERE order_id = ? "))
+  {
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    $stmt->bind_result($gig_id);
+    while ($stmt->fetch()) {
+      $rows[] = array('gig_id' => $gig_id);
+    }
+    $stmt->close();
+    return $rows;
+  }
+  else {
+    printf("Error message: %s\n", $conn->error);
+  }
+}
+
 function getAllCompletedPurchases($user_id)
 {
   global $conn;
@@ -387,27 +424,28 @@ if (isset($_POST['confirm_order_id']))
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">                
                   <li class="active">
-                      <a class="" href="index.php">
-                          <i class="icon_house_alt"></i>
+                      <a class="" href="dashboard.php">
+                          
+                          <i class="icon_document_alt"></i>
                           <span>Dashboard</span>
                       </a>
                   </li>
 				  <li class="sub-menu">
-                      <a href="javascript:;" class="">
-                          <i class="icon_document_alt"></i>
-                          <span>Forms</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
+                      <a href="index.php" class="">
+                          <i class="icon_house_alt"></i>
+                          <span>Home page</span>
+                         
                       </a>
                       <ul class="sub">
                           <li><a class="" href="form_component.html">Form Elements</a></li>                          
                           <li><a class="" href="form_validation.html">Form Validation</a></li>
                       </ul>
                   </li>       
-                  <li class="sub-menu">
-                      <a href="javascript:;" class="">
+          <li class="sub-menu">
+                      <a href="userprofile.php" class="">
                           <i class="icon_desktop"></i>
-                          <span>UI Fitures</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
+                          <span>Profile</span>
+                          
                       </a>
                       <ul class="sub">
                           <li><a class="" href="general.html">Elements</a></li>
@@ -416,12 +454,12 @@ if (isset($_POST['confirm_order_id']))
                       </ul>
                   </li>
                   <li>
-                      <a class="" href="widgets.html">
+                      <a class="" href="seller.php">
                           <i class="icon_genius"></i>
-                          <span>Widgets</span>
+                          <span>Post a Gig</span>
                       </a>
                   </li>
-                  <li>                     
+                  <!-- <li>                     
                       <a class="" href="chart-chartjs.html">
                           <i class="icon_piechart"></i>
                           <span>Charts</span>
@@ -455,7 +493,7 @@ if (isset($_POST['confirm_order_id']))
                       </ul>
                   </li>
                   
-              </ul>
+              </ul> -->
               <!-- sidebar menu end-->
           </div>
       </aside>
@@ -477,7 +515,7 @@ if (isset($_POST['confirm_order_id']))
               
             <div class="row">
 				
-                
+                <a data-toggle="modal" href="#myModal4" title="So that it can show all the purchase details">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box dark-bg">
                         <i class="fa fa-thumbs-o-up"></i>
@@ -487,6 +525,45 @@ if (isset($_POST['confirm_order_id']))
                         <div class="title">Sold</div>
                     </div><!--/.info-box-->
                 </div><!--/.col-->
+                </a>
+                <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modaltitleP">Sales details</h4>
+                          </div>
+                          <div class="modalbodyP">
+                            <table>
+                                    <th> Gig Category </th>
+                                    <th> Gig Descrption </th>
+                                    <th> Credit </th>                                
+                              <?php
+                                foreach (getAllCompletedSales($_SESSION['id']) as $completedsales):
+                                 
+                                  print_r($advertisement_details = getAdvertisementDetails(getGigID($completedsales['order_id'])));
+                                ?>
+                                    <tr>
+                                    <td>
+                                    <?php echo getCategoryName($advertisement_details['category_id']); ?>
+                                    </td>                                    
+                                    <td>
+                                    <?php echo $advertisement_details['description']."   " ; ?>
+                                    </td>
+                                    <td>
+                                    <?php echo $advertisement_details['price']; ?>
+                                    </td>                                                                 
+                                    </tr>                                 
+                                <?php endforeach; ?>
+                            </table>
+                          </div>
+                          <div class="modal-footer">
+                              <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                              <button class="btn btn-success" type="button">Save changes</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
                 <a data-toggle="modal" href="#myModal" title="So that it can show all the purchase details">
         				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
         					<div class="info-box brown-bg">
@@ -508,18 +585,27 @@ if (isset($_POST['confirm_order_id']))
                               <h4 class="modaltitleP">Purchase details</h4>
                           </div>
                           <div class="modalbodyP">
+                            <table>
+                                    <th> Gig Category </th>
+                                    <th> Gig Descrption </th>
+                                    <th> Credit </th>                                
                               <?php
                                 foreach (getAllCompletedPurchases($_SESSION['id']) as $completed):
                                   $advertisement_details = getAdvertisementDetails($completed['gig_id']);
                                 ?>
-                                  <?php // echo $completed['gig_id']; ?>
-                                  <?php echo getCategoryName($advertisement_details['category_id']); ?>
-                                  <?php echo $advertisement_details['description']; ?>
-                                  <?php echo $advertisement_details['price']; ?>
-                                  <?php // echo $completed['order_id']; ?>
-                                  <br>
-                                  <span class="badge bg-important"><?php echo $completed['status']; ?></span>
+                                    <tr>
+                                    <td>
+                                    <?php echo getCategoryName($advertisement_details['category_id']); ?>
+                                    </td>                                    
+                                    <td>
+                                    <?php echo $advertisement_details['description']."   " ; ?>
+                                    </td>
+                                    <td>
+                                    <?php echo $advertisement_details['price']; ?>
+                                    </td>                                                                 
+                                    </tr>                                 
                                 <?php endforeach; ?>
+                            </table>
                           </div>
                           <div class="modal-footer">
                               <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
