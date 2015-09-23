@@ -142,21 +142,36 @@ if (isset($_POST['submit'])) {
         // *** Error checking, what if !$result? eg query is broken
 
         $row = mysqli_fetch_array($result);
+        
+            
+           
+            
+       
 
         if (!$row) {
             echo "<div>";
-            echo "No existing user or wrong password.";
+            $message= "No existing user or wrong password.";
+            
+            echo "<script type='text/javascript'>alert('$message');</script>";
+         
             echo "</div>";
         }
         else {
             // *** My PERSONAL preference is to use {} every where, it just makes it easier if you add  
             // code into the condition later
-            $loggedIn = true;
+           if( $loggedIn = true)
+          
             $_SESSION["email"] = $userName;
             $_SESSION['id'] = $row['id'];
-            header("Location: dashboard.php");
+            header("Location: Dashboard.php");
+          
         }
+      
+
+
+        
     }
+
     
   }
 ?>

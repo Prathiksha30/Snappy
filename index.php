@@ -1,3 +1,5 @@
+<?php include('datasnap.php');
+global $conn; ?>
 <?php session_start(); 
 function getUserName($user_id)
 {
@@ -18,8 +20,7 @@ function getUserName($user_id)
     }
 }
 ?>
-<?php include('datasnap.php');
-global $conn; ?>
+
 
 <!-- For the Recommended Services thing -->
 
@@ -78,9 +79,10 @@ else
           
     <!--Search button-->  <form class="navbar-form navbar-left" role="search" method="POST">
         <div class="form-group">
+        
           <input type="text" placeholder= "Search for gigs.." class="form-control" name = "search">
-        </div>
-
+          
+        </div>          
         <button type="submit" class="btn btn-default btn-primary" name="Submit">Submit</button>
       </form>
       <?php
@@ -259,29 +261,17 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
     </div>
   </div> -->
   
-
-
- 
-<?php include('footer.html'); ?>
-
-</body>
-</html>
-
-<!-- FOR SEARCH BAR -->
-<?php
-include('datasnap.php');
-?>
 <?php 
 global $conn;
 if(isset($_POST['Submit']))
 {
-    if($_POST['search']!="")
+  if($_POST['search']!="")
     {
         $search=$_POST['search'];
         if($stmt = $conn-> prepare("SELECT * FROM advertisement WHERE description = '$search' "))
         {
             $stmt->bind_param('s',$search);
-            $result = $stmt->execute();
+             $result = $stmt->execute();
             $stmt->$stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
             while ($stmt->fetch()) 
             {
@@ -291,10 +281,21 @@ if(isset($_POST['Submit']))
         }
         else
         {
-            echo "NO RESULTS FOUND!";
+          echo "NO RESULTS FOUND!";
         }
 
     }
 }
 ?>
+
+ 
+<?php include('footer.html'); ?>
+
+</body>
+</html>
+
+
+
+
+
 

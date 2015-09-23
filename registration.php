@@ -55,7 +55,7 @@ include("registerheader.html");
                 <div>
                 Semester :
                 <br>
-                <input type="text" name="semester" >
+                <input type="text" name="semester" placeholder="semester" value="">
                 </div>
 
                 <div>
@@ -83,7 +83,7 @@ include("registerheader.html");
                 <div>
                 Password
                 <br>
-                    <input type="password" name="password" />
+                    <input type="password" name="password" placeholder="password" />
                 </div>
 
                 <div>
@@ -197,6 +197,14 @@ include("registerheader.html");
         }
                
         ?>
+        <?php 
+        if($result)
+        {
+          $message = "succesfully";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+
+        }
+        ?>
 
 <?php
 
@@ -242,12 +250,16 @@ include("registerheader.html");
              echo "Invalid file";
        }
 
-    echo ""; // here pre tag will come in double quotes.
+    echo "";
+
+               
+     // here pre tag will come in double quotes.
     //print_r($_POST);  // show post data
     //print_r($_FILES);  // show files data
     die; // die to stop execution. 
 
 ?>
+
 
 
 </body>
