@@ -6738,3 +6738,8 @@ button.close {
       color:#fff;
       background-color:#009688;
 }
+@media(min-width: 768px) {
+  .containerheader {
+    height: 50px;
+  }
+}
