@@ -2,7 +2,7 @@
 <?php
 if( isset($_SESSION["email"]) && $_SESSION["email"] )
     {
-        header("Location: index.html");
+        header("Location: index.php");
         exit;
     }
 ?>
@@ -10,7 +10,7 @@ if( isset($_SESSION["email"]) && $_SESSION["email"] )
 
 include("registerheader.html");
 ?>
-<?php include('datasnap.php'); ?> 
+<?php include('datasnap.php'); global $conn?> 
 
 <html lang="en">
 <head>
@@ -37,6 +37,13 @@ include("registerheader.html");
                 Last Name
                 <br>
                     <input type="text" name="lastname" />
+                </div>
+
+
+                <div>
+                Enter Your Phone Number
+                <br>
+                    <input type="text" name="mobile" />
                 </div>
 
                 <div>
@@ -84,8 +91,11 @@ include("registerheader.html");
                 <br>
                     <input type="email" name="email_id" />
                 </div> 
-                
+                <div>
+              <a href="index.php">
                 <input type="submit" name="submit" value="Send" class="btn btn-default"/>
+                </a>
+                </div>
             </fieldset>    
         </form> 
             </div>
@@ -147,6 +157,7 @@ include("registerheader.html");
         {
             $firstname = $_POST['firstname'];
             $lastname = $_POST['lastname'];
+            $mobile = $_POST['mobile'];
             $course = $_POST['course'];
             $semester = $_POST['semester'];
             $DOB = $_POST['DOB'];
@@ -167,8 +178,8 @@ include("registerheader.html");
                     $row = array('id' => $id);
                   $stmt1->close();
                 }
-                if($stmt =$conn->prepare("INSERT INTO userdetails(user_id, firstname, secondname, course, semester, DOB, gender, photoAd) values(?,?,?,?,?,?,?,?)")) {
-                $stmt->bind_param('isssssss', $row['id'], $firstname, $lastname, $course, $semester, $DOB, $gender, $file);
+                if($stmt =$conn->prepare("INSERT INTO userdetails(user_id, firstname, secondname, mobile, course, semester, DOB, gender, photoAd) values(?,?,?,?,?,?,?,?,?)")) {
+                $stmt->bind_param('issssssss', $row['id'], $firstname, $lastname, $mobile, $course, $semester, $DOB, $gender, $file);
                 $result = $stmt->execute();
                 $stmt->close();
                 echo $result;
@@ -187,8 +198,7 @@ include("registerheader.html");
                
         ?>
 
-        <?php
-
+<?php
 
     $allowedExts = array("gif", "jpeg", "jpg", "png");
     $temp = explode(".", $_FILES["file"]["name"]);
