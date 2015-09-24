@@ -200,7 +200,7 @@ include("registerheader.html");
         <?php 
         if($result)
         {
-          $message = "succesfully";
+          $message = "succesfully registered";
                 echo "<script type='text/javascript'>alert('$message');</script>";
 
         }

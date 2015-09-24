@@ -1,6 +1,7 @@
 
 <?php session_start(); ?>
 <?php
+
 if( isset($_SESSION["email"]) && $_SESSION["email"] )
     {
         header("Location: index.php");
@@ -136,7 +137,7 @@ if (isset($_POST['submit'])) {
         // User Entered fields
       
         $query = "SELECT id FROM user WHERE email = '$userName' AND password = '$userPass'";// AND password = $userPass";
-
+        
         $result = mysqli_query( $conn, $query);
 
         // *** Error checking, what if !$result? eg query is broken
@@ -146,8 +147,7 @@ if (isset($_POST['submit'])) {
             
            
             
-       
-
+      
         if (!$row) {
             echo "<div>";
             $message= "No existing user or wrong password.";
@@ -166,10 +166,8 @@ if (isset($_POST['submit'])) {
             header("Location: Dashboard.php");
           
         }
-      
 
 
-        
     }
 
     
