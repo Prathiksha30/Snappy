@@ -62,6 +62,24 @@ function getServicesSoldCount($user_id)
     }
 }
 
+function getDeliveryTime($gig_id)
+{  
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT deliverytime FROM `advertisement` WHERE gig_id = ?")) 
+    {
+        $stmt->bind_param("i", $gig_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($deliverytime);
+        $stmt->fetch();
+        $stmt->close();
+        return $deliverytime;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+
 function getServicesPurchasedCount($user_id)
 {
     global $conn;
@@ -137,9 +155,8 @@ function getCredits($user_id)
 
 function getAdvertisementDetails($gig_id)
 {
-    echo $gig_id;
     global $conn;
-    if ($stmt = $conn->prepare("SELECT category_id, description, price FROM advertisement WHERE gig_id = ? ")) 
+    if ($stmt = $conn->prepare("SELECT category_id, description, price FROM `advertisement` WHERE gig_id = ? ")) 
     {
       $stmt->bind_param("i", $gig_id);
       $stmt->execute();
@@ -182,7 +199,7 @@ function getGigID($order_id)
     $stmt->execute();
     $stmt->bind_result($gig_id);
     while ($stmt->fetch()) {
-      $rows[] = array('gig_id' => $gig_id);
+      $rows = array('gig_id' => $gig_id);
     }
     $stmt->close();
     return $rows;
@@ -250,14 +267,14 @@ function getSoldDetails($user_id)
 {
     global $conn;
     $rows = array();
-    if ($stmt = $conn->prepare("SELECT order_id, category_id, status, confirmed, deliverytime,description,price FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE a.user_id = ? AND o.status= 'pending' "))
+    if ($stmt = $conn->prepare("SELECT order_id, category_id, status, confirmed, deliverytime,description,price,seller_gigcompleted FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE a.user_id = ? AND o.status= 'pending' "))
      {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($order_id, $category_id, $status, $confirmed,$deliverytime,$description,$price);
+        $stmt->bind_result($order_id, $category_id, $status, $confirmed,$deliverytime,$description,$price,$seller_gigcompleted);
         while ($stmt->fetch()) 
         {
-          $rows[] = array('order_id' => $order_id, 'category_id' =>  $category_id, 'status' => $status, 'confirmed' => $confirmed,'deliverytime' => $deliverytime, 'description' => $description,'price' => $price);
+          $rows[] = array('order_id' => $order_id, 'category_id' =>  $category_id, 'status' => $status, 'confirmed' => $confirmed,'deliverytime' => $deliverytime, 'description' => $description,'price' => $price, 'seller_gigcompleted' => $seller_gigcompleted);
         }
         $stmt->close();
         return $rows;
@@ -267,6 +284,7 @@ function getSoldDetails($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
+
 
 function getPurchaseDetails($user_id)
 {
@@ -289,23 +307,66 @@ function getPurchaseDetails($user_id)
         printf("Error message: %s\n", $conn->error);
     }
 }
-if (isset($_POST['drop_order_id'])) {
-  echo "request rejected";
+
+function updateduedateinordertable($order_id)
+{
+  global $conn;
+    $rows = array();
+    $gigid1 = getGigID($order_id)['gig_id'];
+    $date = getDeliveryTime($gigid1);
+    // echo $sql = "UPDATE `order` SET due_date=".date('Y-m-d', strtotime('+'.$date.' day', time()))." WHERE order_id=?";
+    if($stmt = $conn->prepare("UPDATE `order` SET due_date='".date('Y-m-d', strtotime('+'.$date.' day', time()))."' WHERE order_id=?"))
+    {
+      $stmt->bind_param("i", $order_id);
+      $stmt->execute();
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
+function updateconfirminordertable($confirm_order_id)
+{
+    global $conn;
+    $rows = array();
+    if($stmt = $conn->prepare("UPDATE `order` SET confirmed='1' WHERE order_id=?"))
+    {
+      $stmt->bind_param("i", $confirm_order_id);
+      $stmt->execute();
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
+function updatesellerconfirminordertable($order_id)
+{
+  global $conn;
+    if($stmt = $conn->prepare("UPDATE `order` SET seller_gigcompleted='1' WHERE order_id=?"))
+    {
+      $stmt->bind_param("i", $order_id);
+      $stmt->execute();
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
 }
 
+if (isset($_POST['sellerconfirm'])) 
+{
+  updatesellerconfirminordertable($_POST['sellerconfirm']);
+}
+
+if (isset($_POST['drop_order_id'])) 
+{
+  echo "request rejected";
+}
+ 
 if (isset($_POST['confirm_order_id'])) 
 {
-  // global $conn;
-  //   $rows = array();
-  //   if($stmt = $conn->prepare("UPDATE `order` SET comfirmed='1' WHERE order_id=confirm_order_id"))
-  //   {
-  //     $stmt->bind_param("i", $user_id);
-  //     $stmt->execute();
-  //   }
-  //   else
-  //   {
-  //     printf("Error message: %s\n", $conn->error);
-  //   }
+  updateconfirminordertable($_POST['confirm_order_id']);
+  updateduedateinordertable($_POST['confirm_order_id']);
 }
 
 ?>
@@ -382,7 +443,7 @@ if (isset($_POST['confirm_order_id']))
                             <?php
                             	$name = getUserName($_SESSION['id']);
                             	echo $name[0]['firstname']." ".$name[0]['secondname'];
-                        	?>
+                        	  ?>
                             </span>
                             <b class="caret"></b>
                         </a>
@@ -391,12 +452,12 @@ if (isset($_POST['confirm_order_id']))
                             <li class="eborder-top">
                                 <a href="#"><i class="icon_profile"></i> My Profile</a>
                             </li>
-                            <!-- <li>
-                                <a href="#"><i class="icon_mail_alt"></i> My Inbox</a>
-                            </li> -->
-                           <!--  <li>
-                                <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
-                            </li> -->
+                            <li>
+                                <a href="dashboard.php"><i class="icon_mail_alt"></i>Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="seller.php"><i class="icon_clock_alt"></i> Post a Gig</a>
+                            </li>
                             <!-- <li>
                                 <a href="#"><i class="icon_chat_alt"></i> Chats</a>
                             </li> -->
@@ -419,10 +480,10 @@ if (isset($_POST['confirm_order_id']))
       <!--header end-->
 
       <!--sidebar start-->
-      <aside>
-          <div id="sidebar" class="nav-collapse">
+      <!-- <aside>
+          <div id="sidebar" class="nav-collapse"> -->
               <!-- sidebar menu start-->
-              <ul class="sidebar-menu">                
+              <!-- <ul class="sidebar-menu">                
                   <li class="active">
                       <a class="" href="dashboard.php">
                           
@@ -442,7 +503,7 @@ if (isset($_POST['confirm_order_id']))
                       </ul>
                   </li>       
           <li class="sub-menu">
-                      <a href="userprofile.php" class="">
+                      <a href="profile.php" class="">
                           <i class="icon_desktop"></i>
                           <span>Profile</span>
                           
@@ -458,7 +519,7 @@ if (isset($_POST['confirm_order_id']))
                           <i class="icon_genius"></i>
                           <span>Post a Gig</span>
                       </a>
-                  </li>
+                  </li> -->
                   <!-- <li>                     
                       <a class="" href="chart-chartjs.html">
                           <i class="icon_piechart"></i>
@@ -495,8 +556,8 @@ if (isset($_POST['confirm_order_id']))
                   
               </ul> -->
               <!-- sidebar menu end-->
-          </div>
-      </aside>
+         <!--  </div>
+      </aside> -->
       <!--sidebar end-->
       
       <!--main content start-->
@@ -515,7 +576,7 @@ if (isset($_POST['confirm_order_id']))
               
             <div class="row">
 				
-                <a data-toggle="modal" href="#myModal4" title="So that it can show all the purchase details">
+                <a data-toggle="modal" href="#myModal4" title="click to view details of gigs sold">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box dark-bg">
                         <i class="fa fa-thumbs-o-up"></i>
@@ -535,22 +596,22 @@ if (isset($_POST['confirm_order_id']))
                           </div>
                           <div class="modalbodyP">
                             <table>
-                                    <th> Gig Category </th>
-                                    <th> Gig Descrption </th>
-                                    <th> Credit </th>                                
+                                    <th style="padding:5px;"> Gig Category </th>
+                                    <th style="padding:5px;"> Gig Descrption </th>
+                                    <th style="padding:5px;"> Credit </th>                                
                               <?php
                                 foreach (getAllCompletedSales($_SESSION['id']) as $completedsales):
-                                 
-                                  print_r($advertisement_details = getAdvertisementDetails(getGigID($completedsales['order_id'])));
+                                  $gigid=getGigID($completedsales['order_id']);
+                                  $advertisement_details = getAdvertisementDetails($gigid['gig_id']);
                                 ?>
                                     <tr>
-                                    <td>
+                                    <td style="padding:5px;">
                                     <?php echo getCategoryName($advertisement_details['category_id']); ?>
                                     </td>                                    
-                                    <td>
+                                    <td style="padding:5px;">
                                     <?php echo $advertisement_details['description']."   " ; ?>
                                     </td>
-                                    <td>
+                                    <td style="padding:5px;">
                                     <?php echo $advertisement_details['price']; ?>
                                     </td>                                                                 
                                     </tr>                                 
@@ -564,7 +625,7 @@ if (isset($_POST['confirm_order_id']))
                       </div>
                   </div>
               </div>
-                <a data-toggle="modal" href="#myModal" title="So that it can show all the purchase details">
+                <a data-toggle="modal" href="#myModal" title="click to view details of gigs purchased">
         				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
         					<div class="info-box brown-bg">
         						<i class="fa fa-shopping-cart"></i>
@@ -585,24 +646,24 @@ if (isset($_POST['confirm_order_id']))
                               <h4 class="modaltitleP">Purchase details</h4>
                           </div>
                           <div class="modalbodyP">
-                            <table>
-                                    <th> Gig Category </th>
-                                    <th> Gig Descrption </th>
-                                    <th> Credit </th>                                
+                            <table >
+                                    <th style="padding:5px;"> Gig Category </th>
+                                    <th style="padding:5px;"> Gig Descrption </th>
+                                    <th style="padding:5px;"> Credit </th>                                
                               <?php
                                 foreach (getAllCompletedPurchases($_SESSION['id']) as $completed):
                                   $advertisement_details = getAdvertisementDetails($completed['gig_id']);
                                 ?>
                                     <tr>
-                                    <td>
+                                    <td style="padding:5px;">
                                     <?php echo getCategoryName($advertisement_details['category_id']); ?>
                                     </td>                                    
-                                    <td>
+                                    <td style="padding:5px;">
                                     <?php echo $advertisement_details['description']."   " ; ?>
                                     </td>
                                     <td>
                                     <?php echo $advertisement_details['price']; ?>
-                                    </td>                                                                 
+                                    </td style="padding:5px;">                                                                 
                                     </tr>                                 
                                 <?php endforeach; ?>
                             </table>
@@ -650,6 +711,7 @@ if (isset($_POST['confirm_order_id']))
                               <th>Credits</th>
 
 
+
                               <?php
                                 foreach (getSoldDetails($_SESSION["id"]) as $Sold):
                                   
@@ -665,14 +727,21 @@ if (isset($_POST['confirm_order_id']))
                                   <td>
                                       <?php echo $Sold['price']; ?>
                                   </td>
+
                                   <td>
                                       <?php 
+                                      if ($Sold['confirmed'] == '1' && $Sold['seller_gigcompleted'] == '1' )
+                                      {
+                                      ?>
+                                         <span class="badge bg-important">Waiting for the buyer to acknowledge delivery of service </span>
+                                        
+                                         <?php }
+                                      else
+                                      {
                                         if ($Sold['confirmed'] != '0')
                                           {
                                             ?>
-                                              <!-- <a class="btn btn-success" data-toggle="modal" href="#myModal">Confirm</a> -->
-                                              
-                                              <a class="btn btn-success" data-toggle="modal" href="#myModal2">Confirmed</a>
+                                            <a class="btn btn-success" data-toggle="modal" href="#myModal2">Confirm</a> 
                                               <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                   <div class="modal-content">
@@ -718,19 +787,38 @@ if (isset($_POST['confirm_order_id']))
                                                       </div>
                                                         <div class="modal-footer">
                                                         <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-                                                        <!-- <form method="POST" action="">
-                                                          <input type="hidden" name="confirm_order_id" value="<?php echo $Sold['order_id']; ?>">
-                                                          <input type="submit" value="Confirm" class="btn btn-success">
-                                                        </form> -->
+                                                       
                                                        </div>
                                                        </div>
                                                    </div>
                                                    </div>
-                                                <!-- </div> -->
-                                           <!--  </td> -->
-                                            <?php
-                                          }
-                                        else
+                                            <?php if ($Sold['seller_gigcompleted'] == '0')
+                                               {?>
+                                               <a class="btn btn-success" data-toggle="modal" href="#myModal12">Delivered</a>
+                                                              <div class="modal fade" id="myModal12" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                  <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                  <h4 class="modal-title">Delivered</h4>
+                                                                      </div>
+                                                                      <div class="modal-body">
+                                                                        Do you confirm that you have delivered the service?
+                                                                      </div>
+                                                                        <div class="modal-footer">
+                                                                        <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                                                         <form method="POST" action="">
+                                                                          <input type="hidden" name="sellerconfirm" value="<?php echo $Sold['order_id']; ?>">
+                                                                          <input type="submit" value="Confirm" class="btn btn-success">
+                                                                        </form> 
+                                                                       </div>
+                                                                       </div>
+                                                                   </div>
+                                                              </div>
+                                            <?php } ?>
+                                            <?php }
+
+                                           else
                                         {
                                           ?>
                                          <!--  <div class="panel-body"> -->
@@ -789,7 +877,7 @@ if (isset($_POST['confirm_order_id']))
                                                     </form>
                                                     <form method="POST" action="" style="display:inline;">
                                                       <input type="hidden" name="confirm_order_id" value="<?php echo $Sold['order_id']; ?>">
-                                                      <input type="submit" value="Accept" class="btn btn-success">
+                                                      <input type="submit" name="Accept" value="Accept" class="btn btn-success">
                                                     </form>
                                                    </div>
                                                    </div>
@@ -797,7 +885,26 @@ if (isset($_POST['confirm_order_id']))
                                                </div>
                                            
                                         <?php } ?>
+
                                       
+                                               <!-- else
+                                               {
+                                                ?>
+                                               <span class="badge bg-important">delivered</span>
+                                               <?php
+                                               }?> -->
+
+                                                  
+                                  
+                                          
+                                              <!-- <a class="btn btn-success" data-toggle="modal" href="#myModal">Confirm</a> -->
+                                              
+                                              
+                                                <!-- </div> -->
+                                           <!--  </td> -->
+                                          
+
+                                        
                                   </td>
 
                               
@@ -806,6 +913,9 @@ if (isset($_POST['confirm_order_id']))
                               <?php endforeach; ?>
                               </tbody>
                           </table>
+
+                                      
+                                        
                          <!--  <table class="table table-hover personal-task">
                               <tbody>
                               <tr>
@@ -954,6 +1064,7 @@ if (isset($_POST['confirm_order_id']))
 
           </section>
       </section>
+
       <!--main content end-->
   </section>
   <!-- container section start -->
