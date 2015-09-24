@@ -64,18 +64,7 @@ function getEmail($user_id)
 //NOT WORKING ?
 function getCategory($category_id)
 {
-  /*global $conn;
-  if($stmt = $conn->prepare("SELECT name FROM `category` WHERE category_id = $category_id"))
-  { 
-    $stmt->execute();
-    $stmt->bind_result($name);
-    while ($stmt->fetch) {
-      $row[] = array('name' => $name);
-    }
-    echo "Name: ".$row[0]['name'];
-    $stmt->close();
-    return $row;
-  }*/
+  
   global $conn;
   if ($stmt = $conn->prepare("SELECT name FROM `category` WHERE category_id =$category_id")) 
   {
@@ -91,6 +80,22 @@ function getCategory($category_id)
     echo "Error with category!";
   }
 }
+function insertintoordertable($gig_id)
+{
+  global $conn;
+  $sess=$_SESSION['id']; //because it wasn't working before
+  
+  if($stmt = $conn->prepare("INSERT INTO `order`(`user_id`, `gig_id`, `created_at`) VALUES ($sess, ?, now())"))
+  {
+    
+    $stmt->bind_param('i', $gig_id);
+    $stmt->execute();
+    $stmt->close();
+  }
+  else
+    echo "Error with insertion into order table!";
+}
+
 
 
 ?>
@@ -140,19 +145,11 @@ function getCategory($category_id)
 <?php include('footer.html'); ?>
 
 <?php 
-  /*global $conn;
+  global $conn;
   if(isset($_POST['confirm']))
   {
+    insertintoordertable($gig_id);
 
-    if($stmt = $conn->prepare("INSERT INTO order(user_id, gig_id, status, created_at) VALUES(?, ?, ?, now())"))
-  {
-    $status="pending";
-    $stmt->bind_param('', );
-    $stmt->execute();
-    $stmt->close();
-  }
-  else
-    echo "Error with insertion into order table!";
-  }*/
+   }
 ?>
 
