@@ -353,7 +353,7 @@ if (isset($_POST['confirm_order_id']))
             </div>
 
             <!--logo start-->
-            <a href="index.php" class="logo"> <span class="lite">Snap Services</span></a>
+            <a href="index.php" class="logo">SNAP <span class="lite">SERVICES</span></a>
             <!--logo end-->
 
             <div class="nav search-row" id="top_menu">
