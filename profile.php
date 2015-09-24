@@ -21,16 +21,16 @@ function getUserdetails($user_id)
     }
 }
 
-function getUserName($user_id)
+function getUserInfo($user_id)
 {
     global $conn;
-    if ($stmt = $conn->prepare("SELECT firstname, secondname FROM `userdetails` WHERE user_id = ?"))
+    if ($stmt = $conn->prepare("SELECT firstname, secondname, photoAd FROM `userdetails` WHERE user_id = ?"))
         {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($firstname, $secondname);
+        $stmt->bind_result($firstname, $secondname, $photoAd);
         while ($stmt->fetch()) {
-          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname);
+          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname, 'photoAd' => $photoAd);
         }
         $stmt->close();
         return $rows;
@@ -110,7 +110,7 @@ function getUserName($user_id)
                             </span>
                             <span class="username">
                             <?php
-                                $name = getUserName(21);
+                                $name = getUserInfo(21);
                                 echo $name[0]['firstname']." ".$name[0]['secondname'];
                               ?>
                             </span>
@@ -237,12 +237,13 @@ function getUserName($user_id)
                             <div class="col-lg-2 col-sm-2">
                               <h4>
                               <?php
-                                $name = getUserName(21);
+                                $name = getUserDetails(21);
                                 echo $name[0]['firstname']." ".$name[0]['secondname'];
                               ?>
                               </h4>               
                               <div class="follow-ava">
-                                  <img src="img/profile-widget-avatar.jpg" alt="">
+                            
+                                  <img src="$name[0]['photoAd']" alt="">
                               </div>
                               <h6>Student</h6>
                             </div>
