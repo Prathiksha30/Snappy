@@ -339,6 +339,19 @@ function updateconfirminordertable($confirm_order_id)
       printf("Error message: %s\n", $conn->error);
     }
 }
+function updatebuyerconfirminordertable($order_id)
+{
+  global $conn;
+    if($stmt = $conn->prepare("UPDATE `order` SET buyer_gigcompleted='1' WHERE order_id=?"))
+    {
+      $stmt->bind_param("i", $order_id);
+      $stmt->execute();
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
 function updatesellerconfirminordertable($order_id)
 {
   global $conn;
@@ -365,12 +378,14 @@ function  deleteorderrow($order_id)
       printf("Error message: %s\n", $conn->error);
     }
 }
+if (isset($_POST['buyerconfirm']))
+{
+  updatebuyerconfirminordertable($_POST['sellerconfirm']);
+}
 if (isset($_POST['sellerconfirm'])) 
 {
   updatesellerconfirminordertable($_POST['sellerconfirm']);
-
 }
-
 if (isset($_POST['delete_order_id'])) 
 {
   deleteorderrow($_POST['delete_order_id']);
@@ -719,9 +734,9 @@ if (isset($_POST['confirm_order_id']))
                           </div>
                           <table class="table table-hover personal-task">
                               <tbody>
-                              <th>Gig category</th>
-                              <th>Gig Description</th>
-                              <th>Credits</th>
+                              <th><center>Gig category</center></th>
+                              <th><center>Gig Description</center></th>
+                              <th><center>Credits</center></th>
 
 
 
@@ -770,12 +785,12 @@ if (isset($_POST['confirm_order_id']))
                                                           $u_id_array=getUseridInToDomodal($o_id);
                                                           $u_id = $u_id_array['user_id'];
                                                           ?>
-                                                          <th>Name</th>
+                                                          <th><center>Name</center></th>
                                                           <!-- <th>Second Name</th> -->
-                                                          <th>Course</th>
-                                                          <th>Semester</th>
-                                                          <th>Mobile Number</th>
-                                                          <th>Email ID</th>
+                                                          <th><center>Course</center></th>
+                                                          <th><center>Semester</center></th>
+                                                          <th><center>Mobile Number</center></th>
+                                                          <th><center>Email ID</center></th>
                                                           <tr>
                                                             <?php $userdetail = getUserdetails($u_id);?>
                                                             <td>
@@ -820,9 +835,9 @@ if (isset($_POST['confirm_order_id']))
                                                                         Do you confirm that you have delivered the service?
                                                                       </div>
                                                                         <div class="modal-footer">
-                                                                        <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-                                                                          method="POST" action="">
-                                                                         <form <input type="hidden" name="sellerconfirm" value="<?php echo $Sold['order_id']; ?>">
+                                                                        <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>  
+                                                                        <form  method="POST" action="">
+                                                                         <input type="hidden" name="sellerconfirm" value="<?php echo $Sold['order_id']; ?>">
                                                                           <input type="submit" value="Confirm" class="btn btn-success">
                                                                         </form> 
                                                                        </div>
@@ -854,12 +869,12 @@ if (isset($_POST['confirm_order_id']))
                                                           $u_id_array=getUseridInToDomodal($o_id);
                                                           $u_id = $u_id_array['user_id'];
                                                           ?>
-                                                          <th>Name</th>
+                                                          <th><center>Name</center></th>
                                                        <!--    <th>Second Name</th> -->
-                                                          <th>Course</th>
-                                                          <th>Semester</th>
-                                                          <th>Mobile Number</th>
-                                                          <th>Email ID</th>
+                                                          <th><center>Course</center></th>
+                                                          <th><center>Semester</center></th>
+                                                          <th><center>Mobile Number</center></th>
+                                                          <th><center>Email ID</center></th>
                                                           <tr>
                                                             <?php $userdetail = getUserdetails($u_id);?>
                                                             <td>
@@ -1038,10 +1053,10 @@ if (isset($_POST['confirm_order_id']))
                               
                           <table class="table table-hover personal-task">
                               <tbody>
-                              <th>Gig Category</th>
-                              <th>Gig Desciption</th>
-                              <th>Credit</th>
-                              <th>Confirm status</th>
+                              <th><center>Gig Category</center></th>
+                              <th><center>Gig Desciption</center></th>
+                              <th><center>Credit</center></th>
+                              <th><center>Confirm status</center></th>
                              <!--  <th>Delivery Status</th> -->
                               <?php
                                 foreach (getPurchaseDetails($_SESSION['id']) as $purchase):
@@ -1057,7 +1072,7 @@ if (isset($_POST['confirm_order_id']))
                                       <?php echo $purchase['price']; ?>
                                   </td>
                                    <td>
-                                      <span class="badge bg-success">
+                                      <span class="badge bg-important">
                                         <?php 
                                         if ( $purchase['confirmed']=='1' )
                                           echo "Order confirmed and is expected by:".$purchase['due_date'];
@@ -1066,9 +1081,34 @@ if (isset($_POST['confirm_order_id']))
                                         ?>
                                       </span>
                                   </td>
-                                      <!-- <td>
-                                      <span class="badge bg-important"><?php echo $purchase['status']; ?></span>
-                                  </td> -->
+                                  <td>
+                                     <?php 
+                                        if ( $purchase['confirmed']=='1' )
+                                        {?>
+                                          <form  method="POST" action="">
+                                          <input type="hidden" name="buyerconfirm" value="<?php echo $purchase['order_id']; ?>">
+                                          <input type="submit" value="Confirm" class="btn btn-success">
+                                          </form> 
+                                   <?php}?>
+                                   </td>
+                                      
+                                               <!-- else
+                                               {
+                                                ?>
+                                               <span class="badge bg-important">delivered</span>
+                                               <?php
+                                               }?> -->
+
+                                                  
+                                  
+                                          
+                                              <!-- <a class="btn btn-success" data-toggle="modal" href="#myModal">Confirm</a> -->
+                                              
+                                              
+                                                <!-- </div> -->
+                                           <!--  </td> -->
+                                          
+
                                 </tr>
                               <?php endforeach; ?>
                               </tbody>
