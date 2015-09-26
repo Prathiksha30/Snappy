@@ -139,7 +139,7 @@ echo "hello there, ".$name[0]['firstname']." ".$name[0]['secondname'];
         <li> <a href="VideoAudio.php"> Video & Audio </a></li>
          <li><a href="Programming.php"> Programming & IT</a></li>
          <li><a href="Advertising.php"> Advertising </a></li>
-         <li><a href="Buisness.php"> Buisness </a></li>
+        <!-- <li><a href="Buisness.php"> Buisness </a></li>-->
          <li><a href="Academics.php"> Academics </a></li>
         <li> <a href="#"> Others </a></li> 
       </ul> 

@@ -8,6 +8,9 @@ if(mysqli_connect_errno()) {
   echo "connection failed:" . mysqli_connect_errno();
   exit();
 }
+?>
+
+<?php
 if(isset($_POST['sub']))
 {
   $desc = $_POST['desc'];
@@ -16,19 +19,36 @@ if(isset($_POST['sub']))
   $lang = $_POST['lang'];
   $Img = $_FILES["file"]["name"];
 
+  
+                  $fields = array('desc', 'cat', 'price', 'lang');
 
+                   $error = false; //No errors yet
+                  foreach($fields AS $fieldname) 
+                    { //Loop trough each field
+                      if(!isset($_POST[$fieldname]) || empty($_POST[$fieldname]))
+                        {
+                           echo "<script type='text/javascript'>alert('field ".$fieldname." not entered , unable to post gig');</script>";
+                           //Display error with field
+                           
+                          $error = true; //Yup there are errors
+                        }
+                     }
+
+            if(!$error)
+            {
 //inserts seller details into ad table
-  if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, updated_at, img) VALUES(?, ?, ?, ?, ?, now(), now(), ?)"))
-  {
-    echo "Done";
-    $stmt->bind_param('isisis', $_SESSION['id'], $desc, $price, $lang, $cat, $Img);
-    $stmt->execute();
-    $stmt->close();
-  }
-  else
-  {
+    if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, updated_at, img) VALUES(?, ?, ?, ?, ?, now(), now(), ?)"))
+    {
+      echo "Done";
+      $stmt->bind_param('isisis', $_SESSION['id'], $desc, $price, $lang, $cat, $Img);
+      $stmt->execute();
+      $stmt->close();
+    }
+    else
+    {
     echo "Error with insertion";
-  }
+    }
+         }
 }
 ?>
 
