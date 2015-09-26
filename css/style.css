@@ -4938,3 +4938,24 @@ span.customSelect.changed {
 .customSelectInner {
     background:url(../img/customSelect-arrow.gif) no-repeat center right;
 }
+
+/*CUSTOM */
+footer {
+width: 100%;
+background: #1a2732;
+float: left;
+margin: 0 0 .5% 0;
+bottom: 0;
+position: relative;
+border-radius: 10px;
+/*box-shadow: 5px 5px 10px #202020;
+height: auto;*/
+}
+
+address {
+font-size : 16px; 
+text-align : center; 
+color: #00a0df;
+padding: 1% 0;
+text-shadow: 1px 1px 0px #202020
+}
