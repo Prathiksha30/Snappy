@@ -37,7 +37,7 @@ if(isset($_POST['sub']))
             if(!$error)
             {
 //inserts seller details into ad table
-    if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, updated_at, img) VALUES(?, ?, ?, ?, ?, now(), now(), ?)"))
+    if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, img) VALUES(?, ?, ?, ?, ?, now(), ?)"))
     {
       echo "Done";
       $stmt->bind_param('isisis', $_SESSION['id'], $desc, $price, $lang, $cat, $Img);
