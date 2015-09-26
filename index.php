@@ -61,35 +61,6 @@ else
 </head>
 <body>
 
-<<<<<<< HEAD
-           <button type="submit" class="btn-default btn btn-primary">Log Out</button>
-           </a>
-           
-           </div>';
-         }  
-
-    ?>
-  </div>
-    <!-- /.navbar-collapse --> 
- 
-  <!-- /.container-fluid --> 
-</nav>
-<div class="container">
-		<ul class="nav navbar-nav">
-        <li class="active"><a href="#"><span class="sr-only">(current)</span></a></li>
-        <li><a href="graphics.php">Graphics & Design</a></li>
-        <li><a href="Online.php"> Online Marketing</a></li>
-        <li> <a href="writting.php"> Writing & Translation </a></li>
-        <li> <a href="VideoAudio.php"> Video & Audio </a></li>
-         <li><a href="Programming.php"> Programming & IT</a></li>
-         <li><a href="Advertising.php"> Advertising </a></li>
-        <!-- <li><a href="Buisness.php"> Buisness </a></li>-->
-         <li><a href="Academics.php"> Academics </a></li>
-        <li> <a href="#"> Others </a></li> 
-      </ul> 
-</div>
-
-
 
 <div class="container">
     <div class="row">
