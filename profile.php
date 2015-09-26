@@ -243,7 +243,7 @@ function getUserInfo($user_id)
                               </h4>               
                               <div class="follow-ava">
                             
-                                  <img src="$name[0]['photoAd']" alt="">
+                                  <img src="'upload/'.$name[0]['photoAd']" alt="">
                               </div>
                               <h6>Student</h6>
                             </div>
