@@ -28,44 +28,44 @@ include("registerheader.html");
                 <legend>Please enter the following details:</legend>
                 
                 <div>
-                First Name
+                <label >First Name</label>
                 <br>
                     <input type="text" name="firstname" />
                 </div>
 
                 <div>
-                Last Name
+                <label >Last Name</label>
                 <br>
                     <input type="text" name="lastname" />
                 </div>
 
 
                 <div>
-                Enter Your Phone Number
+                <label >Enter Your Phone Number</label>
                 <br>
                     <input type="text" name="mobile" />
                 </div>
 
                 <div>
-                Course
+                <label > Course</label>
                 <br>
                 <input type="text" name="course">
                 </div>
 
                 <div>
-                Semester :
+               <label > Semester :</label>
                 <br>
                 <input type="text" name="semester" placeholder="semester" value="">
                 </div>
 
                 <div>
-                Age:
+                <label > Age:</label>
                 <br>
                 <input type="date" name="DOB" max="2001-12-31" >
                 </div>
 
                 <div>
-                Gender
+                <label >Gender</label>
                 <br>
                 <input type="radio" name="sex" value ="male" checked>Male
                 <input type="radio" name="sex" value ="female">Female
@@ -73,7 +73,7 @@ include("registerheader.html");
                 <br>
 
                 <div>
-                Upload Choice of Identity Verification
+                <label >Upload Choice of Identity Verification</label>
                 <br>
                 <input type="file" name="file" id="file" size="80">
 
@@ -81,13 +81,14 @@ include("registerheader.html");
                 <br>
 
                 <div>
-                Password
+                <label >Password (between 8-10 characters)</label>
+                <!--Password-->
                 <br>
-                    <input type="password" name="password" placeholder="password" />
+                    <input type="password" name="password" placeholder="password"  />
                 </div>
 
                 <div>
-                Email-ID
+                <label >Email-ID</label>
                 <br>
                     <input type="email" name="email_id" />
                 </div> 
@@ -152,19 +153,36 @@ include("registerheader.html");
 
 <?php
 
+            if(isset($_POST['submit']))
+                {
+                  $firstname = $_POST['firstname'];
+                  $lastname = $_POST['lastname'];
+                  $mobile = $_POST['mobile'];
+                  $course = $_POST['course'];
+                  $semester = $_POST['semester'];
+                  $DOB = $_POST['DOB'];
+                  $gender = $_POST['sex'];
+                 $file = $_FILES["file"]["name"];
+                  $password = $_POST['password'];
+                  $email_id = $_POST['email_id'];
 
-    if(isset($_POST['submit']))
-        {
-            $firstname = $_POST['firstname'];
-            $lastname = $_POST['lastname'];
-            $mobile = $_POST['mobile'];
-            $course = $_POST['course'];
-            $semester = $_POST['semester'];
-            $DOB = $_POST['DOB'];
-            $gender = $_POST['sex'];
-            $file = $_FILES["file"]["name"];
-            $password = $_POST['password'];
-            $email_id = $_POST['email_id'];
+                  $fields = array('firstname', 'lastname', 'mobile', 'course', 'semester', 'DOB', 'sex', 'password', 'email_id');
+
+                   $error = false; //No errors yet
+                  foreach($fields AS $fieldname) 
+                    { //Loop trough each field
+                      if(!isset($_POST[$fieldname]) || empty($_POST[$fieldname]))
+                        {
+                           echo "<script type='text/javascript'>alert('field ".$fieldname." not entered , registration unsuccessfull');</script>";
+                           //Display error with field
+                           
+                          $error = true; //Yup there are errors
+                        }
+                     }
+
+            if(!$error)
+            {
+
             if ($stmtt=$conn->prepare("INSERT INTO user(password, email, created_at) values(?,?,now())")) {
               $stmtt->bind_param('ss', $password, $email_id);
               $result = $stmtt->execute();
@@ -195,6 +213,7 @@ include("registerheader.html");
                 echo "error with insertion 2";
               }      
         }
+      }
                
         ?>
         <?php 
