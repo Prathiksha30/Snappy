@@ -3,11 +3,11 @@
 include("head.php");
 global $conn;
 $search = $_POST['search'];
-if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, updated_at, language from advertisement WHERE description like '%search%' "))   {
-    $result = $stmt->execute(array('%' . $search . '%'));
-    $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
+if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, language from advertisement WHERE description like '%search%' "))   {
+    $result = $stmt->execute();
+    $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $language);
     while ($stmt->fetch()) {
-        $rows[] = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language);
+        $rows[] = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'language' => $language);
 }
 $stmt->close();
 } else {
@@ -62,8 +62,9 @@ $stmt->close();
 <div class="container">
   <div class="row text-center">
      <?php
-     if(isset($_POST['search']))
+     if(isset($_POST['submit']))
      {
+     
                  ?>
        <?php foreach ($rows as $row): ?>
       <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
