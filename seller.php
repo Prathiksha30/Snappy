@@ -2,7 +2,7 @@
 
 <!-- php starts here -->
 <?php
-include("header.php");
+include("head.php");
 include ("datasnap.php");
 if(mysqli_connect_errno()) {
   echo "connection failed:" . mysqli_connect_errno();
@@ -52,8 +52,7 @@ if(isset($_POST['sub']))
 }
 ?>
 
-<br>
-<hr>
+<br> <br> <br> <br> <br> 
 <div class="container">
   <div class="row">
   <h3 class="font-color" align="center"> Please fill in the form to start Selling! </h6>
@@ -61,7 +60,7 @@ if(isset($_POST['sub']))
 <form method="POST" action="" enctype="multipart/form-data">
   <div class=".form-control:focus">
     <label class="font-color"> I will ... </label>
-    <textarea class=".form-control" rows="3" cols="172" name="desc"> </textarea>
+    <textarea class=".form-control:focus" rows="3" cols="172" name="desc"> </textarea>
     <!--<input type="text" class="form-control" inamed="uname"> -->
     </div>
     <br> <br>

@@ -1,6 +1,6 @@
 <?php include('datasnap.php'); ?>
 
-<?php include('header.php') ?>
+<?php include('head.php') ?>
 
 <?php
 
@@ -103,7 +103,7 @@ function insertintoordertable($gig_id)
 
 <!DOCTYPE html>
 
-
+<br> <br> <br> <br> <br> 
 <div class="container">
   <div class="row">  
     </div>
