@@ -49,15 +49,10 @@ else
     <![endif]-->
 </head>
 <body>
-
- 
-  <!-- /.container-fluid --> 
-<br> <br> <br> <br> <br> <!-- find out another way to do this. -->
+<!-- /.container-fluid --> 
+<!-- <br> <br> <br> <br> <br>  --><!-- find out another way to do this. -->
 <div class="container">
-  <div class="row">  
- 
-   
-
+<div class="row">  
 <h2 class="text-center text-primary">Graphics and Design</h2>
 <hr>
 <div class="container">
@@ -76,8 +71,8 @@ else
   </div>
 </div>
    </div>
-</div>
- </div>
+<!-- </div>
+ </div> -->
 </body>
 </html>
 <?php include('footer.html'); ?>
