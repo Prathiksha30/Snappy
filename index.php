@@ -137,8 +137,8 @@ else
           <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a> </p>
         </div>
       </div>
-    </div> -->
-   <!--  <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6 hidden-lg hidden-md hidden-sm">
+    </div> 
+     <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6 hidden-lg hidden-md hidden-sm">
       <div class="thumbnail"> <img src="img/magento.jpeg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
         <div class="caption">
           <h3>Business</h3>
@@ -147,8 +147,8 @@ else
         </div>
       </div>
     </div>
-  </div> -->
-  <!-- <div class="row text-center hidden-xs">
+  </div> 
+   <div class="row text-center hidden-xs">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
       <div class="thumbnail"> <img src="img/phpfix.jpg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
         <div class="caption">
