@@ -1,7 +1,7 @@
 <?php include('datasnap.php'); ?>
 
 <?php
-include("header.php");
+include("head.php");
 
 
 global $conn;
