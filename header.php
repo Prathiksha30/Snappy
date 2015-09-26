@@ -26,14 +26,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Snap Services</title>
  
-<!-- Bootstrap -->
+<!-- 
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
+    <link href="css/font-awesome.min.css" rel="stylesheet" />    
+ -->
+<!-- Bootstrap CSS -->    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />  
 </head>
 <body>
 <nav>
-  <div class="containerheader"> 
+  <div class="header dark-bg"> 
     
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
