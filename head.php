@@ -64,7 +64,9 @@
                 <ul class="nav top-menu">                    
                     <li>
                         <form class="navbar-form">
+                        <a href="search.php">
                             <input class="form-control" placeholder="Search" type="text">
+                            </a>
                         </form>
                     </li>                    
                 </ul>
