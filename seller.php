@@ -62,6 +62,13 @@ if(isset($_POST['sub']))
          }
 }
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Post your Gig</title>
+</head>
+<body>
+
 
 <br> <br> <br> <br> <br> 
 <div class="container">
