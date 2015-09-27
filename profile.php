@@ -448,7 +448,7 @@ function getUserInfo($user_id)
                                     <section class="panel">                                          
                                           <div class="panel-body bio-graph-info">
                                               <h1> Profile Info</h1>
-                                              <form class="form-horizontal" role="form" method="POST" action="">                                                   
+                                              <form class="form-horizontal" role="form">                                                  
                                                   <div class="form-group">
                                                       <label class="col-lg-2 control-label">First Name</label>
                                                       <div class="col-lg-6">
@@ -560,7 +560,7 @@ function getUserInfo($user_id)
                   $semester = $_POST['semester'];
                   $DOB = $_POST['DOB'];
                   $gender = $_POST['sex'];
-                  echo $firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender." ".$_SESSION['id'];
+                  echo $firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender."".$_SESSION['id'];
                   global $conn;
                   if ($stmt = $conn->prepare("UPDATE `userdetails` SET `firstname`=?,`secondname`=?,`mobile`=?,`course`=?,`semester`=?,
                     `DOB`=?,`gender`=? WHERE `user_id`=?")) 

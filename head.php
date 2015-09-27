@@ -1,12 +1,5 @@
 <?php session_start(); ?>
 <?php include("datasnap.php") ?>
-  <?php
-            $search = $_POST['search'];
-            if ($_POST['submit']) {
-                header("Location: search.php");
-                # code...
-            }
-            ?>
 <?php function getUserName($user_id)
 {
     global $conn;
@@ -32,7 +25,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<title>Snap Services</title>
  
 <!-- 
 <link rel="stylesheet" href="css/bootstrap.css">
@@ -71,12 +64,7 @@
                 <ul class="nav top-menu">                    
                     <li>
                         <form class="navbar-form">
-                       
                             <input class="form-control" placeholder="Search" type="text">
-                            
-                            
-                            <button type="submit" class="btn btn-default btn-primary">Submit</button>
-
                         </form>
                     </li>                    
                 </ul>
@@ -103,7 +91,6 @@
                <?php } 
                 else 
                 { ?>  
-
             
             <!--PROBLEM IS HERE, DROPDOWN MENU IS NOT SHOWN WHEN SESSION IS STARTED! -->
 
