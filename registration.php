@@ -8,7 +8,7 @@ if( isset($_SESSION["email"]) && $_SESSION["email"] )
 ?>
 <?php
 
-include("registerheader.html");
+include("head.php");
 ?>
 <?php include('datasnap.php'); global $conn?> 
 
@@ -20,7 +20,7 @@ include("registerheader.html");
 <style type="text/css">
     
 </style>
-<br> 
+<br> <center>
 <body>
     <div id="wrapper">
       <form action="" method="POST" enctype="multipart/form-data">
@@ -32,38 +32,38 @@ include("registerheader.html");
                 <br>
                     <input type="text" name="firstname" />
                 </div>
-
+<br>
                 <div>
                 <label >Last Name</label>
                 <br>
                     <input type="text" name="lastname" />
                 </div>
 
-
+<br>
                 <div>
                 <label >Enter Your Phone Number</label>
                 <br>
                     <input type="text" name="mobile" />
                 </div>
-
+<br>
                 <div>
                 <label > Course</label>
                 <br>
                 <input type="text" name="course">
                 </div>
-
+<br>
                 <div>
                <label > Semester :</label>
                 <br>
-                <input type="text" name="semester" placeholder="semester" value="">
+                <input type="number" name="semester" placeholder="Ex: 3" value="">
                 </div>
-
+<br>
                 <div>
                 <label > Age:</label>
                 <br>
                 <input type="date" name="DOB" max="2001-12-31" >
                 </div>
-
+<br>
                 <div>
                 <label >Gender</label>
                 <br>
@@ -84,69 +84,27 @@ include("registerheader.html");
                 <label >Password (between 8-10 characters)</label>
                 <!--Password-->
                 <br>
-                    <input type="password" name="password" placeholder="password"  />
+                    <input type="password" name="password"  />
                 </div>
-
+<br>
                 <div>
                 <label >Email-ID</label>
                 <br>
                     <input type="email" name="email_id" />
-                </div> 
+                </div>  <br>
                 <div>
               <a href="index.php">
-                <input type="submit" name="submit" value="Send" class="btn btn-default"/>
+                <input type="submit" name="submit" value="Submit" class="btn btn-default"/>
                 </a>
                 </div>
             </fieldset>    
         </form> 
             </div>
+            </center>
 </body>
 
-<br> <hr>
-<!-- Footer starts here -->
-<footer class="text-center">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-         <div class="container well">
-    <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
-        <div class="row">
-          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-            <div>
-              <ul class="list-unstyled">
-                <li> <a>About Us</a> </li>
-                <li> <a>Privacy Policy</a> </li>
-                <li> <a>FAQs</a> </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-4  col-xs-6">
-            <div>
-              
-            </div>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-            <div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-5"> 
-        <address>
-        <strong>Snap Services</strong><br>
-        
-        <!--<abbr title="Phone">P:</abbr> (123) 456-7890 -->
-      </address>
-       
-        </div>
-    </div>
-  </div>
-      </div>
-    </div>
-  </div>
-</footer>
+<?php include('footer.html') ?>
+
 <script src="js/jquery-1.11.2.min.js"></script> 
 <script src="js/bootstrap.min.js"></script>
 
@@ -165,6 +123,7 @@ include("registerheader.html");
                  $file = $_FILES["file"]["name"];
                   $password = $_POST['password'];
                   $email_id = $_POST['email_id'];
+            
 
                   $fields = array('firstname', 'lastname', 'mobile', 'course', 'semester', 'DOB', 'sex', 'password', 'email_id');
 
@@ -179,6 +138,13 @@ include("registerheader.html");
                           $error = true; //Yup there are errors
                         }
                      }
+
+  if (strlen ($password)>10 || strlen ($password)<8)
+      {
+     echo "<font color=red> Password must be between 8 to 10 characters<font>";
+       }
+   else
+        {
 
             if(!$error)
             {
@@ -200,7 +166,7 @@ include("registerheader.html");
                 $stmt->bind_param('issssssss', $row['id'], $firstname, $lastname, $mobile, $course, $semester, $DOB, $gender, $file);
                 $result = $stmt->execute();
                 $stmt->close();
-                echo $result;
+                //echo $result;
                  }
                 else
                   {
@@ -213,6 +179,7 @@ include("registerheader.html");
                 echo "error with insertion 2";
               }      
         }
+      }
       }
                
         ?>
