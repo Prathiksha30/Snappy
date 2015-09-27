@@ -94,7 +94,7 @@ include("head.php");
                 </div>  <br>
                 <div>
               <a href="index.php">
-                <input type="submit" name="submit" value="Send" class="btn btn-default"/>
+                <input type="submit" name="submit" value="Submit" class="btn btn-default"/>
                 </a>
                 </div>
             </fieldset>    
