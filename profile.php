@@ -24,13 +24,13 @@ function getUserdetails($user_id)
 function getUserInfo($user_id)
 {
     global $conn;
-    if ($stmt = $conn->prepare("SELECT firstname, secondname, photoAd FROM `userdetails` WHERE user_id = ?"))
+    if ($stmt = $conn->prepare("SELECT firstname, secondname, photoAd ,Credits FROM `userdetails` WHERE user_id = ?"))
         {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($firstname, $secondname, $photoAd);
+        $stmt->bind_result($firstname, $secondname, $photoAd, $Credits);
         while ($stmt->fetch()) {
-          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname, 'photoAd' => $photoAd);
+          $rows[] = array('firstname' => $firstname, 'secondname' => $secondname, 'photoAd' => $photoAd,'Credits'=>$Credits);
         }
         $stmt->close();
         return $rows;
@@ -235,8 +235,8 @@ function getUserInfo($user_id)
       <section id="main-content">
           <section class="wrapper">
 		  <div class="row">
-				<div class="col-lg-12"
-					<h3 class="page-header"><i class="fa fa-user-md"></i> Profile</h3>
+				<div class="col-lg-12">
+					<h3 class="page-header"><i class="fa fa-laptop"></i>Profile</h3>
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
 						<!-- <li><i class="icon_documents_alt"></i>Pages</li> -->
@@ -252,15 +252,15 @@ function getUserInfo($user_id)
                             <div class="col-lg-2 col-sm-2">
                               <h4>
                               <?php
-                                $name = getUserDetails(21);
+                                $name = getUserInfo($_SESSION['id']);
                                 echo $name[0]['firstname']." ".$name[0]['secondname'];
                               ?>
                               </h4>               
                               <div class="follow-ava">
                                 
                                  <!--  <img src="upload/".<?php$getUserInfo['photoAd']?>.".jpg"profile-widget-avatar.jpg" alt=""> -->
-                              
-                                 <img src="upload/".<?php$getUserInfo['photoAd']?>.".jpg" alt="">
+                                <!-- <img src="<?php echo 'GigUploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400"> -->
+                                <img src="<?php echo 'upload/'.$name[0]['photoAd']; ?>" alt="<?php echo "sorry"?>">
                               </div>
                               <h6>Student</h6>
                             </div>
@@ -272,7 +272,10 @@ function getUserInfo($user_id)
                                     <!-- <span><i class="icon_pin_alt"></i>NY</span> -->
                                 </h6>
                             </div>
-                            
+                                    <span><i class="icon-bell-l"></i><h4><?php echo $name[0]['Credits'];?></h4></span>
+                            <div>
+
+                            </div>
                           </div>
                     </div>
                 </div>
@@ -409,12 +412,12 @@ function getUserInfo($user_id)
                                       <div class="panel-body bio-graph-info">
                                           <h1>Personal Information</h1>
                                           <div class="row">
-                                          <?php $userdetail = getUserdetails('21');?>
+                                          <?php $userdetail = getUserdetails($_SESSION['id']);?>
                                               <div class="bio-row">
                                                   <p><span>First Name </span>:<?php echo $userdetail[0]['firstname'];?> </p>
                                               </div>
                                               <div class="bio-row">
-                                                  <p><span>Last Name </span>: <?php echo $userdetail[0]['lastname'];?></p>
+                                                  <p><span>Last Name </span>: <?php echo $userdetail[0]['secondname'];?></p>
                                               </div>                                              
                                               <div class="bio-row">
                                                   <p><span>Date of birth </span>: <?php echo $userdetail[0]['DOB'];?></p>
@@ -445,66 +448,69 @@ function getUserInfo($user_id)
                                     <section class="panel">                                          
                                           <div class="panel-body bio-graph-info">
                                               <h1> Profile Info</h1>
-                                              <form class="form-horizontal" role="form">                                                  
+                                              <form class="form-horizontal" role="form" method="POST" action="">                                                   
                                                   <div class="form-group">
                                                       <label class="col-lg-2 control-label">First Name</label>
                                                       <div class="col-lg-6">
-                                                          <input type="text" class="form-control" id="f-name" placeholder=" ">
+                                                          <input type="text" name="firstname" class="form-control" >
                                                       </div>
                                                   </div>
                                                   <div class="form-group">
                                                       <label class="col-lg-2 control-label">Last Name</label>
                                                       <div class="col-lg-6">
-                                                          <input type="text" class="form-control" id="l-name" placeholder=" ">
+                                                          <input type="text" name="lastname" class="form-control" >
                                                       </div>
                                                   </div>
                                                   <div class="form-group">
-                                                      <label class="col-lg-2 control-label">About Me</label>
+                                                      <label class="col-lg-2 control-label">Mobile Number</label>
                                                       <div class="col-lg-10">
-                                                          <textarea name="" id="" class="form-control" cols="30" rows="5"></textarea>
+                                                          <input type="text" name="mobile" id="" class="form-control" maxlength="10" minlength="10">
                                                       </div>
                                                   </div>
                                                   <div class="form-group">
-                                                      <label class="col-lg-2 control-label">Country</label>
+                                                      <label class="col-lg-2 control-label">Course</label>
                                                       <div class="col-lg-6">
-                                                          <input type="text" class="form-control" id="c-name" placeholder=" ">
+                                                          <input type="text" name="course" class="form-control" >
                                                       </div>
                                                   </div>
                                                   <div class="form-group">
-                                                      <label class="col-lg-2 control-label">Birthday</label>
+                                                      <label class="col-lg-2 control-label">Semester</label>
                                                       <div class="col-lg-6">
-                                                          <input type="text" class="form-control" id="b-day" placeholder=" ">
+                                                          <input type="text" name="semester" class="form-control" id="b-day" placeholder=" ">
                                                       </div>
                                                   </div>
                                                   <div class="form-group">
-                                                      <label class="col-lg-2 control-label">Occupation</label>
+                                                      <label class="col-lg-2 control-label">Date of Birth</label>
                                                       <div class="col-lg-6">
-                                                          <input type="text" class="form-control" id="occupation" placeholder=" ">
+                                                          <input type="date" name="DOB" max="2001-12-31" >
+                                                      
                                                       </div>
                                                   </div>
                                                   <div class="form-group">
+                                                      <label class="col-lg-2 control-label">Gender</label>
+                                                      <div class="col-lg-6">
+                                                          <input type="radio" name="sex" value ="male" checked>Male
+                                                          <input type="radio" name="sex" value ="female">Female
+                                                      </div>
+                                                  </div>
+                                                  <!-- <div class="form-group">
                                                       <label class="col-lg-2 control-label">Email</label>
                                                       <div class="col-lg-6">
                                                           <input type="text" class="form-control" id="email" placeholder=" ">
                                                       </div>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label class="col-lg-2 control-label">Mobile</label>
-                                                      <div class="col-lg-6">
-                                                          <input type="text" class="form-control" id="mobile" placeholder=" ">
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-group">
+                                                  </div> -->
+                                                  
+                                                  <!-- <div class="form-group">
                                                       <label class="col-lg-2 control-label">Website URL</label>
                                                       <div class="col-lg-6">
                                                           <input type="text" class="form-control" id="url" placeholder="http://www.demowebsite.com ">
                                                       </div>
-                                                  </div>
+                                                  </div> -->
 
                                                   <div class="form-group">
                                                       <div class="col-lg-offset-2 col-lg-10">
-                                                          <button type="submit" class="btn btn-primary">Save</button>
-                                                          <button type="button" class="btn btn-danger">Cancel</button>
+                                                          <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                          
                                                       </div>
                                                   </div>
                                               </form>
@@ -544,3 +550,31 @@ function getUserInfo($user_id)
 
   </body>
 </html>
+<?php
+ if(isset($_POST['submit']))
+ {
+                  $firstname = $_POST['firstname'];
+                  $lastname = $_POST['lastname'];
+                  $mobile = $_POST['mobile'];
+                  $course = $_POST['course'];
+                  $semester = $_POST['semester'];
+                  $DOB = $_POST['DOB'];
+                  $gender = $_POST['sex'];
+                  echo $firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender." ".$_SESSION['id'];
+                  global $conn;
+                  if ($stmt = $conn->prepare("UPDATE `userdetails` SET `firstname`=?,`secondname`=?,`mobile`=?,`course`=?,`semester`=?,
+                    `DOB`=?,`gender`=? WHERE `user_id`=?")) 
+                 {
+        $stmt->bind_param("ssisiss", $firstname,$lastname,$mobile,$course,$semester,$DOB,$gender,$_SESSION['id']);
+        $stmt->execute();
+        // $stmt->bind_result($firstname, $lastname, $mobile, $course, $semester, $DOB, $gender);
+        // while ($stmt->fetch()) {
+        //   $rows[] = array('firstname' => $firstname, 'secondname' => $lastname,'mobile' => $mobile, 'course' => $course, 'semester' => $semester, 'DOB' => $DOB,'gender'=>$gender);
+        // }
+        // $stmt->close();
+        // return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}           

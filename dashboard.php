@@ -430,9 +430,9 @@ function deductcreditfrombuyer($order_id)
    $userid=getbuyerid($order_id);
    $usercredits=getusercredit($userid);
    $updatedcredit=$usercredits-$Adcredit;
-   if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=? WHERE order_id=?"))
+   if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=? WHERE user_id=?"))
     {
-      $stmt->bind_param("ii",$updatedcredit,$order_id);
+      $stmt->bind_param("ii",$updatedcredit,$userid);
       $stmt->execute();
     }
     else
@@ -613,7 +613,7 @@ if (isset($_POST['confirm_order_id']))
               <!--overview start-->
 			  <div class="row">
 				<div class="col-lg-12">
-					<h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
+					Up
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="index.php">Home Page</a></li>
 						<li><i class="fa fa-laptop"></i>Dashboard</li>
