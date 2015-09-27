@@ -75,7 +75,7 @@ else
             <div class="item"> <img class="img-responsive" src="img/wallhaven-167217.jpg" alt="thumb">
               <div class="carousel-caption"> Snap Services </div>
             </div>
-            <div class="item active"> <img class="img-responsive" src="img/wallhaven-74011.jpg" alt="thumb">
+            <div class="item active"> <img class="img-responsive" src="img/snap1.jpg" alt="thumb">
               <div class="carousel-caption">  </div>
             </div>
             <div class="item"> <img class="img-responsive" src="img/steam_the_digital_distribution_valve_service_digital_distribution_of_computer_games_95837_1920x1080.jpg" alt="thumb">
@@ -109,74 +109,7 @@ else
       </div>
     <?php } ?>
   </div>
-    <!-- <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6"> -->
-     <!--  <div class="thumbnail"> <img src="img/logo.jpg" alt="Thumbnail Image 1" height="200" width="400">
-        <div class="caption">
-          <h3>Designing</h3>
-          <p>I will design a logo for your website</p>
-          <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-      <div class="thumbnail"> <img src="img/blog.png" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
-        <div class="caption">
-          <h3>&nbsp;</h3>
-          <h3>Writing &amp;Translation</h3>
-          <p>I will write a blog post about anything</p>
-          <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a> </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-      <div class="thumbnail"> <img src="img/flyer.jpg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
-        <div class="caption">
-          <h3>Graphic&Designing</h3>
-          <p>I will design a flyer for you.</p>
-          <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a> </p>
-        </div>
-      </div>
-    </div> 
-     <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6 hidden-lg hidden-md hidden-sm">
-      <div class="thumbnail"> <img src="img/magento.jpeg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
-        <div class="caption">
-          <h3>Business</h3>
-          <p>I will manage your magento based website</p>
-          <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a></p>
-        </div>
-      </div>
-    </div>
-  </div> 
-   <div class="row text-center hidden-xs">
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-      <div class="thumbnail"> <img src="img/phpfix.jpg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
-        <div class="caption">
-          <h3>Programming&IT</h3>
-          <p>I will fix all issues related to PHP</p>
-          <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a> </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-      <div class="thumbnail"> <img src="img/creative.jpg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
-        <div class="caption">
-          <h3>Writing&Translation</h3>
-          <p>I will write an essay in French for you</p>
-          <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a> </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-      <div class="thumbnail"> <img src="img/phpfix.jpg" alt="Thumbnail Image 1" class="img-responsive" height="200" width="400">
-        <div class="caption">
-          <h3>Programming & IT</h3>
-          <p>I will manage your web page for you.</p>
-          <p><a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to Cart</a> </p>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  
+    
 <!--<?php 
 //if(isset($_POST['Submit']))
 {

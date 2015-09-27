@@ -60,8 +60,6 @@ function getEmail($user_id)
     }
 }
 
-
-//NOT WORKING ?
 function getCategory($category_id)
 {
   
@@ -95,8 +93,24 @@ function insertintoordertable($gig_id)
   else
     echo "Error with insertion into order table!";
 }
-
-
+function getCredits($user_id)
+{
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT Credits FROM `userdetails` WHERE user_id = ?"))
+    {
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      $stmt->bind_result($Credits);
+      while ($stmt->fetch()) {
+        $rows[] = array('Credits' => $Credits);
+      }
+      $stmt->close();
+      return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
 
 ?>
 
@@ -108,6 +122,11 @@ function insertintoordertable($gig_id)
   <div class="row">  
     </div>
     </div>
+    <head>
+      <title>
+        Gig Details
+      </title>
+    </head>
 
 <h2 class="text-center text-primary"> <?php  echo getCategory($category_id); ?>  </h2>
 <hr>
@@ -148,8 +167,38 @@ function insertintoordertable($gig_id)
   global $conn;
   if(isset($_POST['confirm']))
   {
-    insertintoordertable($gig_id);
+    $s=$_SESSION['id'];
+    $Credits = getCredits($s);
+     $c=$Credits[0]['Credits'];
+    $p=$details['price'];
+    //echo $Credits[0]['Credits'];
+   
+    /*Checking if user is buying his own gig*/
+    if($s != $user_id && $c > $p) 
+    {
+    insertintoordertable($gig_id); 
+?>
+<!-- ALERT DIALOG -->
+       <script type="text/javascript">
+        alert("Your order has been placed!");
+        window.location.href = "dashboard.php";
+        </script> 
 
-   }
+ <?php 
+    }
+   elseif ($c < $p) { ?>
+          <script type="text/javascript">
+          alert("Sorry, you do not have enough credits to buy this gig!");
+          </script>
+          
+  <?php }
+  else
+    {?>
+          <script type="text/javascript">
+          alert("You cannot buy your own gig!");
+          </script>
+<?php
+    }
+  }
 ?>
 

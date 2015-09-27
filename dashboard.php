@@ -198,11 +198,9 @@ function getGigID($order_id)
     $stmt->bind_param("i", $order_id);
     $stmt->execute();
     $stmt->bind_result($gig_id);
-    while ($stmt->fetch()) {
-      $rows = array('gig_id' => $gig_id);
-    }
+    $stmt->fetch();
     $stmt->close();
-    return $rows;
+    return $gig_id;
   }
   else {
     printf("Error message: %s\n", $conn->error);
@@ -267,14 +265,14 @@ function getSoldDetails($user_id)
 {
     global $conn;
     $rows = array();
-    if ($stmt = $conn->prepare("SELECT order_id, category_id, status, confirmed, deliverytime ,description,price,seller_gigcompleted, due_date FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE a.user_id = ? AND o.status= 'pending' "))
+    if ($stmt = $conn->prepare("SELECT order_id, category_id, status, confirmed, deliverytime ,description,price,seller_gigcompleted, due_date,buyer_gigcompleted FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE a.user_id = ? AND o.status= 'pending' "))
      {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($order_id, $category_id, $status, $confirmed,$deliverytime,$description,$price,$seller_gigcompleted,$due_date);
+        $stmt->bind_result($order_id, $category_id, $status, $confirmed,$deliverytime,$description,$price,$seller_gigcompleted,$due_date,$buyer_gigcompleted);
         while ($stmt->fetch()) 
         {
-          $rows[] = array('order_id' => $order_id, 'category_id' =>  $category_id, 'status' => $status, 'confirmed' => $confirmed,'deliverytime' => $deliverytime, 'description' => $description,'price' => $price, 'seller_gigcompleted' => $seller_gigcompleted, 'due_date'=>$due_date);
+          $rows[] = array('order_id' => $order_id, 'category_id' =>  $category_id, 'status' => $status, 'confirmed' => $confirmed,'deliverytime' => $deliverytime, 'description' => $description,'price' => $price, 'seller_gigcompleted' => $seller_gigcompleted, 'due_date'=>$due_date,'buyer_gigcompleted'=>$buyer_gigcompleted);
         }
         $stmt->close();
         return $rows;
@@ -290,14 +288,14 @@ function getPurchaseDetails($user_id)
 {
     global $conn;
     $rows = array();
-    if ($stmt = $conn->prepare("SELECT order_id, status, confirmed, due_date, category_id, description, price, img, deliverytime FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE o.user_id = ? AND o.status = 'pending' "))
+    if ($stmt = $conn->prepare("SELECT order_id, status, confirmed, due_date, category_id, description, price, img, deliverytime,buyer_gigcompleted,seller_gigcompleted FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE o.user_id = ? AND o.status = 'pending' "))
      {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($order_id, $status, $confirmed, $due_date, $category_id, $description, $price, $img, $deliverytime);
+        $stmt->bind_result($order_id, $status, $confirmed, $due_date, $category_id, $description, $price, $img, $deliverytime,$buyer_gigcompleted,$seller_gigcompleted);
         while ($stmt->fetch()) 
         {
-          $rows[] = array('order_id' => $order_id, 'status' => $status, 'confirmed' => $confirmed, 'due_date' => $due_date, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime);
+          $rows[] = array('order_id' => $order_id, 'status' => $status, 'confirmed' => $confirmed, 'due_date' => $due_date, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'buyer_gigcompleted' => $buyer_gigcompleted,'seller_gigcompleted'=>$seller_gigcompleted);
         }
         $stmt->close();
         return $rows;
@@ -352,6 +350,19 @@ function updatebuyerconfirminordertable($order_id)
       printf("Error message: %s\n", $conn->error);
     }
 }
+function updatestatus($order_id)
+{
+  global $conn;
+    if($stmt = $conn->prepare("UPDATE `order` SET status='completed' WHERE order_id=?"))
+    {
+      $stmt->bind_param("i", $order_id);
+      $stmt->execute();
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
 function updatesellerconfirminordertable($order_id)
 {
   global $conn;
@@ -378,9 +389,81 @@ function  deleteorderrow($order_id)
       printf("Error message: %s\n", $conn->error);
     }
 }
+function getbuyerid($order_id)
+{
+  global $conn;
+    if ($stmt = $conn->prepare("SELECT user_id FROM `order` WHERE order_id=?")) 
+    {
+        $stmt->bind_param("i", $order_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($user_id);
+        $stmt->fetch();
+        $stmt->close();
+        return $user_id;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+function getusercredit($userid)
+{
+  global $conn;
+    if ($stmt = $conn->prepare("SELECT Credits FROM `userdetails` WHERE user_id=?")) 
+    {
+        $stmt->bind_param("i", $userid);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($Credits);
+        $stmt->fetch();
+        $stmt->close();
+        return $Credits;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+}
+function deductcreditfrombuyer($order_id)
+{
+   global $conn;
+   $Adcredit=getAdCredit($order_id);
+   $userid=getbuyerid($order_id);
+   $usercredits=getusercredit($userid);
+   $updatedcredit=$usercredits-$Adcredit;
+   if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=? WHERE order_id=?"))
+    {
+      $stmt->bind_param("ii",$updatedcredit,$order_id);
+      $stmt->execute();
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+
+}
+function getAdCredit($order_id)
+{
+   global $conn;
+    $gigid=getGigID($order_id);
+    if($stmt = $conn->prepare("SELECT price from `advertisement` WHERE gig_id=?"))
+    {
+      $stmt->bind_param("i", $gigid);
+      $stmt->execute();
+      $stmt->store_result();
+      $stmt->bind_result($price);
+      $stmt->fetch();
+      $stmt->close();
+      return $price;
+
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
 if (isset($_POST['buyerconfirm']))
 {
-  updatebuyerconfirminordertable($_POST['sellerconfirm']);
+  updatebuyerconfirminordertable($_POST['buyerconfirm']);
 }
 if (isset($_POST['sellerconfirm'])) 
 {
@@ -393,6 +476,7 @@ if (isset($_POST['delete_order_id']))
  
 if (isset($_POST['confirm_order_id'])) 
 {
+  deductcreditfrombuyer($_POST['confirm_order_id']);
   updateconfirminordertable($_POST['confirm_order_id']);
   updateduedateinordertable($_POST['confirm_order_id']);
 }
@@ -408,7 +492,7 @@ if (isset($_POST['confirm_order_id']))
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Creative - Bootstrap Admin Template</title>
+    <title>My Dashboard</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -524,89 +608,6 @@ if (isset($_POST['confirm_order_id']))
  </div> </center>
       </header>      
       <!--header end-->
-
-      <!--sidebar start-->
-      <!-- <aside>
-          <div id="sidebar" class="nav-collapse"> -->
-              <!-- sidebar menu start-->
-              <!-- <ul class="sidebar-menu">                
-                  <li class="active">
-                      <a class="" href="dashboard.php">
-                          
-                          <i class="icon_document_alt"></i>
-                          <span>Dashboard</span>
-                      </a>
-                  </li>
-				  <li class="sub-menu">
-                      <a href="index.php" class="">
-                          <i class="icon_house_alt"></i>
-                          <span>Home page</span>
-                         
-                      </a>
-                      <ul class="sub">
-                          <li><a class="" href="form_component.html">Form Elements</a></li>                          
-                          <li><a class="" href="form_validation.html">Form Validation</a></li>
-                      </ul>
-                  </li>       
-          <li class="sub-menu">
-                      <a href="profile.php" class="">
-                          <i class="icon_desktop"></i>
-                          <span>Profile</span>
-                          
-                      </a>
-                      <ul class="sub">
-                          <li><a class="" href="general.html">Elements</a></li>
-                          <li><a class="" href="buttons.html">Buttons</a></li>
-                          <li><a class="" href="grids.html">Grids</a></li>
-                      </ul>
-                  </li>
-                  <li>
-                      <a class="" href="seller.php">
-                          <i class="icon_genius"></i>
-                          <span>Post a Gig</span>
-                      </a>
-                  </li> -->
-                  <!-- <li>                     
-                      <a class="" href="chart-chartjs.html">
-                          <i class="icon_piechart"></i>
-                          <span>Charts</span>
-                          
-                      </a>
-                                         
-                  </li>
-                             
-                  <li class="sub-menu">
-                      <a href="javascript:;" class="">
-                          <i class="icon_table"></i>
-                          <span>Tables</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
-                      </a>
-                      <ul class="sub">
-                          <li><a class="" href="basic_table.html">Basic Table</a></li>
-                      </ul>
-                  </li>
-                  
-                  <li class="sub-menu">
-                      <a href="javascript:;" class="">
-                          <i class="icon_documents_alt"></i>
-                          <span>Pages</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
-                      </a>
-                      <ul class="sub">                          
-                          <li><a class="" href="profile.html">Profile</a></li>
-                          <li><a class="" href="login.html"><span>Login Page</span></a></li>
-                          <li><a class="" href="blank.html">Blank Page</a></li>
-                          <li><a class="" href="404.html">404 Error</a></li>
-                      </ul>
-                  </li>
-                  
-              </ul> -->
-              <!-- sidebar menu end-->
-         <!--  </div>
-      </aside> -->
-      <!--sidebar end-->
-      
-      <!--main content start-->
       <section id="main-content">
           <section class="wrapper">            
               <!--overview start-->
@@ -614,7 +615,7 @@ if (isset($_POST['confirm_order_id']))
 				<div class="col-lg-12">
 					<h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>
+						<li><i class="fa fa-home"></i><a href="index.php">Home Page</a></li>
 						<li><i class="fa fa-laptop"></i>Dashboard</li>
 					</ol>
 				</div>
@@ -775,13 +776,18 @@ if (isset($_POST['confirm_order_id']))
                                   </td>
 
                                   <td>
-                                      <?php 
+                                      <?php
+                                      if($Sold['seller_gigcompleted']=='1' && $Sold['buyer_gigcompleted']=='1')
+                                      {
+                                        updatestatus($Sold['order_id']);
+                                      }
                                       if ($Sold['confirmed'] == '1' && $Sold['seller_gigcompleted'] == '1' )
                                       {
                                       ?>
                                          <span class="badge bg-important">Waiting for the buyer to acknowledge delivery of service </span>
                                         
                                          <?php }
+                                      
                                       else
                                       {
                                         if ($Sold['confirmed'] != '0')
@@ -1087,9 +1093,26 @@ if (isset($_POST['confirm_order_id']))
                                   </td>
                                   <td><?php echo $purchase['description']; ?></td>
                                   <td>
-                                      <?php echo $purchase['price']; ?>
+                                      <?php echo $purchase['price'];?>
                                   </td>
-                                   <td>
+                                   <!-- <td> -->
+                                   <?php
+                                   if($purchase['seller_gigcompleted']=='1' && $purchase['buyer_gigcompleted']=='1')
+                                      {
+                                        updatestatus($purchase['order_id']);
+                                      }
+                                   if($purchase['confirmed']=='1' && $purchase['buyer_gigcompleted']=='1')
+                                   { echo "hey";?>
+                                    <td>
+                                    <span class="badge bg-important">
+                                    <?php echo "waiting for buyer to acknowledge delivery";?>
+                                    </span>
+                                    </td>
+                                    <?php
+                                   }
+                                   else
+                                    {?>
+                                      <td>
                                       <span class="badge bg-important">
                                         <?php 
                                         if ( $purchase['confirmed']=='1' )
@@ -1098,24 +1121,29 @@ if (isset($_POST['confirm_order_id']))
                                           echo "Order confirmation pending";
                                         ?>
                                       </span>
-                                  <!-- </td>
-                                  <td> -->
-                                     <?php 
-                                        if ( $purchase['confirmed']=='1' )
+                                     <</td>
+                                    <?php
+                                    }?>
+                                   
+                                    <td> 
+                                        <?php
+                                        if ( $purchase['confirmed']=='1' && $purchase['buyer_gigcompleted']=='0' )
                                         {?>
                                           <form  method="POST" action="">
                                           <input type="hidden" name="buyerconfirm" value="<?php echo $purchase['order_id']; ?>">
-                                          <input type="submit" value="Confirm" class="btn btn-success">
+                                          <input type="submit" value="Confirm Delivery Recieved" class="btn btn-success">
                                           </form> 
-                                   <?php}?>
+                                   <?php
+                                   }?>
                                    </td>
+                                   <!-- /td> -->
                                       
                                                <!-- else
                                                {
                                                 ?>
                                                <span class="badge bg-important">delivered</span>
                                                <?php
-                                               }?> -->
+                                               ?> -->
 
                                                   
                                   

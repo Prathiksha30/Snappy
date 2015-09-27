@@ -17,17 +17,19 @@ if(isset($_POST['sub']))
   $cat = $_POST['cat'];
   $price = $_POST['price'];
   $lang = $_POST['lang'];
+  $delivery= $_POST['days'];
   $Img = $_FILES["file"]["name"];
 
   
-                  $fields = array('desc', 'cat', 'price', 'lang');
+                  $fields = array('desc', 'cat', 'price', 'lang', 'days');
 
                    $error = false; //No errors yet
                   foreach($fields AS $fieldname) 
                     { //Loop trough each field
                       if(!isset($_POST[$fieldname]) || empty($_POST[$fieldname]))
                         {
-                           echo "<script type='text/javascript'>alert('field ".$fieldname." not entered , unable to post gig');</script>";
+                           echo "<script type='text/javascript'>alert('Please fill in all the fields!'); 
+                           </script>";
                            //Display error with field
                            
                           $error = true; //Yup there are errors
@@ -37,20 +39,36 @@ if(isset($_POST['sub']))
             if(!$error)
             {
 //inserts seller details into ad table
-    if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, img) VALUES(?, ?, ?, ?, ?, now(), ?)"))
+    if($stmt = $conn->prepare("INSERT INTO advertisement(user_id, description, price, language, category_id, created_at, img, deliverytime) VALUES(?, ?, ?, ?, ?, now(), ?, ?)"))
     {
-      echo "Done";
-      $stmt->bind_param('isisis', $_SESSION['id'], $desc, $price, $lang, $cat, $Img);
+      $stmt->bind_param('isisisi', $_SESSION['id'], $desc, $price, $lang, $cat, $Img, $delivery);
       $stmt->execute();
       $stmt->close();
-    }
+ ?> 
+      <!-- ALERT BOX -->
+        <script type="text/javascript">
+        alert("Gig posted successfully!");
+        window.location.href = "dashboard.php";
+        </script>
+  <?php  }
     else
-    {
-    echo "Error with insertion";
+    {?>
+   <script type="text/javascript">
+        alert("Error occured. Please try again!");
+        window.location.href = "seller.php";
+        </script>
+   <?php /*echo "Error with insertion";*/
     }
          }
 }
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Post your Gig</title>
+</head>
+<body>
+
 
 <br> <br> <br> <br> <br> 
 <div class="container">
@@ -60,7 +78,7 @@ if(isset($_POST['sub']))
 <form method="POST" action="" enctype="multipart/form-data">
   <div class=".form-control:focus">
     <label class="font-color"> I will ... </label>
-    <textarea class=".form-control:focus" rows="3" cols="172" name="desc"> </textarea>
+    <textarea class=".form-control:focus" rows="3" cols="172" name="desc" > </textarea>
     <!--<input type="text" class="form-control" inamed="uname"> -->
     </div>
     <br> <br>
@@ -89,6 +107,11 @@ if(isset($_POST['sub']))
     <input type="number" class="form-control" name="price">
   </div>
   <br><br>
+   <div class=".form-control:focus">
+    <label class="font-color">Number of days to deliver the service: (For ex: 3)</label>
+    <input type="number" class="form-control" name="days">
+  </div>
+  <br><br>
   <div class="form-control:focus">
     <label class="font-color">Language:</label>
     <input type="text" class="form-control" name="lang">
@@ -112,7 +135,7 @@ if(isset($_POST['sub']))
  <?php
 
 
-    $allowedExts = array("gif", "jpeg", "jpg", "png");
+    $allowedExts = array("gif", "jpeg", "jpg", "png", "JPG", "PNG", "GIF", "JPEG");
     $temp = explode(".", $_FILES["file"]["name"]); //breaking it into 2
     $extension = end($temp);
 
