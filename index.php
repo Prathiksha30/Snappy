@@ -177,33 +177,32 @@ else
     </div>
   </div> -->
   
-<?php 
-global $conn;
-if(isset($_POST['Submit']))
+<!--<?php 
+//if(isset($_POST['Submit']))
 {
-  if($_POST['search']!="")
+  //if($_POST['search']!="")
     {
-        $search=$_POST['search'];
-        if($stmt = $conn-> prepare("SELECT * FROM advertisement WHERE description = '$search' "))
+    //    $search=$_POST['search'];
+      //  if($stmt = $conn-> prepare("SELECT * FROM advertisement WHERE description = '$search' "))
         {
-            $stmt->bind_param('s',$search);
-             $result = $stmt->execute();
-            $stmt->$stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
-            while ($stmt->fetch()) 
+        //    $stmt->bind_param('s',$search);
+         //    $result = $stmt->execute();
+          //  $stmt->$stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
+            //while ($stmt->fetch()) 
             {
-            $details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
+            //$details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
             }
-            $stmt->close();
+            //$stmt->close();
         }
-        else
+        //else
         {
-          echo "NO RESULTS FOUND!";
+          //echo "NO RESULTS FOUND!";
         }
 
     }
 }
 ?>
-
+-->
  
 <?php include('footer.html'); ?>
 
