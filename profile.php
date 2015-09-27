@@ -562,11 +562,13 @@ function getUserInfo($user_id)
                   $gender = $_POST['sex'];
                   echo $firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender." ".$_SESSION['id'];
                   global $conn;
-                  if ($stmt = $conn->prepare("UPDATE `userdetails` SET `firstname`=?,`secondname`=?,`mobile`=?,`course`=?,`semester`=?,
-                    `DOB`=?,`gender`=? WHERE `user_id`=?")) 
+                  if ($stmt = $conn->prepare("UPDATE userdetails SET firstname=?, secondname=?, mobile=?, course=?, semester=?,
+                    DOB=?, gender=? WHERE user_id=?")) 
                  {
-        $stmt->bind_param("ssisiss", $firstname,$lastname,$mobile,$course,$semester,$DOB,$gender,$_SESSION['id']);
-        $stmt->execute();
+        $stmt->bind_param("issssiss",$row['id'], $firstname,$lastname,$mobile,$course,$semester,$DOB,$gender);
+        $result = $stmt->execute();
+        echo $result;
+         $stmt->close();
         // $stmt->bind_result($firstname, $lastname, $mobile, $course, $semester, $DOB, $gender);
         // while ($stmt->fetch()) {
         //   $rows[] = array('firstname' => $firstname, 'secondname' => $lastname,'mobile' => $mobile, 'course' => $course, 'semester' => $semester, 'DOB' => $DOB,'gender'=>$gender);
@@ -575,6 +577,7 @@ function getUserInfo($user_id)
         // return $rows;
     }
     else {
+      echo "error with updating";
         printf("Error message: %s\n", $conn->error);
     }
 }           
