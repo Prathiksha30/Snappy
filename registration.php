@@ -181,15 +181,14 @@ include("registerheader.html");
                         }
                      }
 
-  if (strlen ($password)>10 || strlen ($password)<8)
+            if(!$error)
+            {
+              if (strlen ($password)>10 || strlen ($password)<8)
       {
      echo "<font color=red> Password must be between 8 to 10 characters<font>";
        }
    else
         {
-
-            if(!$error)
-            {
 
             if ($stmtt=$conn->prepare("INSERT INTO user(password, email, created_at) values(?,?,now())")) {
               $stmtt->bind_param('ss', $password, $email_id);
@@ -275,7 +274,7 @@ include("registerheader.html");
        }    
      else 
        {
-             echo "Invalid file";
+             //echo "Invalid file";
        }
 
     echo "";
