@@ -488,7 +488,7 @@ ul.sidebar-menu li.active a i {
 /*main content*/
 
 #main-content {
-    margin-right: 180px;
+    margin-left: 0px;
 }
 
 .header, .footer {
