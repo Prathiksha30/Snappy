@@ -43,7 +43,7 @@ include("head.php");
                 <div>
                 <label >Enter Your Phone Number</label>
                 <br>
-                    <input type="text" name="mobile" />
+                    <input type="number" name="mobile" />
                 </div>
 <br>
                 <div>
@@ -93,9 +93,8 @@ include("head.php");
                     <input type="email" name="email_id" />
                 </div>  <br>
                 <div>
-              <a href="index.php">
-                <input type="submit" name="submit" value="Submit" class="btn btn-default"/>
-                </a>
+             
+                <input type="submit" name="submit" value="submit" class="btn btn-default"/>
                 </div>
             </fieldset>    
         </form> 
