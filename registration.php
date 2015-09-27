@@ -165,6 +165,7 @@ include("registerheader.html");
                  $file = $_FILES["file"]["name"];
                   $password = $_POST['password'];
                   $email_id = $_POST['email_id'];
+            
 
                   $fields = array('firstname', 'lastname', 'mobile', 'course', 'semester', 'DOB', 'sex', 'password', 'email_id');
 
@@ -179,6 +180,13 @@ include("registerheader.html");
                           $error = true; //Yup there are errors
                         }
                      }
+
+  if (strlen ($password)>10 || strlen ($password)<8)
+      {
+     echo "<font color=red> Password must be between 8 to 10 characters<font>";
+       }
+   else
+        {
 
             if(!$error)
             {
@@ -200,7 +208,7 @@ include("registerheader.html");
                 $stmt->bind_param('issssssss', $row['id'], $firstname, $lastname, $mobile, $course, $semester, $DOB, $gender, $file);
                 $result = $stmt->execute();
                 $stmt->close();
-                echo $result;
+                //echo $result;
                  }
                 else
                   {
@@ -213,6 +221,7 @@ include("registerheader.html");
                 echo "error with insertion 2";
               }      
         }
+      }
       }
                
         ?>
