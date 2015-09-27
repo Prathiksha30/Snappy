@@ -28,7 +28,8 @@ if(isset($_POST['sub']))
                     { //Loop trough each field
                       if(!isset($_POST[$fieldname]) || empty($_POST[$fieldname]))
                         {
-                           echo "<script type='text/javascript'>alert('Please fill in all the fields!');</script>";
+                           echo "<script type='text/javascript'>alert('Please fill in all the fields!'); 
+                           </script>";
                            //Display error with field
                            
                           $error = true; //Yup there are errors
@@ -43,11 +44,20 @@ if(isset($_POST['sub']))
       $stmt->bind_param('isisisi', $_SESSION['id'], $desc, $price, $lang, $cat, $Img, $delivery);
       $stmt->execute();
       $stmt->close();
-      echo "<script type='text/javascript'>alert('Gig posted successfully!');</script>";
-    }
+ ?> 
+      <!-- ALERT BOX -->
+        <script type="text/javascript">
+        alert("Gig posted successfully!");
+        window.location.href = "dashboard.php";
+        </script>
+  <?php  }
     else
-    {
-    echo "Error with insertion";
+    {?>
+   <script type="text/javascript">
+        alert("Error occured. Please try again!");
+        window.location.href = "seller.php";
+        </script>
+   <?php /*echo "Error with insertion";*/
     }
          }
 }
