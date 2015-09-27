@@ -504,6 +504,24 @@ if (isset($_POST['confirm_order_id']))
                 </ul>
                 <!-- notificatoin dropdown end-->
             </div>
+             <center>
+           <div>
+
+    <ul class="nav navbar-nav">
+        
+        <li><a href="graphics.php">GRAPHICS & DESIGN</a></li>
+        <li><a href="Online.php"> ONLINE MARKETING</a></li>
+        <li> <a href="writting.php"> WRITING & TRANSLATION </a></li>
+        <li> <a href="VideoAudio.php"> VIDEO & AUDIO </a></li>
+         <li><a href="Programming.php"> PROGRAMMING & IT</a></li>
+         <li><a href="Advertising.php"> ADVERTISING </a></li>
+       <!--  <li><a href="Buisness.php"> BUSINESS </a></li>-->
+         <li><a href="Academics.php"> ACADEMICS </a></li>
+        <li> <a href="#"> OTHERS </a></li> 
+
+    </ul>
+    
+ </div> </center>
       </header>      
       <!--header end-->
 
@@ -1080,8 +1098,8 @@ if (isset($_POST['confirm_order_id']))
                                           echo "Order confirmation pending";
                                         ?>
                                       </span>
-                                  </td>
-                                  <td>
+                                  <!-- </td>
+                                  <td> -->
                                      <?php 
                                         if ( $purchase['confirmed']=='1' )
                                         {?>

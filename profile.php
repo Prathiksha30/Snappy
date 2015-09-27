@@ -116,14 +116,29 @@ function getUserInfo($user_id)
                             </span>
                             <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu extended logout">
+                       <ul class="dropdown-menu extended logout">
                             <div class="log-arrow-up"></div>
                             <li class="eborder-top">
-                                <a href="#"><i class="icon_profile"></i> My Profile</a>
+                                <a href="profile.php"><i class="icon_profile"></i> My Profile</a>
                             </li>
                             <li>
-                                <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
+                                <a href="dashboard.php"><i class="icon-dashboard-l"></i>Dashboard</a>
                             </li>
+                            <li>
+                                <a href="seller.php"><i class="icon-task-l"></i> Post a Gig</a>
+                            </li>
+                            <!-- <li>
+                                <a href="#"><i class="icon_chat_alt"></i> Chats</a>
+                            </li> -->
+                            <li>
+                                <a href="logout.php"><i class="icon-login-l "></i> Log Out</a>
+                            </li>
+                            <!-- <li>
+                                <a href="documentation.html"><i class="icon_key_alt"></i> Documents</a>
+                            </li> -->
+                           <!--  <li>
+                                <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
+                            </li> -->
                         </ul>
                     </li>
                     <!-- user login dropdown end -->
@@ -134,13 +149,13 @@ function getUserInfo($user_id)
       <!--header end-->
 
       <!--sidebar start-->
-      <aside>
-          <div id="sidebar" class="nav-collapse">
+      <!-- <aside> -->
+         <!--  <div id="sidebar" class="nav-collapse"> -->
               <!-- sidebar menu start-->
-              <ul class="sidebar-menu"> 
-                    <li class="active">
+              <!-- <ul class="sidebar-menu"> 
+                    <li class="active"> -->
                                  
-                  
+                  <!-- 
                       <a class="" href="dashboard.php">
                           
                           <i class="icon_document_alt"></i>
@@ -175,7 +190,7 @@ function getUserInfo($user_id)
                           <i class="icon_genius"></i>
                           <span>Post a Gig</span>
                       </a>
-                  </li>
+                  </li> -->
                   <!-- <li>                     
                       <a class="" href="chart-chartjs.html">
                           <i class="icon_piechart"></i>
@@ -212,15 +227,15 @@ function getUserInfo($user_id)
                   
               </ul> -->
               <!-- sidebar menu end-->
-          </div>
-      </aside>
+          <!-- </div>
+      </aside> -->
       <!--sidebar end-->
       
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
 		  <div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-12"
 					<h3 class="page-header"><i class="fa fa-user-md"></i> Profile</h3>
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
@@ -242,16 +257,18 @@ function getUserInfo($user_id)
                               ?>
                               </h4>               
                               <div class="follow-ava">
-                            
-                                  <img src="'upload/'.$name[0]['photoAd']" alt="">
+                                
+                                 <!--  <img src="upload/".<?php$getUserInfo['photoAd']?>.".jpg"profile-widget-avatar.jpg" alt=""> -->
+                              
+                                 <img src="upload/".<?php$getUserInfo['photoAd']?>.".jpg" alt="">
                               </div>
                               <h6>Student</h6>
                             </div>
                             <div class="col-lg-4 col-sm-4 follow-info">
                                 
                                 <h6>
-                                    <span><i class="icon_clock_alt"></i><php echo date("Y/m/d"); ?></span>
-                                    <span><i class="icon_calendar"></i><php echo ("h:i:sa"); ?></span>
+                                    <span><i class="icon_calendar"></i><?php echo date('l jS \of F Y ');?></span>
+                                    <!-- <span><i class="icon_calendar"></i><php echo ("h:i:sa"); ?></span> -->
                                     <!-- <span><i class="icon_pin_alt"></i>NY</span> -->
                                 </h6>
                             </div>
