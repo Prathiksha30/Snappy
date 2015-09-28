@@ -430,9 +430,9 @@ function deductcreditfrombuyer($order_id)
    $userid=getbuyerid($order_id);
    $usercredits=getusercredit($userid);
    $updatedcredit=$usercredits-$Adcredit;
-   if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=? WHERE order_id=?"))
+   if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=? WHERE user_id=?"))
     {
-      $stmt->bind_param("ii",$updatedcredit,$order_id);
+      $stmt->bind_param("ii",$updatedcredit,$user_id);
       $stmt->execute();
     }
     else
@@ -461,6 +461,65 @@ function getAdCredit($order_id)
       printf("Error message: %s\n", $conn->error);
     }
 }
+function updatesellercredit($gig_id)
+{
+  global $conn;
+  $uID=getsellerID($gig_id);
+  echo $uID;
+  $sellercredit=getusercredit($uID);
+  echo $sellercredit;
+  $Adcredit=getGigprice($gig_id);
+  echo $Adcredit;
+  $updatedcredit=$sellercredit+$Adcredit;
+  echo $updatedcredit;
+    if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=? WHERE user_id=?"))
+    {
+      $stmt->bind_param("ii", $updatedcredit,$uID);
+      $stmt->execute();
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
+function getsellerID($gig_id)
+{
+   global $conn;
+    if($stmt = $conn->prepare("SELECT user_id from `advertisement` WHERE gig_id=?"))
+    {
+      $stmt->bind_param("i", $gig_id);
+      $stmt->execute();
+      $stmt->store_result();
+      $stmt->bind_result($user_id);
+      $stmt->fetch();
+      $stmt->close();
+      return $user_id;
+
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
+function getGigprice($gig_id)
+{
+   global $conn;
+    if($stmt = $conn->prepare("SELECT price from `advertisement` WHERE gig_id=?"))
+    {
+      $stmt->bind_param("i", $gig_id);
+      $stmt->execute();
+      $stmt->store_result();
+      $stmt->bind_result($price);
+      $stmt->fetch();
+      $stmt->close();
+      return $price;
+
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
 if (isset($_POST['buyerconfirm']))
 {
   updatebuyerconfirminordertable($_POST['buyerconfirm']);
@@ -476,9 +535,10 @@ if (isset($_POST['delete_order_id']))
  
 if (isset($_POST['confirm_order_id'])) 
 {
+  updateduedateinordertable($_POST['confirm_order_id']);
   deductcreditfrombuyer($_POST['confirm_order_id']);
   updateconfirminordertable($_POST['confirm_order_id']);
-  updateduedateinordertable($_POST['confirm_order_id']);
+  
 }
 
 ?>
@@ -613,7 +673,7 @@ if (isset($_POST['confirm_order_id']))
               <!--overview start-->
 			  <div class="row">
 				<div class="col-lg-12">
-					<h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
+					Up
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="index.php">Home Page</a></li>
 						<li><i class="fa fa-laptop"></i>Dashboard</li>
@@ -780,6 +840,8 @@ if (isset($_POST['confirm_order_id']))
                                       if($Sold['seller_gigcompleted']=='1' && $Sold['buyer_gigcompleted']=='1')
                                       {
                                         updatestatus($Sold['order_id']);
+                                        
+                                        updatesellercredit($Sold['gig_id']);
                                       }
                                       if ($Sold['confirmed'] == '1' && $Sold['seller_gigcompleted'] == '1' )
                                       {

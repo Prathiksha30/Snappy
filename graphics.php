@@ -50,7 +50,7 @@ else
 </head>
 <body>
 <!-- /.container-fluid --> 
-<!-- <br> <br> <br> <br> <br>  --><!-- find out another way to do this. -->
+<!--   --><!-- find out another way to do this. -->
 <div class="container">
 <div class="row">  
 <h2 class="text-center text-primary">Graphics and Design</h2>
