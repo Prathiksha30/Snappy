@@ -1,14 +1,9 @@
 <?php include('datasnap.php');
 include('head.php');
 global $conn; ?>
-<?php session_start();
-
-
-?>
-
+<?php session_start();?>
 
 <!-- For the Recommended Services thing -->
-
 <?php 
 global $conn;
 if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, language from advertisement")) 
@@ -35,8 +30,8 @@ else
 <title>Snap Services</title>
  
 <!-- Bootstrap -->
-<link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
  <!-- bootstrap theme -->
     <link href="css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
@@ -44,25 +39,15 @@ else
     <link href="css/elegant-icons-style.css" rel="stylesheet" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />    
 
-  <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
     <!-- Custom styles -->
-  <link href="css/widgets.css" rel="stylesheet">
+    <link href="css/widgets.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet" />
-  <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-   
+    <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 </head>
 <body>
-
-
-<div class="container">
+  <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div id="carousel1" class="carousel slide">
@@ -70,7 +55,7 @@ else
             <li data-target="#carousel1" data-slide-to="0" class="active"> </li>
             <li data-target="#carousel1" data-slide-to="1" class=""> </li>
             <li data-target="#carousel1" data-slide-to="2" class=""> </li>
-          </ol>
+           </ol>
           <div class="carousel-inner">
             <div class="item"> <img class="img-responsive" src="img/wallhaven-167217.jpg" alt="thumb">
               <div class="carousel-caption"> Snap Services </div>
@@ -87,14 +72,13 @@ else
 </div>
     <hr>
   </div>
-<div class="container">
-  <div class="row">  
-    </div>
-    </div>
+
+  
+    
 
 <h2 class="text-center text-primary">RECOMMENDED SERVICES</h2>
 <hr>
-<div class="container">
+
   <div class="row text-center">
     <?php for ($i=0; $i < 6; $i++) 
     { ?>
@@ -108,7 +92,8 @@ else
         </div>
       </div>
     <?php } ?>
-  </div>
+    </div>
+  
     
 <!--<?php 
 //if(isset($_POST['Submit']))
