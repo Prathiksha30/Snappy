@@ -51,6 +51,12 @@ else
 <body>
 <!-- /.container-fluid --> 
 <!--   --><!-- find out another way to do this. -->
+<?php
+if(!$rows)
+{ 
+  echo 'Nothing available at the moment. Please come back laster';
+ } 
+else { ?>
 <div class="container">
 <div class="row">  
 <h2 class="text-center text-primary">Graphics and Design</h2>
@@ -67,7 +73,9 @@ else
           </div>
         </div>
       </div>
-    <?php endforeach; ?>
+    <?php endforeach; 
+    }
+    ?>
   </div>
 </div>
    </div>
