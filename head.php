@@ -65,8 +65,11 @@
                     <!--  search form start -->
                     <ul class="nav top-menu">                    
                         <li>
-                            <form class="navbar-form">
-                                <input class="form-control" placeholder="Search" type="text">
+                            <form class="navbar-form" method="GET" action="search.php">
+                                <input class="form-control" placeholder="Search" type="text" name="q">
+                                <button type="submit" >
+                                    search
+                                </button>
                             </form>
                         </li>                    
                     </ul>
