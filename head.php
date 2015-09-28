@@ -1,12 +1,6 @@
 <?php session_start(); ?>
 <?php include("datasnap.php") ?>
-  <?php
-            $search = $_POST['search'];
-            if ($_POST['submit']) {
-                header("Location: search.php");
-                # code...
-            }
-            ?>
+  
 <?php function getUserName($user_id)
 {
     global $conn;
