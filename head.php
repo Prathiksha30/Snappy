@@ -158,7 +158,7 @@
              <li><a href="Advertising.php"> ADVERTISING </a></li>
            <!--  <li><a href="Buisness.php"> BUSINESS </a></li>-->
              <li><a href="Academics.php"> ACADEMICS </a></li>
-            <li> <a href="#"> OTHERS </a></li> 
+            <li> <a href="others.php"> OTHERS </a></li> 
 
         </ul>
         
