@@ -110,7 +110,7 @@ function getUserInfo($user_id)
                             </span>
                             <span class="username">
                             <?php
-                                $name = getUserInfo(21);
+                                $name = getUserInfo($_SESSION['id']);
                                 echo $name[0]['firstname']." ".$name[0]['secondname'];
                               ?>
                             </span>
@@ -574,5 +574,5 @@ function getUserInfo($user_id)
         $stmt->bind_param("ssssissi", $firstname,$lastname,$mobile,$course,$semester,$DOB,$gender,$_SESSION['id']);
         $stmt->execute();
                  }
-  header("Location: http://localhost:8080/snappy/profile.php#");
+  // header("Location: http://localhost:8080/snappy/profile.php#");
 }
