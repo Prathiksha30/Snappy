@@ -448,7 +448,7 @@ function getUserInfo($user_id)
                                     <section class="panel">                                          
                                           <div class="panel-body bio-graph-info">
                                               <h1> Profile Info</h1>
-                                              <form class="form-horizontal" role="form">                                                  
+                                              <form class="form-horizontal" role="form" action="" method="POST">                                                   
                                                   <div class="form-group">
                                                       <label class="col-lg-2 control-label">First Name</label>
                                                       <div class="col-lg-6">
@@ -509,7 +509,8 @@ function getUserInfo($user_id)
 
                                                   <div class="form-group">
                                                       <div class="col-lg-offset-2 col-lg-10">
-                                                          <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                      <input type="submit" name="submit" value="Submit" class="btn btn-success">
+                                                          <!-- <button type="submit" name="submit" class="btn btn-primary">Save</button> -->
                                                           
                                                       </div>
                                                   </div>
@@ -551,30 +552,27 @@ function getUserInfo($user_id)
   </body>
 </html>
 <?php
+
  if(isset($_POST['submit']))
  {
-                  $firstname = $_POST['firstname'];
-                  $lastname = $_POST['lastname'];
-                  $mobile = $_POST['mobile'];
-                  $course = $_POST['course'];
-                  $semester = $_POST['semester'];
-                  $DOB = $_POST['DOB'];
-                  $gender = $_POST['sex'];
-                  echo $firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender."".$_SESSION['id'];
+  $firstname = $_POST['firstname'];
+  $lastname = $_POST['lastname'];
+  $mobile = $_POST['mobile'];
+  $course = $_POST['course'];
+  $semester = $_POST['semester'];
+  $DOB = $_POST['DOB'];
+  $gender = $_POST['sex'];
+  $message= "Your personal details have been updated";
+                  echo "<script type='text/javascript'>alert('$message');</script>";
+                  
+                  // echo "hey".$firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender."".$_SESSION['id'];
                   global $conn;
                   if ($stmt = $conn->prepare("UPDATE `userdetails` SET `firstname`=?,`secondname`=?,`mobile`=?,`course`=?,`semester`=?,
                     `DOB`=?,`gender`=? WHERE `user_id`=?")) 
+
                  {
-        $stmt->bind_param("ssisiss", $firstname,$lastname,$mobile,$course,$semester,$DOB,$gender,$_SESSION['id']);
+        $stmt->bind_param("ssssissi", $firstname,$lastname,$mobile,$course,$semester,$DOB,$gender,$_SESSION['id']);
         $stmt->execute();
-        // $stmt->bind_result($firstname, $lastname, $mobile, $course, $semester, $DOB, $gender);
-        // while ($stmt->fetch()) {
-        //   $rows[] = array('firstname' => $firstname, 'secondname' => $lastname,'mobile' => $mobile, 'course' => $course, 'semester' => $semester, 'DOB' => $DOB,'gender'=>$gender);
-        // }
-        // $stmt->close();
-        // return $rows;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }
+                 }
+  header("Location: http://localhost:8080/snappy/profile.php#");
 }           

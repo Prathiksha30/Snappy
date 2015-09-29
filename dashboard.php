@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('datasnap.php');
+//include('head.php');
 ?>
 <!-- php starts here -->
 <?php
@@ -99,7 +100,7 @@ function getServicesPurchasedCount($user_id)
 function getUserdetails($user_id)
 {
     global $conn;
-    if ($stmt = $conn->prepare("SELECT firstname, secondname, course, semester, mobile, email  FROM `userdetails` ud LEFT JOIN `user` u ON ud.user_id=u.id WHERE ud.user_id = ?")) 
+    if ($stmt = $conn->prepare("SELECT firstname, secondname, course, semester, mobile, email  FROM `user` u LEFT JOIN `userdetails` ud ON ud.user_id=u.id WHERE u.id = ?")) 
         {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
@@ -249,15 +250,14 @@ function getUseridInToDomodal($order_id)
     $rows = array();
     if ($stmt = $conn->prepare("SELECT user_id FROM `order` WHERE order_id = ?"))
      {
-        $stmt->bind_param("i", $order_id);
-        $stmt->execute();
-        $stmt->bind_result($user_id);
-        while ($stmt->fetch()) 
         {
-          $rows = array('user_id' => $user_id);
-        }
-        $stmt->close();
-        return $rows;
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    $stmt->bind_result($user_id);
+    $stmt->fetch();
+    $stmt->close();
+    return $user;
+  }
       }
 }
 
@@ -288,11 +288,11 @@ function getPurchaseDetails($user_id)
 {
     global $conn;
     $rows = array();
-    if ($stmt = $conn->prepare("SELECT order_id, status, confirmed, due_date, category_id, description, price, img, deliverytime,buyer_gigcompleted,seller_gigcompleted FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE o.user_id = ? AND o.status = 'pending' "))
+    if ($stmt = $conn->prepare("SELECT order_id,status, confirmed, due_date, category_id, description, price, img, deliverytime,buyer_gigcompleted,seller_gigcompleted FROM `order` o LEFT JOIN advertisement a ON o.gig_id = a.gig_id WHERE o.user_id = ? AND o.status = 'pending' "))
      {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($order_id, $status, $confirmed, $due_date, $category_id, $description, $price, $img, $deliverytime,$buyer_gigcompleted,$seller_gigcompleted);
+        $stmt->bind_result($order_id,$status, $confirmed, $due_date, $category_id, $description, $price, $img, $deliverytime,$buyer_gigcompleted,$seller_gigcompleted);
         while ($stmt->fetch()) 
         {
           $rows[] = array('order_id' => $order_id, 'status' => $status, 'confirmed' => $confirmed, 'due_date' => $due_date, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'buyer_gigcompleted' => $buyer_gigcompleted,'seller_gigcompleted'=>$seller_gigcompleted);
@@ -310,9 +310,8 @@ function updateduedateinordertable($order_id)
 {
   global $conn;
     $rows = array();
-    $gigid1 = getGigID($order_id)['gig_id'];
+    $gigid1 = getGigID($order_id);
     $date = getDeliveryTime($gigid1);
-    // echo $sql = "UPDATE `order` SET due_date=".date('Y-m-d', strtotime('+'.$date.' day', time()))." WHERE order_id=?";
     if($stmt = $conn->prepare("UPDATE `order` SET due_date='".date('Y-m-d', strtotime('+'.$date.' day', time()))."' WHERE order_id=?"))
     {
       $stmt->bind_param("i", $order_id);
@@ -707,6 +706,7 @@ if (isset($_POST['confirm_order_id']))
                                     <th style="padding:5px;"> Gig Descrption </th>
                                     <th style="padding:5px;"> Credit </th>                                
                               <?php
+
                                 foreach (getAllCompletedSales($_SESSION['id']) as $completedsales):
                                   $gigid=getGigID($completedsales['order_id']);
                                   $advertisement_details = getAdvertisementDetails($gigid['gig_id']);
@@ -756,23 +756,25 @@ if (isset($_POST['confirm_order_id']))
                             <table >
                                     <th style="padding:5px;"> Gig Category </th>
                                     <th style="padding:5px;"> Gig Descrption </th>
-                                    <th style="padding:5px;"> Credit </th>                                
+                                    <th style="padding:5px;"> Credit </th>
                               <?php
-                                foreach (getAllCompletedPurchases($_SESSION['id']) as $completed):
-                                  $advertisement_details = getAdvertisementDetails($completed['gig_id']);
-                                ?>
-                                    <tr>
-                                    <td style="padding:5px;">
-                                    <?php echo getCategoryName($advertisement_details['category_id']); ?>
-                                    </td>                                    
-                                    <td style="padding:5px;">
-                                    <?php echo $advertisement_details['description']."   " ; ?>
-                                    </td>
-                                    <td>
-                                    <?php echo $advertisement_details['price']; ?>
-                                    </td style="padding:5px;">                                                                 
-                                    </tr>                                 
-                                <?php endforeach; ?>
+                                if (!is_null(getAllCompletedPurchases($_SESSION['id']))) {
+                                  foreach (getAllCompletedPurchases($_SESSION['id']) as $completed):
+                                    $advertisement_details = getAdvertisementDetails($completed['gig_id']);
+                                  ?>
+                                      <tr>
+                                      <td style="padding:5px;">
+                                      <?php echo getCategoryName($advertisement_details['category_id']); ?>
+                                      </td>  
+                                       <td style="padding:5px;">
+                                      <?php echo $advertisement_details['description']."   " ; ?>
+                                      </td>
+                                      <td>
+                                      <?php echo $advertisement_details['price']; ?>
+                                      </td style="padding:5px;">
+                                      </tr>
+                                  <?php endforeach; ?>
+                                <?php } ?> 
                             </table>
                           </div>
                           <div class="modal-footer">
@@ -866,36 +868,39 @@ if (isset($_POST['confirm_order_id']))
                                                       </div>
                                                       <div class="modal-body">
                                                         <table>
-                                                          <?php
-                                                          $o_id=$Sold['order_id'];
-                                                          $u_id_array=getUseridInToDomodal($o_id);
-                                                          $u_id = $u_id_array['user_id'];
-                                                          ?>
+
                                                           <th><center>Name</center></th>
                                                           <!-- <th>Second Name</th> -->
                                                           <th><center>Course</center></th>
                                                           <th><center>Semester</center></th>
                                                           <th><center>Mobile Number</center></th>
                                                           <th><center>Email ID</center></th>
-                                                          <tr>
-                                                            <?php $userdetail = getUserdetails($u_id);?>
+                                                          
+                                                          <?php
+                                                          $o_id=$Sold['order_id'];
+                                                         
+                                                          $u_id_array=getUseridInToDomodal($o_id);
+                                                          $u_id = $u_id_array['user_id'];
+                                                         
+                                                          $userdetail = getUserdetails($u_id);?>
+                                                            <tr>
                                                             <td>
-                                                            <?php echo $userdetail[0]['firstname']." ".$userdetail[0]['secondname'];?>
+                                                            <?php echo $userdetail['firstname']." ".$userdetail['secondname'];?>
                                                             </td>
                                                            <!--  <td>
                                                             <?php echo $userdetail[0]['secondname'];?>
                                                             </td> -->
                                                             <td>
-                                                            <?php echo $userdetail[0]['course'];?>
+                                                            <?php echo $userdetail['course'];?>
                                                             </td>
                                                             <td>
-                                                            <?php echo $userdetail[0]['semester'];?>
+                                                            <?php echo $userdetail['semester'];?>
                                                             </td>
                                                             <td>
-                                                            <?php echo $userdetail[0]['mobile'];?>
+                                                            <?php echo $userdetail['mobile'];?>
                                                             </td>
                                                             <td>
-                                                            <?php echo $userdetail[0]['email'];?>
+                                                            <?php echo $userdetail['email'];?>
                                                             </td>
                                                           </tr>
                                                     </table>
@@ -952,8 +957,10 @@ if (isset($_POST['confirm_order_id']))
                                                     <table>
                                                           <?php
                                                           $o_id=$Sold['order_id'];
+                                                          // echo $o_id;
                                                           $u_id_array=getUseridInToDomodal($o_id);
                                                           $u_id = $u_id_array['user_id'];
+                                                          // echo $u_id;
                                                           ?>
                                                           <th><center>Name</center></th>
                                                        <!--    <th>Second Name</th> -->
@@ -966,9 +973,6 @@ if (isset($_POST['confirm_order_id']))
                                                             <td>
                                                             <?php echo $userdetail[0]['firstname']."".$userdetail[0]['secondname'];?>
                                                             </td>
-                                                            <!-- <td>
-                                                            <?php echo $userdetail[0]['secondname'];?>
-                                                            </td> -->
                                                             <td>
                                                             <?php echo $userdetail[0]['course'];?>
                                                             </td>
@@ -1162,12 +1166,18 @@ if (isset($_POST['confirm_order_id']))
                                    if($purchase['seller_gigcompleted']=='1' && $purchase['buyer_gigcompleted']=='1')
                                       {
                                         updatestatus($purchase['order_id']);
+                                        updatesellercredit($purchase['order_id']);
                                       }
+                                    if($purchase['confirmed']=='1')
+                                    {
+                                      deductcreditfrombuyer($purchase['order_id']);
+                                      // echo "Order confirmed and is expected by:".$purchase['due_date'];
+                                    }
                                    if($purchase['confirmed']=='1' && $purchase['buyer_gigcompleted']=='1')
-                                   { echo "hey";?>
+                                   { ?>
                                     <td>
                                     <span class="badge bg-important">
-                                    <?php echo "waiting for buyer to acknowledge delivery";?>
+                                    <?php echo "waiting for seller to acknowledge delivery";?>
                                     </span>
                                     </td>
                                     <?php
