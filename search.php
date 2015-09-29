@@ -10,7 +10,7 @@ if ($stmt = $conn->prepare($q))   {
     $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $language);
     while ($stmt->fetch()) {
         $rows[] = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'language' => $language);
-print_r($result);
+//print_r($result);
 }
 
 $stmt->close();
@@ -55,7 +55,12 @@ $stmt->close();
     
 </head>
 <body>
-
+ <?php
+if(!$rows)
+{ 
+  echo '<center><font color=black size=4>Nothing available at the moment. Please come back later<font></center>';
+ } 
+else { ?>
 
 <div class="container">
   <div class="row">  
@@ -82,14 +87,15 @@ $stmt->close();
         </div>
       </div>
       
-    <?php endforeach; ?>
+    <?php endforeach; } ?>
+
     <?php } ?>
     
     
   </div>
 </div>
 </div>
-
+ 
 
 </body>
 </html>
