@@ -2,8 +2,8 @@
 
 <!-- php starts here -->
 <?php
+include("datasnap.php");
 include("head.php");
-include ("datasnap.php");
 if(mysqli_connect_errno()) {
   echo "connection failed:" . mysqli_connect_errno();
   exit();
@@ -62,15 +62,7 @@ if(isset($_POST['sub']))
          }
 }
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <title> Post your Gig</title>
-</head>
-<body>
 
-
-<br> <br> <br> <br> <br> 
 <div class="container">
   <div class="row">
   <h3 class="font-color" align="center"> Please fill in the form to start Selling! </h6>

@@ -2,17 +2,22 @@
        <?php
 include("head.php");
 global $conn;
-$search = $_POST['search'];
-if ($stmt = $conn->prepare("SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, language from advertisement WHERE description like '%search%' "))   {
+$search = $_GET['q'];
+
+$q ="SELECT gig_id, user_id, category_id, description, price, img, deliverytime, created_at, language from `snapservices`.`advertisement` WHERE description like '%".$search."%'";
+if ($stmt = $conn->prepare($q))   {
     $result = $stmt->execute();
     $stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $language);
     while ($stmt->fetch()) {
         $rows[] = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'language' => $language);
+print_r($result);
 }
+
 $stmt->close();
 } else {
     echo "error";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +56,7 @@ $stmt->close();
 </head>
 <body>
 
-<br> <br> <br> <br> <br>
+
 <div class="container">
   <div class="row">  
     </div>
@@ -62,7 +67,7 @@ $stmt->close();
 <div class="container">
   <div class="row text-center">
      <?php
-     if(isset($_POST['submit']))
+     if(isset($_GET['q']))
      {
      
                  ?>

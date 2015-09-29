@@ -43,7 +43,7 @@ include("head.php");
                 <div>
                 <label >Enter Your Phone Number</label>
                 <br>
-                    <input type="text" name="mobile" />
+                    <input type="number" name="mobile" />
                 </div>
 <br>
                 <div>
@@ -93,9 +93,8 @@ include("head.php");
                     <input type="email" name="email_id" />
                 </div>  <br>
                 <div>
-              <a href="index.php">
-                <input type="submit" name="submit" value="Submit" class="btn btn-default"/>
-                </a>
+             
+                <input type="submit" name="submit" value="submit" class="btn btn-default"/>
                 </div>
             </fieldset>    
         </form> 
@@ -139,15 +138,14 @@ include("head.php");
                         }
                      }
 
-  if (strlen ($password)>10 || strlen ($password)<8)
+            if(!$error)
+            {
+              if (strlen ($password)>10 || strlen ($password)<8)
       {
      echo "<font color=red> Password must be between 8 to 10 characters<font>";
        }
    else
         {
-
-            if(!$error)
-            {
 
             if ($stmtt=$conn->prepare("INSERT INTO user(password, email, created_at) values(?,?,now())")) {
               $stmtt->bind_param('ss', $password, $email_id);
@@ -233,7 +231,7 @@ include("head.php");
        }    
      else 
        {
-             echo "Invalid file";
+             //echo "Invalid file";
        }
 
     echo "";

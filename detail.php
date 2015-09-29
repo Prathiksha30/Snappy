@@ -117,7 +117,7 @@ function getCredits($user_id)
 
 <!DOCTYPE html>
 
-<br> <br> <br> <br> <br> 
+ 
 <div class="container">
   <div class="row">  
     </div>

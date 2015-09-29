@@ -50,8 +50,13 @@ else
     <![endif]-->
 </head>
 <body>
+<?php
+if(!$rows)
+{ 
+  echo 'Nothing available at the moment. Please come back laster';
+ } 
+else { ?>
 
-<br> <br> <br> <br> <br>
 <div class="container">
   <div class="row">  
     </div>
@@ -71,7 +76,8 @@ else
           </div>
         </div>
       </div>
-    <?php endforeach; ?>
+    <?php endforeach;
+    } ?>
   </div>
 </div>
 </div>

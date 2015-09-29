@@ -53,8 +53,15 @@ else
 <body>
 
  
+<?php
+if(!$rows)
+{ 
+  echo 'Nothing available at the moment. Please come back laster';
+ } 
+else { ?>
 
-<br> <br> <br> <br> <br>
+
+
 <div class="container">
   <div class="row">  
     </div>
@@ -66,7 +73,7 @@ else
   <div class="row text-center">
     <?php foreach ($rows as $row): ?>
       <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-        <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
+        <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$row['img']; ?>" alt="<?php  echo $row['description'] ?>" height="200" width="400">
           <div class="caption">
             <h3><?php echo $row['description']; ?></h3>
             <!-- Passing the gig_id through the URL. Get the gig_id from the URL in the detail page using $_GET['gig_id'] -->
@@ -74,7 +81,9 @@ else
           </div>
         </div>
       </div>
-    <?php endforeach; ?>
+    <?php endforeach; 
+  }
+    ?>
   </div>
 </div>
 </div>

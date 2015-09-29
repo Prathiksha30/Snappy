@@ -567,7 +567,7 @@ function getUserInfo($user_id)
                   
                   // echo "hey".$firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender."".$_SESSION['id'];
                   global $conn;
-                  if ($stmt = $conn->prepare("UPDATE `userdetails` SET `firstname`=?,`secondname`=?,`mobile`=?,`course`=?,`semester`=?,
+      if ($stmt = $conn->prepare("UPDATE `userdetails` SET `firstname`=?,`secondname`=?,`mobile`=?,`course`=?,`semester`=?,
                     `DOB`=?,`gender`=? WHERE `user_id`=?")) 
 
                  {
@@ -575,4 +575,4 @@ function getUserInfo($user_id)
         $stmt->execute();
                  }
   header("Location: http://localhost:8080/snappy/profile.php#");
-}           
+}

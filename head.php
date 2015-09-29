@@ -1,5 +1,6 @@
 <?php session_start(); ?>
 <?php include("datasnap.php") ?>
+
 <?php function getUserName($user_id)
 {
     global $conn;
@@ -49,116 +50,119 @@
     <link href="css/style-responsive.css" rel="stylesheet" />
 	<link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 </head>
-<section id="container" class="">
-      <header class="header dark-bg">
-            <div class="toggle-nav">
-                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
-            </div>
+<body>
+    <!-- <section id="container" class=""> -->
+          <header class="header dark-bg">
+                <div class="toggle-nav">
+                    <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
+                </div>
 
-            <!--logo start-->
-            <a href="index.php" class="logo">SNAP <span class="lite">SERVICES</span></a>
-            <!--logo end-->
+                <!--logo start-->
+                <a href="index.php" class="logo">SNAP <span class="lite">SERVICES</span></a>
+                <!--logo end-->
 
-            <div class="nav search-row" id="top_menu">
-                <!--  search form start -->
-                <ul class="nav top-menu">                    
-                    <li>
-                        <form class="navbar-form">
-                            <input class="form-control" placeholder="Search" type="text">
-                        </form>
-                    </li>                    
-                </ul>
-                <!--  search form end -->                
-            </div>
+                <div class="nav search-row" id="top_menu">
+                    <!--  search form start -->
+                    <ul class="nav top-menu">                    
+                        <li>
+                            <form class="navbar-form" method="GET" action="search.php">
+                                <input class="form-control" placeholder="Search" type="text" name="q">
+                                <button type="submit" >
+                                    search
+                                </button>
+                            </form>
+                        </li>                    
+                    </ul>
+                    <!--  search form end -->                
+                </div>
 
-            <div class="top-nav notification-row">                
-                <!-- notificatoin dropdown start-->
+                <div class="top-nav notification-row">                
+                    <!-- notificatoin dropdown start-->
 
-                <ul class="nav pull-right top-menu">
-                    <!-- user login dropdown start-->
-                    <li>
-                        <a href="login.php">
-                           
-                            <?php if (!$_SESSION["email"]) {
-                            	
-                          ?><span class="username"> START SELLING NOW</span>
-                                                     <b class="caret"></b>
-                        </a>
-                        
-                    </li>
-                    <!-- user login dropdown end -->
-                </ul> 
-               <?php } 
-                else 
-                { ?>  
-            
-            <!--PROBLEM IS HERE, DROPDOWN MENU IS NOT SHOWN WHEN SESSION IS STARTED! -->
-
-                    <!-- user login dropdown start-->
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="profile-ava">
-                                <!-- image goes here -->
-                               <!--  <img alt="" src="img/avatar1_small.jpg"> -->
-                            </span>
-                            <span class="username">
-                            <?php
-                            	$name = getUserName($_SESSION['id']);
-                            	echo $name[0]['firstname']." ".$name[0]['secondname'];
-                        	  ?>
-                            </span>
-                            <b class="caret"></b>
-                        </a>
-                       <ul class="dropdown-menu extended logout">
-                            <div class="log-arrow-up"></div>
-                            <li class="eborder-top">
-                                <a href="profile.php"><i class="icon_profile"></i> My Profile</a>
-                            </li>
-                            <li>
-                                <a href="dashboard.php"><i class="icon-dashboard-l"></i>Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="seller.php"><i class="icon-task-l"></i> Post a Gig</a>
-                            </li>
-                            <!-- <li>
-                                <a href="#"><i class="icon_chat_alt"></i> Chats</a>
-                            </li> -->
-                            <li>
-                                <a href="logout.php"><i class="icon-login-l "></i> Log Out</a>
-                            </li>
-                            <!-- <li>
-                                <a href="documentation.html"><i class="icon_key_alt"></i> Documents</a>
-                            </li> -->
-                           <!--  <li>
-                                <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
-                            </li> -->
-                        </ul>
-                    </li>
-                    <!-- user login dropdown end -->
+                    <ul class="nav pull-right top-menu">
+                        <!-- user login dropdown start-->
+                        <li>
+                            <a href="login.php">
+                               
+                                <?php if (!$_SESSION["email"]) {
+                                	
+                              ?><span class="username"> START SELLING NOW</span>
+                                                         <b class="caret"></b>
+                            </a>
+                            
+                        </li>
+                        <!-- user login dropdown end -->
+                    </ul> 
+                   <?php } 
+                    else 
+                    { ?>  
                 
-            	 <?php } ?> <!--end of if-->
+               
 
-                <!-- notificatoin dropdown end-->
-            </div>
-           <center>
-           <div>
+                        <!-- user login dropdown start-->
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="profile-ava">
+                                    <!-- image goes here -->
+                                   <!--  <img alt="" src="img/avatar1_small.jpg"> -->
+                                </span>
+                                <span class="username">
+                                <?php
+                                	$name = getUserName($_SESSION['id']);
+                                	echo $name[0]['firstname']." ".$name[0]['secondname'];
+                            	  ?>
+                                </span>
+                                <b class="caret"></b>
+                            </a>
+                           <ul class="dropdown-menu extended logout">
+                                <div class="log-arrow-up"></div>
+                                <li class="eborder-top">
+                                    <a href="profile.php"><i class="icon_profile"></i> My Profile</a>
+                                </li>
+                                <li>
+                                    <a href="dashboard.php"><i class="icon-dashboard-l"></i>Dashboard</a>
+                                </li>
+                                <li>
+                                    <a href="seller.php"><i class="icon-task-l"></i> Post a Gig</a>
+                                </li>
+                                <!-- <li>
+                                    <a href="#"><i class="icon_chat_alt"></i> Chats</a>
+                                </li> -->
+                                <li>
+                                    <a href="logout.php"><i class="icon-login-l "></i> Log Out</a>
+                                </li>
+                                <!-- <li>
+                                    <a href="documentation.html"><i class="icon_key_alt"></i> Documents</a>
+                                </li> -->
+                               <!--  <li>
+                                    <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
+                                </li> -->
+                            </ul>
+                        </li>
+                        <!-- user login dropdown end -->
+                    
+                	 <?php } ?> <!--end of if-->
 
-		<ul class="nav navbar-nav">
+                    <!-- notificatoin dropdown end-->
+                </div>
+               <center>
+               <div>
+
+    		<ul class="nav navbar-nav">
+            
+            <li><a href="graphics.php">GRAPHICS & DESIGN</a></li>
+            <li><a href="Online.php"> ONLINE MARKETING</a></li>
+            <li> <a href="writting.php"> WRITING & TRANSLATION </a></li>
+            <li> <a href="VideoAudio.php"> VIDEO & AUDIO </a></li>
+             <li><a href="Programming.php"> PROGRAMMING & IT</a></li>
+             <li><a href="Advertising.php"> ADVERTISING </a></li>
+           <!--  <li><a href="Buisness.php"> BUSINESS </a></li>-->
+             <li><a href="Academics.php"> ACADEMICS </a></li>
+            <li> <a href="#"> OTHERS </a></li> 
+
+        </ul>
         
-        <li><a href="graphics.php">GRAPHICS & DESIGN</a></li>
-        <li><a href="Online.php"> ONLINE MARKETING</a></li>
-        <li> <a href="writting.php"> WRITING & TRANSLATION </a></li>
-        <li> <a href="VideoAudio.php"> VIDEO & AUDIO </a></li>
-         <li><a href="Programming.php"> PROGRAMMING & IT</a></li>
-         <li><a href="Advertising.php"> ADVERTISING </a></li>
-       <!--  <li><a href="Buisness.php"> BUSINESS </a></li>-->
-         <li><a href="Academics.php"> ACADEMICS </a></li>
-        <li> <a href="#"> OTHERS </a></li> 
-
-    </ul>
-    
- </div> </center>
-      </header>  
-
-      </section>
-      </html>
+     </div> </center>
+     </header>
+     <br><br><br><br><br><br>
+<!-- </section> -->
