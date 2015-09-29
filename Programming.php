@@ -69,7 +69,7 @@ else { ?>
       <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
         <div class="thumbnail"> <img src="<?php echo 'GigUploads/'.$row['img']; ?>" alt="<?php echo $row['description']; ?>" height="200" width="400">
           <div class="caption">
-            <h3><?php echo $row['description']; ?></h3>
+            <h3><?php echo "I will ".$row['description']; ?></h3>
             <!-- Passing the gig_id through the URL. Get the gig_id from the URL in the detail page using $_GET['gig_id'] -->
             <p><a href="detail.php?gig_id=<?php echo $row['gig_id']; ?>" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Request</a></p>
           </div>
