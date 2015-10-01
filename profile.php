@@ -238,7 +238,7 @@ function getUserInfo($user_id)
 				<div class="col-lg-12">
 					<h3 class="page-header"><i class="fa fa-laptop"></i>Profile</h3>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>
 						<!-- <li><i class="icon_documents_alt"></i>Pages</li> -->
 						<li><i class="fa fa-user-md"></i>Profile</li>
 					</ol>
