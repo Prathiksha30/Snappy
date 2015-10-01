@@ -562,10 +562,12 @@ function getUserInfo($user_id)
   $semester = $_POST['semester'];
   $DOB = $_POST['DOB'];
   $gender = $_POST['sex'];
-  $message= "Your personal details have been updated";
-                  echo "<script type='text/javascript'>alert('$message');</script>";
+ ?>
+                  <script type='text/javascript'>alert("Your personal details have been updated");
+                         window.location.href = "profile.php"
+                  </script>";
                   
-                  // echo "hey".$firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender."".$_SESSION['id'];
+            <?php     // echo "hey".$firstname." ".$lastname." ".$mobile." ".$course." ".$semester." ".$DOB." ".$gender."".$_SESSION['id'];
                   global $conn;
       if ($stmt = $conn->prepare("UPDATE `userdetails` SET `firstname`=?,`secondname`=?,`mobile`=?,`course`=?,`semester`=?,
                     `DOB`=?,`gender`=? WHERE `user_id`=?")) 

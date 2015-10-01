@@ -69,13 +69,9 @@ else
           </div>
           <a class="left carousel-control" href="#carousel1" data-slide="prev"><span class="icon-prev"></span></a> <a class="right carousel-control" href="#carousel1" data-slide="next"><span class="icon-next"></span></a></div>
       </div>
-</div>
-    <hr>
   </div>
-
-  
-    
-
+    <hr>
+</div>
 <h2 class="text-center text-primary">RECOMMENDED SERVICES</h2>
 <hr>
 
@@ -93,35 +89,6 @@ else
       </div>
     <?php } ?>
     </div>
-  
-    
-<!--<?php 
-//if(isset($_POST['Submit']))
-{
-  //if($_POST['search']!="")
-    {
-    //    $search=$_POST['search'];
-      //  if($stmt = $conn-> prepare("SELECT * FROM advertisement WHERE description = '$search' "))
-        {
-        //    $stmt->bind_param('s',$search);
-         //    $result = $stmt->execute();
-          //  $stmt->$stmt->bind_result($gig_id, $user_id, $category_id, $description, $price, $img, $deliverytime, $created_at, $updated_at, $language);
-            //while ($stmt->fetch()) 
-            {
-            //$details = array('gig_id' => $gig_id, 'user_id' => $user_id, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'created_at' => $created_at, 'updated_at' => $updated_at, 'language' => $language); // Creating an array with all the columns 
-            }
-            //$stmt->close();
-        }
-        //else
-        {
-          //echo "NO RESULTS FOUND!";
-        }
-
-    }
-}
-?>
--->
- 
 <?php include('footer.html'); ?>
 
 </body>

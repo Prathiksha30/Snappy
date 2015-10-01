@@ -1,5 +1,5 @@
 <?php include('datasnap.php'); ?>
-
+<?php session_start(); ?>
 <?php include('head.php') ?>
 
 <?php
@@ -172,7 +172,14 @@ function getCredits($user_id)
      $c=$Credits[0]['Credits'];
     $p=$details['price'];
     //echo $Credits[0]['Credits'];
-   
+    if (!$_SESSION['id'])
+    { ?>
+         <script type="text/javascript">
+        alert("Please log in before you make a purchase!");
+        window.location.href = "login.php";
+        </script> 
+   <?php }
+   else {
     /*Checking if user is buying his own gig*/
     if($s != $user_id && $c > $p) 
     {
@@ -200,5 +207,6 @@ function getCredits($user_id)
 <?php
     }
   }
+}
 ?>
 

@@ -231,7 +231,7 @@ include("head.php");
        }    
      else 
        {
-             //echo "Invalid file";
+             echo "Invalid file";
        }
 
     echo "";
