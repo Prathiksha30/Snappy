@@ -180,12 +180,11 @@ function getAllCompletedSales($user_id)
   {
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
+    $stmt->store_result();
     $stmt->bind_result($order_id);
-    while ($stmt->fetch()) {
-      $rows[] = array('order_id' => $order_id);
-    }
+    $stmt->fetch();
     $stmt->close();
-    return $rows;
+    return $order_id;
   }
   else {
     printf("Error message: %s\n", $conn->error);
@@ -706,11 +705,11 @@ if (isset($_POST['confirm_order_id']))
                                     <th style="padding:5px;"> Gig Descrption </th>
                                     <th style="padding:5px;"> Credit </th>                                
                               <?php
-
-                                foreach (getAllCompletedSales($_SESSION['id']) as $completedsales):
-                                  $gigid=getGigID($completedsales['order_id']);
-                                  $advertisement_details = getAdvertisementDetails($gigid['gig_id']);
-                                ?>
+                                foreach ( getAllCompletedSales($_SESSION['id']) as $compledsales ):
+                                  $gigid=getGigID($compledsales['order_id']);
+                                  $advertisement_details[]=getAdvertisementDetails($gigid['gig_id']);
+                              ?>
+                              
                                     <tr>
                                     <td style="padding:5px;">
                                     <?php echo getCategoryName($advertisement_details['category_id']); ?>
@@ -834,7 +833,7 @@ if (isset($_POST['confirm_order_id']))
                                       <?php echo $Sold['description']; ?>
                                   </td>
                                   <td>
-                                      <?php echo $Sold['price']; ?>
+                                      <?php echo $Sold['price']." ".$Sold['order_id']; ?>
                                   </td>
 
                                   <td>
@@ -1193,7 +1192,7 @@ if (isset($_POST['confirm_order_id']))
                                           echo "Order confirmation pending";
                                         ?>
                                       </span>
-                                     <</td>
+                                     </td>
                                     <?php
                                     }?>
                                    
