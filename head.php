@@ -66,9 +66,9 @@
                     <ul class="nav top-menu">                    
                         <li>
                             <form class="navbar-form" method="GET" action="search.php">
-                                <input class="form-control" placeholder="Search" type="text" name="q">
-                                <button type="submit" >
-                                    search
+                                <input class="form-control" placeholder="Search for gigs" type="text" name="q">
+                                <button type="submit" class="btn btn-primary" >
+                                    Search
                                 </button>
                             </form>
                         </li>                    
