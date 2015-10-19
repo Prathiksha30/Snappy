@@ -8,6 +8,25 @@ if( isset($_SESSION["email"]) && $_SESSION["email"] )
         exit;
     }
 ?>
+<?php
+
+    global $conn;
+    if ($stmt = $conn->prepare("SELECT id,password, email, utype, created_at, admin_confirm  FROM `user` WHERE email ='?'")) 
+        {
+        // $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($id, $password, $email, $utype, $created_at, $admin_confirm);
+        while ($stmt->fetch()) {
+          $rows[] = array('id'=>$id,'password'=>$password,'email'=>$email,'utype'=>$utype, 'created_at'=>$created_at, 'admin_confirm'=>$admin_confirm);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+
+?>
 <?php include('datasnap.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,9 +163,10 @@ if (isset($_POST['submit'])) {
 
         $row = mysqli_fetch_array($result);
         
-            
+            $Usert = $rows['$utype'];
+            $aconfirm = $rows['admin_confirm'];
            
-            
+         
       
         if (!$row) {
             echo "<div>";
@@ -160,12 +180,36 @@ if (isset($_POST['submit'])) {
             // *** My PERSONAL preference is to use {} every where, it just makes it easier if you add  
             // code into the condition later
            if( $loggedIn = true)
+
+                if($Usert == 's')
+                    {
+                        if($aconfirm == '1' )
+                            {
           
-            $_SESSION["email"] = $userName;
-            $_SESSION['id'] = $row['id'];
-            header("Location: dashboard.php");
+                                $_SESSION["email"] = $userName;
+                                $_SESSION['id'] = $row['id'];
+                                header("Location: dashboard.php");
+                            }
+                        else
+                            {
+                                echo "<div>";
+                                $message= "Please wait for the admin to confirm your college ID. Try again after 2 hours";
+            
+                                 echo "<script type='text/javascript'>alert('$message');</script>";
+         
+                                 echo "</div>";
+                            }
+
+                    }
+                //else
+                  //  {
+                    //    $_SESSION["email"] = $userName;
+                      //  $_SESSION['id'] = $row['id'];
+                        //header("Location: admin_table.php");
+                    //}
+
           
-        }
+            }
 
 
     }
