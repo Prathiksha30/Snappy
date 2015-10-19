@@ -68,7 +68,7 @@
                     <ul class="nav top-menu">                    
                         <li>
                             <form class="navbar-form" method="GET" action="search.php">
-                                <input class="form-control" placeholder="Search for services" type="text" name="q">
+                                <input class="form-control" placeholder="Search for gigs" type="text" name="q">
                                 <button type="submit" class="btn btn-primary" >
                                     Search
                                 </button>
@@ -99,8 +99,6 @@
                     else 
                     { ?>  
                 
-               
-
                         <!-- user login dropdown start-->
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -119,13 +117,13 @@
                            <ul class="dropdown-menu extended logout">
                                 <div class="log-arrow-up"></div>
                                 <li class="eborder-top">
-                                    <a href="profile.php"><i class="icon_profile"></i> My Profile</a>
+                                    <a href="newusers.php"><i class="icon_profile"></i> New Users</a>
                                 </li>
                                 <li>
-                                    <a href="dashboard.php"><i class="icon-dashboard-l"></i>Dashboard</a>
+                                    <a href="admin_table.php"><i class="icon-dashboard-l"></i>Existing Users</a>
                                 </li>
                                 <li>
-                                    <a href="seller.php"><i class="icon-task-l"></i> Post a Service</a>
+                                    <a href="admin_others.php"><i class="icon-task-l"></i> Other details</a>
                                 </li>
                                 <!-- <li>
                                     <a href="#"><i class="icon_chat_alt"></i> Chats</a>
@@ -166,5 +164,5 @@
         
      </div> </center>
      </header>
-     <br><br><br><br><br><br>
+     <br> <br><br>
 <!-- </section> -->

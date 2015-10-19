@@ -1,7 +1,6 @@
 <?php
 session_start();
 include('datasnap.php');
-
 function getOrderdetails()
 {
   global $conn;
@@ -93,8 +92,7 @@ function getUserTable()
     printf("Error message: %s\n", $conn->error);
   }
              
-}
-?>
+} ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -103,102 +101,19 @@ function getUserTable()
 
   <body>
   <!-- container section start -->
-  <section id="container" class="">
-      <!--header start-->
-      
-      <!--header end-->
-
-      <!--sidebar start-->
-      
-
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-		  <div class="row">
-				<div class="col-lg-12">
-					<h3 class="page-header"><i class="fa fa-table"></i> EXISTING USERS ARE</h3>
-					<!-- <ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-						<li><i class="fa fa-table"></i>Table</li>
-						<li><i class="fa fa-th-list"></i>Basic Table</li>
-					</ol> -->
-				</div>
-			</div>
-              <!-- page start-->
-               
-         
-              <div class="row">
+               <div class="row">
                   <div class="col-lg-12">
                       <section class="panel">
-                          
-                          <div class="table-responsive">
-                            <table class="table"> 
-                            <th>User_ID</th>
-                            <th>First Name</th>
-                            <th>Second Name</th>
-                            <th>Email</th>
-                            <th>Mobile Number</th>
-                            <th>Course</th>
-                            <th>Semester</th>
-                            <th>DOB</th>
-                            <th>Gender</th>
-                            <th>College Id Location</th>
-                            <th>Credits</th>
-                            <th>Created At</th>
-                            <?php 
-                            foreach (getUserdetails() as $userdetails):
-                                ?>
-                                    <tr>
-                                    <td style="padding:10px;">
-                                    <?php echo $userdetails['user_id']; ?>
-                                    </td>                                    
-                                    <td style="padding:10px;">
-                                    <?php echo $userdetails['firstname']; ?>
-                                    </td>
-                                    <td style="padding:10px;">
-                                    <?php echo $userdetails['secondname']; ?>
-                                    </td>
-                                    <td style="padding:10px;">
-                                    <?php echo $userdetails['email']; ?>
-                                    </td>
-                                     <td style="padding:10px;">
-                                    <?php echo $userdetails['mobile']; ?>
-                                    </td>
-                                    <td style="padding:10px;">
-                                    <?php echo $userdetails['course']; ?>
-                                    </td>  
-                                    <td style="padding:10px;">
-                                    <?php echo $userdetails['semester']; ?>
-                                    </td>
-                                     <td style="padding:10px;">
-                                    <?php echo $userdetails['DOB']; ?>
-                                    </td>
-                                     <td style="padding:10px;">
-                                    <?php echo $userdetails['gender']; ?>
-                                    </td>   
-                                     <td style="padding:10px;">
-                                    <?php echo $userdetails['photoAd']; ?>
-                                    </td> 
-                                     <td style="padding:10px;">
-                                    <?php echo $userdetails['Credits']; ?>
-                                    </td> 
-                                     <td style="padding:10px;">
-                                    <?php echo $userdetails['created_at']; ?>
-                                    </td>    
-                                    </tr>                                 
-                                <?php endforeach; ?>
-                            </table>
-                          </div>
-
-                      </section>
-                  </div>
-              </div>
-              <div class="row">
+                          <!-- <header class="panel-heading">
+                              Gig Table
+                          </header> -->
+                            <!--  <div class="row">
                   <div class="col-lg-12">
-                      <section class="panel">
-                          <header class="panel-heading">
-                              Category Table
-                          </header>
+                      <section class="panel"> -->
+                         <h3 class="panel-heading"><i class="fa fa-table"></i> CATEGORY DETAILS </h3>
                           <div class="table-responsive">
                             <table class="table"> 
                             <th>Category_ID</th>
@@ -222,13 +137,60 @@ function getUserTable()
                       </section>
                   </div>
               </div>
-             
-              <div class="row">
-                  <div class="col-lg-12">
-                      <section class="panel">
-                          <header class="panel-heading">
-                             Order Table
-                          </header>
+                          <h3 class="panel-heading"><i class="fa fa-table"></i> ADVERTISEMENT DETAILS </h3>
+                          <div class="table-responsive">
+                            <table class="table"> 
+                            <th>Gig_id</th>
+                            <th>User_id</th>
+                            <th>Category_id</th>
+                            <th>Description</th>
+                            <th>Credit</th>
+                            <th>Image Location</th>
+                            <th>Delivery time(in days)</th>
+                            <th>Created On</th>
+                            <th>Language</th>
+                      
+                            <?php 
+                            foreach (getGigdetails() as $gig):
+                                ?>
+                                    <tr>
+                                    <td style="padding:10px;">
+                                    <?php echo $gig['gig_id']; ?>
+                                    </td>                                    
+                                    <td style="padding:10px;">
+                                    <?php echo $gig['user_id']; ?>
+                                    </td>
+                                    <td style="padding:10px;">
+                                    <?php echo $gig['category_id']; ?>
+                                    </td>
+                                    <td style="padding:10px;">
+                                    <?php echo $gig['description']; ?>
+                                    </td>
+                                     <td style="padding:10px;">
+                                    <?php echo $gig['price']; ?>
+                                    </td>
+                                    <td style="padding:10px;">
+                                    <?php echo $gig['img']; ?>
+                                    </td>  
+                                    <td style="padding:10px;">
+                                    <?php echo $gig['deliverytime']; ?>
+                                    </td>
+                                     <td style="padding:10px;">
+                                    <?php echo $gig['created_at']; ?>
+                                    </td>
+                                     <td style="padding:10px;">
+                                    <?php echo $gig['language']; ?>
+                                    </td>   
+                                     
+                                    </tr>                                 
+                                <?php endforeach; ?>
+                            </table>
+                          </div>
+
+                      </section>
+                  </div>
+              </div>
+                        <h3 class="panel-heading"><i class="fa fa-table"></i> ORDER DETAILS </h3>
                           <div class="table-responsive">
                             <table class="table"> 
                             <th>Order_id</th>
@@ -277,24 +239,17 @@ function getUserTable()
                                 <?php endforeach; ?>
                             </table>
                           </div>
-<!-- <br> <br><br> <br><br> <br> -->
-                      </section>
-                  </div>
-              </div>
-             
-              <!-- page end-->
-          </section>
+
+		  </section>
       </section>
-      <!--main content end-->
-  </section>
-  <!-- container section end -->
-    <!-- javascripts -->
-    <script src="js/jquery.js"></script>
+
+  <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <!-- nicescroll -->
     <script src="js/jquery.scrollTo.min.js"></script>
     <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
     <!--custome script for all page-->
     <script src="js/scripts.js"></script>
-  </body>
+
+</body>
 </html>
