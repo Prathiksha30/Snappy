@@ -191,8 +191,9 @@ function getcountofexistingusers()
     <?php include('adminhead.php'); ?>
   </head>
 
-  <body>
+  <body> <center>
   <!-- container section start -->
+
   <section id="container" class="">
       <!--header start-->
       
@@ -201,13 +202,14 @@ function getcountofexistingusers()
       <!--sidebar start-->
       
 
-      <!--main content start-->
-      <section id="main-content">
+      <!--main content start-->  
+      <section id="main-content"> 
           <section class="wrapper">
+
 		  <div class="row">
 				
-			</div>
-       <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+			</div> 
+     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box lime-bg">
                         <i class="fa fa-table"></i>
                         
@@ -216,7 +218,7 @@ function getcountofexistingusers()
                         <div class="title">New Users</div>
                     </div><!--/.info-box-->
           </div>
-              
+              <div class="row">
          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box green-bg">
                         <i class="fa fa-table"></i>
@@ -226,6 +228,8 @@ function getcountofexistingusers()
                         <div class="title">Existing Users</div>
                     </div><!--/.info-box-->
           </div>
+          </div>
+
           <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box teal-bg">
                         <i class="fa fa-table"></i>
@@ -235,6 +239,7 @@ function getcountofexistingusers()
                         <div class="title">Number of Categories</div>
                     </div><!--/.info-box-->
           </div>
+<div class="row">
           <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box blue-bg">
                         <i class="fa fa-table"></i>
@@ -244,6 +249,7 @@ function getcountofexistingusers()
                         <div class="title">Number of Gigs posted</div>
                     </div><!--/.info-box-->
           </div>
+</div>
           <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box purple-bg">
                         <i class="fa fa-thumbs-o-up"></i>
@@ -254,13 +260,13 @@ function getcountofexistingusers()
                     </div><!--/.info-box-->
           </div>
           
-              
+             
               
              
               
               <!-- page end-->
           </section>
-      </section>
+      </section>  
       <!--main content end-->
   </section>
   <!-- container section end -->
@@ -271,6 +277,6 @@ function getcountofexistingusers()
     <script src="js/jquery.scrollTo.min.js"></script>
     <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
     <!--custome script for all page-->
-    <script src="js/scripts.js"></script>
+    <script src="js/scripts.js"></script> 
   </body>
 </html>

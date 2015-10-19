@@ -909,7 +909,7 @@ div[data-role="editor-toolbar"] {
 .info-box {
   min-height: 140px;
   margin-bottom: 30px;
-  padding: 20px;
+  padding: 10px;
   color: white;
   -webkit-box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.35), 0 3px 1px -1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.35), 0 3px 1px -1px rgba(0, 0, 0, 0.1);
@@ -4958,4 +4958,11 @@ text-align : center;
 color: #00a0df;
 padding: 1% 0;
 text-shadow: 1px 1px 0px #202020
+}
+
+
+
+#main-content1 {
+    margin-left: 100px;
+    text-align:center;
 }

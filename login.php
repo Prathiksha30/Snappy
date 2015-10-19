@@ -99,7 +99,7 @@ function getUserDeets($emailId)
 if (isset($_POST['submit'])) 
 {
     $emailId=$_POST['email'];
-    getUserDeets($emailId);
+    $getUserDeets=getUserDeets($emailId);
     $password = $_POST['password'];   
    
     //VALUE NOT GETTING STORED
@@ -181,12 +181,12 @@ if (isset($_POST['submit']))
                             }
 
                     }
-                //else
-                  //  {
-                    //    $_SESSION["email"] = $userName;
-                      //  $_SESSION['id'] = $row['id'];
-                        //header("Location: admin_table.php");
-                    //}
+                if($Usert == 'a')
+                   {
+                       $_SESSION["email"] = $userName;
+                       $_SESSION['id'] = $row['id'];
+                        header("Location: admin_table.php");
+                    }
 
           
             }
