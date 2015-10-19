@@ -9,8 +9,24 @@ if( isset($_SESSION["email"]) && $_SESSION["email"] )
     }
 ?>
 <?php
-
-    global $conn;
+include('datasnap.php');
+function getUserDeets($emailId)
+{
+     global $conn;
+    if ($stmt = $conn->prepare("SELECT id, utype, admin_confirm  FROM `user` WHERE email = $emailId ")) 
+        {
+        $stmt->execute();
+        $stmt->bind_result($id, $utype, $admin_confirm);
+        while ($stmt->fetch()) {
+          $rows[] = array('id' => $id, 'utype' => $utype, 'admin_confirm' => $admin_confirm);
+        }
+        $stmt->close();
+        return $rows;
+    }
+    else {
+        printf("Error message: %s\n", $conn->error);
+    }
+    /*global $conn;
     if ($stmt = $conn->prepare("SELECT id,password, email, utype, created_at, admin_confirm  FROM `user` WHERE email ='?'")) 
         {
         // $stmt->bind_param("i", $user_id);
@@ -24,10 +40,11 @@ if( isset($_SESSION["email"]) && $_SESSION["email"] )
     }
     else {
         printf("Error message: %s\n", $conn->error);
-    }
-
+    }*/
+}
 ?>
-<?php include('datasnap.php'); ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,11 +133,19 @@ if( isset($_SESSION["email"]) && $_SESSION["email"] )
             </div>
 -->
 <?php
-if (isset($_POST['submit'])) {
-  $email=$_POST['email'];
-    $password = $_POST['password'];
+if (isset($_POST['submit'])) 
+{
+    $emailId=$_POST['email'];
+    getUserDeets($emailId);
+    $password = $_POST['password'];   
 
-    // turn error reporting on, it makes life easier if you make typo in a variable name etc
+//VALUE NOT GETTING STORED
+
+    $Usert = $getUserDeets['$utype'];
+    $aconfirm = $getUserDeets['admin_confirm'];
+    /*echo "USER DETAILS".$Usert." ".$aconfirm;*/
+   
+ // turn error reporting on, it makes life easier if you make typo in a variable name etc
     error_reporting(E_ALL);
   
      //$queryy = "SELECT firstname FROM userdetails ";// AND password = $userPass";
@@ -163,8 +188,7 @@ if (isset($_POST['submit'])) {
 
         $row = mysqli_fetch_array($result);
         
-            $Usert = $rows['$utype'];
-            $aconfirm = $rows['admin_confirm'];
+            
            
          
       
@@ -180,16 +204,13 @@ if (isset($_POST['submit'])) {
             // *** My PERSONAL preference is to use {} every where, it just makes it easier if you add  
             // code into the condition later
            if( $loggedIn = true)
-
-                if($Usert == 's')
-                    {
-                        if($aconfirm == '1' )
-                            {
-          
-                                $_SESSION["email"] = $userName;
-                                $_SESSION['id'] = $row['id'];
-                                header("Location: dashboard.php");
-                            }
+                
+                if($Usert == 's' && $aconfirm == '1')
+                 {       
+                    $_SESSION["email"] = $userName;
+                    $_SESSION['id'] = $row['id'];
+                    header("Location: dashboard.php");
+                 }
                         else
                             {
                                 echo "<div>";
@@ -215,7 +236,7 @@ if (isset($_POST['submit'])) {
     }
 
     
-  }
+  
 ?>
 
             
