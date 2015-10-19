@@ -9,8 +9,7 @@ if( isset($_SESSION["email"]) && $_SESSION["email"] )
     }
 ?>
 <?php
-function getUserdetails()
-{
+
     global $conn;
     if ($stmt = $conn->prepare("SELECT id,password, email, utype, created_at, admin_confirm  FROM `user` WHERE email ='?'")) 
         {
@@ -26,7 +25,7 @@ function getUserdetails()
     else {
         printf("Error message: %s\n", $conn->error);
     }
-} 
+
 ?>
 <?php include('datasnap.php'); ?>
 <!DOCTYPE html>
