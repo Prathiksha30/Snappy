@@ -208,8 +208,8 @@ function getcountofexistingusers()
 				
 			</div>
        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box green-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
+                    <div class="info-box lime-bg">
+                        <i class="fa fa-table"></i>
                         
                     <div class="count"> <?php echo $count = getcountofnewusers(); ?></div>
 
@@ -218,8 +218,8 @@ function getcountofexistingusers()
           </div>
               
          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box orange-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
+                    <div class="info-box green-bg">
+                        <i class="fa fa-table"></i>
                         
                     <div class="count"> <?php echo $count = getcountofexistingusers(); ?></div>
 
@@ -227,8 +227,8 @@ function getcountofexistingusers()
                     </div><!--/.info-box-->
           </div>
           <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box red-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
+                    <div class="info-box teal-bg">
+                        <i class="fa fa-table"></i>
                         
                     <div class="count"> <?php echo $count = getcountofcategories(); ?></div>
 
@@ -237,7 +237,7 @@ function getcountofexistingusers()
           </div>
           <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box blue-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
+                        <i class="fa fa-table"></i>
                         
                     <div class="count"> <?php echo $count = getcountofgigs(); ?></div>
 
@@ -245,7 +245,7 @@ function getcountofexistingusers()
                     </div><!--/.info-box-->
           </div>
           <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box yellow-bg">
+                    <div class="info-box purple-bg">
                         <i class="fa fa-thumbs-o-up"></i>
                         
                     <div class="count"> <?php echo $count = getcountoforders(); ?></div>
