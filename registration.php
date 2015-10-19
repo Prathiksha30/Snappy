@@ -85,8 +85,8 @@ include("head.php");
                 <!--Password-->
                 <br>
                     <input type="password" name="password"  />
-                </div>
-<br>
+                </div> 
+          <br>
                 <div>
                 <label >Email-ID</label>
                 <br>
@@ -119,7 +119,7 @@ include("head.php");
                   $semester = $_POST['semester'];
                   $DOB = $_POST['DOB'];
                   $gender = $_POST['sex'];
-                 $file = $_FILES["file"]["name"];
+                  $file = $_FILES["file"]["name"];
                   $password = $_POST['password'];
                   $email_id = $_POST['email_id'];
             
@@ -192,7 +192,7 @@ include("head.php");
 
 <?php
 
-    $allowedExts = array("gif", "jpeg", "jpg", "png");
+    $allowedExts = array("gif", "jpeg", "jpg", "png", "GIF". "JPEG", "JPG", "PNG");
     $temp = explode(".", $_FILES["file"]["name"]);
     $extension = end($temp);
 

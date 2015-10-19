@@ -643,7 +643,7 @@ if (isset($_POST['confirm_order_id']))
                                 <a href="dashboard.php"><i class="icon_mail_alt"></i>Dashboard</a>
                             </li>
                             <li>
-                                <a href="seller.php"><i class="icon_clock_alt"></i> Post a Gig</a>
+                                <a href="seller.php"><i class="icon_clock_alt"></i> Post a Service</a>
                             </li>
                             <!-- <li>
                                 <a href="#"><i class="icon_chat_alt"></i> Chats</a>

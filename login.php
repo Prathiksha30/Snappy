@@ -163,7 +163,7 @@ if (isset($_POST['submit'])) {
           
             $_SESSION["email"] = $userName;
             $_SESSION['id'] = $row['id'];
-            header("Location: Dashboard.php");
+            header("Location: dashboard.php");
           
         }
 
