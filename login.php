@@ -13,34 +13,21 @@ include('datasnap.php');
 function getUserDeets($emailId)
 {
      global $conn;
-    if ($stmt = $conn->prepare("SELECT id, utype, admin_confirm  FROM `user` WHERE email = $emailId ")) 
+        if ($stmt = $conn->prepare("SELECT utype, admin_confirm  FROM `user` WHERE email = ? ")) 
         {
-        $stmt->execute();
-        $stmt->bind_result($id, $utype, $admin_confirm);
-        while ($stmt->fetch()) {
-          $rows[] = array('id' => $id, 'utype' => $utype, 'admin_confirm' => $admin_confirm);
-        }
+            $stmt->bind_param("s",$emailId);
+            $stmt->execute();
+            $stmt->bind_result($utype, $admin_confirm);
+            while ($stmt->fetch())
+            {
+                $rows = array('utype' => $utype, 'admin_confirm' => $admin_confirm);
+            }
         $stmt->close();
         return $rows;
-    }
+        }
     else {
         printf("Error message: %s\n", $conn->error);
     }
-    /*global $conn;
-    if ($stmt = $conn->prepare("SELECT id,password, email, utype, created_at, admin_confirm  FROM `user` WHERE email ='?'")) 
-        {
-        // $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $stmt->bind_result($id, $password, $email, $utype, $created_at, $admin_confirm);
-        while ($stmt->fetch()) {
-          $rows[] = array('id'=>$id,'password'=>$password,'email'=>$email,'utype'=>$utype, 'created_at'=>$created_at, 'admin_confirm'=>$admin_confirm);
-        }
-        $stmt->close();
-        return $rows;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }*/
 }
 ?>
 
@@ -108,42 +95,19 @@ function getUserDeets($emailId)
       </form>
 
     </div>
-
-
-      
-      
-      <!--<form action="" method="POST" enctype="multipart/form-data">
-            <fieldset>
-                <legend>Please enter the following details:</legend>
-                
-                <div>
-                Enter Your E-mail
-                <br>
-                    <input type="email" name="email" />
-                </div>
-
-                <div>
-                Password
-                <br>
-                    <input type="password" name="password" />
-                </div>
-                <input type="submit" name="submit" value="Send" class="btn btn-default" />
-            </fieldset>    
-        </form> 
-            </div>
--->
 <?php
 if (isset($_POST['submit'])) 
 {
     $emailId=$_POST['email'];
     getUserDeets($emailId);
     $password = $_POST['password'];   
+   
+    //VALUE NOT GETTING STORED
 
-//VALUE NOT GETTING STORED
-
-    $Usert = $getUserDeets['$utype'];
+    $Usert = $getUserDeets['utype'];
     $aconfirm = $getUserDeets['admin_confirm'];
-    /*echo "USER DETAILS".$Usert." ".$aconfirm;*/
+    /*echo "USER DETAILS".$Usert." ".$aconfirm;
+*/
    
  // turn error reporting on, it makes life easier if you make typo in a variable name etc
     error_reporting(E_ALL);
@@ -187,11 +151,6 @@ if (isset($_POST['submit']))
         // *** Error checking, what if !$result? eg query is broken
 
         $row = mysqli_fetch_array($result);
-        
-            
-           
-         
-      
         if (!$row) {
             echo "<div>";
             $message= "No existing user or wrong password.";
@@ -205,7 +164,7 @@ if (isset($_POST['submit']))
             // code into the condition later
            if( $loggedIn = true)
                 
-                if($Usert == 's' && $aconfirm == '1')
+                if($Usert == 's' && $aconfirm == '1') //checks if user is student + admin has confirmed
                  {       
                     $_SESSION["email"] = $userName;
                     $_SESSION['id'] = $row['id'];
