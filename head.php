@@ -43,12 +43,14 @@
     <link href="css/elegant-icons-style.css" rel="stylesheet" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />    
 
-	<link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+
+
+    <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
     <!-- Custom styles -->
-	<link href="css/widgets.css" rel="stylesheet">
+    <link href="css/widgets.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet" />
-	<link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- <section id="container" class=""> -->

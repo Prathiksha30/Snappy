@@ -127,7 +127,7 @@ if(isset($_POST['sub']))
  <?php
 
 
-    $allowedExts = array("gif", "jpeg", "jpg", "png", "JPG", "PNG", "GIF", "JPEG");
+    $allowedExts = array("gif", "jpeg", "jpg", "png", "JPG", "PNG",  "GIF", "JPEG");
     $temp = explode(".", $_FILES["file"]["name"]); //breaking it into 2
     $extension = end($temp);
 
@@ -157,7 +157,5 @@ if(isset($_POST['sub']))
                     }
                 }
        }       
-    
-    
 ?>
 <?php include('footer.html'); ?>
