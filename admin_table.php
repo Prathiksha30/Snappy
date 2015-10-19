@@ -133,18 +133,17 @@ function getUserTable()
                           
                           <div class="table-responsive">
                             <table class="table"> 
-                            <th>User_ID</th>
-                            <th>First Name</th>
-                            <th>Second Name</th>
-                            <th>Email</th>
-                            <th>Mobile Number</th>
-                            <th>Course</th>
-                            <th>Semester</th>
-                            <th>DOB</th>
-                            <th>Gender</th>
-                            <th>College Id Location</th>
-                            <th>Credits</th>
-                            <th>Created At</th>
+                            <th><i class="icon_star"></i> User_ID</th>
+                            <th><i class="icon_profile"></i> First Name</th>
+                            <th><i class="icon_profile"></i> Second Name</th>
+                            <th><i class="icon_mail_alt"></i> Email</th>
+                            <th><i class="icon_phone"></i> Mobile Number</th>
+                            <th><i class="icon_book"></i> Course</th> 
+                            <th><i class="icon_document"></i> Semester</th>
+                            <th><i class="icon_calendar"></i> DOB</th>
+                            <th><i class="icon_ribbon"></i> Gender</th>
+                            <th><i class="icon_currency"></i> Credits</th>
+                            <th><i class="icon_calendar"></i> Created At</th>
                             <?php 
                             foreach (getUserdetails() as $userdetails):
                                 ?>
@@ -176,9 +175,7 @@ function getUserTable()
                                      <td style="padding:10px;">
                                     <?php echo $userdetails['gender']; ?>
                                     </td>   
-                                     <td style="padding:10px;">
-                                    <?php echo $userdetails['photoAd']; ?>
-                                    </td> 
+                                     
                                      <td style="padding:10px;">
                                     <?php echo $userdetails['Credits']; ?>
                                     </td> 
@@ -193,90 +190,12 @@ function getUserTable()
                       </section>
                   </div>
               </div>
-              <div class="row">
-                  <div class="col-lg-12">
-                      <section class="panel">
-                          <header class="panel-heading">
-                              Category Table
-                          </header>
-                          <div class="table-responsive">
-                            <table class="table"> 
-                            <th>Category_ID</th>
-                            <th>Category Name</th>
-                           
-                            <?php 
-                            foreach (getcategorydetails() as $categorydetails):
-                                ?>
-                                    <tr>
-                                    <td style="padding:5px;">
-                                    <?php echo $categorydetails['category_id']; ?>
-                                    </td>                                    
-                                    <td style="padding:5px;">
-                                    <?php echo $categorydetails['name']; ?>
-                                    </td>
-                                    </tr>                                 
-                                <?php endforeach; ?>
-                            </table>
-                          </div>
-
-                      </section>
-                  </div>
-              </div>
+              
              
               <div class="row">
                   <div class="col-lg-12">
                       <section class="panel">
-                          <header class="panel-heading">
-                             Order Table
-                          </header>
-                          <div class="table-responsive">
-                            <table class="table"> 
-                            <th>Order_id</th>
-                            <th>User_id</th>
-                            <th>Gig_id</th>
-  
-                            <th>Status</th>
-                            <th>Confirmed</th>
-                            <th>Created On</th>
-                            <th>Due_Date</th>
-                            <th>Seller Delivery Confirm</th>
-                            <th>Buyer Delivery Confirm</th>
-                            <?php 
-                            foreach (getOrderdetails() as $order):
-                                ?>
-                                    <tr>
-                                    <td style="padding:5px;">
-                                    <?php echo $order['order_id']; ?>
-                                    </td>                                    
-                                    <td style="padding:5px;">
-                                    <?php echo $order['user_id']; ?>
-                                    </td>
-                                    <td style="padding:5px;">
-                                    <?php echo $order['gig_id']; ?>
-                                    </td>
-                                    <td style="padding:5px;">
-                                    <?php echo $order['status']; ?>
-                                    </td>
-                                     <td style="padding:5px;">
-                                    <?php echo $order['confirmed']; ?>
-                                    </td>                                   
-                                    <td style="padding:5px;">
-                                    <?php echo $order['created_at']; ?>
-                                    </td>  
-                                    <td style="padding:5px;">
-                                    <?php echo $order['due_date']; ?>
-                                    </td>
-                                     <td style="padding:5px;">
-                                    <?php echo $order['seller_gigcompleted']; ?>
-                                    </td>
-                                     <td style="padding:5px;">
-                                    <?php echo $order['buyer_gigcompleted']; ?>
-                                    </td>   
-                                     
-                                    </tr>                                 
-                                <?php endforeach; ?>
-                            </table>
-                          </div>
+                          
 <!-- <br> <br><br> <br><br> <br> -->
                       </section>
                   </div>

@@ -88,7 +88,7 @@
                                
                                 <?php if (!$_SESSION["email"]) {
                                 	
-                              ?><span class="username"> START SELLING NOW</span>
+                              ?><span class="username"> Log In</span>
                                                          <b class="caret"></b>
                             </a>
                             
@@ -120,7 +120,7 @@
                                     <a href="newusers.php"><i class="icon_profile"></i> New Users</a>
                                 </li>
                                 <li>
-                                    <a href="admin_table.php"><i class="icon-dashboard-l"></i>Existing Users</a>
+                                    <a href="admin_table.php"><i class="icon_contacts"></i>Existing Users</a>
                                 </li>
                                 <li>
                                     <a href="admin_others.php"><i class="icon-task-l"></i> Other details</a>

@@ -54,7 +54,7 @@ function getUserTable()
                            <tbody>
                               <tr>
                                  <th><i class="icon_profile"></i> Full Name</th>
-                                 <th><i class="icon_contacts_alt"></i> Id</th>
+                                 <th><i class="icon_star"></i> Id</th>
                                  <th><i class="icon_mail_alt"></i> Email</th> 
                                  <th><i class="icon_calendar"></i> Created At</th>
                                  <th><i class="icon_camera_alt"></i> Photo</th>

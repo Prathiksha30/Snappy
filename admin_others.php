@@ -116,17 +116,17 @@ function getUserTable()
                          <h3 class="panel-heading"><i class="fa fa-table"></i> CATEGORY DETAILS </h3>
                           <div class="table-responsive">
                             <table class="table"> 
-                            <th>Category_ID</th>
-                            <th>Category Name</th>
+                            <th><i class="icon_star"></i> Category_ID</th>
+                            <th><i class="icon_datareport"></i> Category Name</th>
                            
                             <?php 
                             foreach (getcategorydetails() as $categorydetails):
                                 ?>
                                     <tr>
-                                    <td style="padding:5px;">
+                                    <td style="padding:10px;">
                                     <?php echo $categorydetails['category_id']; ?>
                                     </td>                                    
-                                    <td style="padding:5px;">
+                                    <td style="padding:10px;">
                                     <?php echo $categorydetails['name']; ?>
                                     </td>
                                     </tr>                                 
@@ -140,15 +140,15 @@ function getUserTable()
                           <h3 class="panel-heading"><i class="fa fa-table"></i> ADVERTISEMENT DETAILS </h3>
                           <div class="table-responsive">
                             <table class="table"> 
-                            <th>Gig_id</th>
-                            <th>User_id</th>
-                            <th>Category_id</th>
-                            <th>Description</th>
-                            <th>Credit</th>
-                            <th>Image Location</th>
-                            <th>Delivery time(in days)</th>
-                            <th>Created On</th>
-                            <th>Language</th>
+                            <th><i class="icon_star"></i> Gig_id</th>
+                            <th><i class="icon_star"></i> User_id</th>
+                            <th><i class="icon_star"></i> Category_id</th>
+                            <th><i class="icon_quotations"></i> Description</th>
+                            <th><i class="icon_currency"></i> Credit</th>
+                            <th><i class="icon_folder"></i> Image Location</th>
+                            <th><i class="icon_hourglass"></i> Delivery time(in days)</th>
+                            <th><i class="icon_calendar"></i> Created On</th>
+                            <th><i class="icon_globe"></i> Language</th>
                       
                             <?php 
                             foreach (getGigdetails() as $gig):
@@ -193,45 +193,45 @@ function getUserTable()
                         <h3 class="panel-heading"><i class="fa fa-table"></i> ORDER DETAILS </h3>
                           <div class="table-responsive">
                             <table class="table"> 
-                            <th>Order_id</th>
-                            <th>User_id</th>
-                            <th>Gig_id</th>
+                            <th><i class="icon_star"></i> Order_id</th>
+                            <th><i class="icon_star"></i> User_id</th>
+                            <th><i class="icon_star"></i> Gig_id</th>
   
-                            <th>Status</th>
-                            <th>Confirmed</th>
-                            <th>Created On</th>
-                            <th>Due_Date</th>
-                            <th>Seller Delivery Confirm</th>
-                            <th>Buyer Delivery Confirm</th>
+                            <th><i class="icon_genius"></i> Status</th>
+                            <th><i class="icon_box-checked"></i> Confirmed</th>
+                            <th><i class="icon_calendar"></i> Created On</th>
+                            <th><i class="icon_calendar"></i> Due_Date</th>
+                            <th><i class="icon_box-checked"></i> Seller Delivery Confirm</th>
+                            <th><i class="icon_box-checked"></i> Buyer Delivery Confirm</th>
                             <?php 
                             foreach (getOrderdetails() as $order):
                                 ?>
                                     <tr>
-                                    <td style="padding:5px;">
+                                    <td style="padding:10px;">
                                     <?php echo $order['order_id']; ?>
                                     </td>                                    
-                                    <td style="padding:5px;">
+                                    <td style="padding:10px;">
                                     <?php echo $order['user_id']; ?>
                                     </td>
-                                    <td style="padding:5px;">
+                                    <td style="padding:10px;">
                                     <?php echo $order['gig_id']; ?>
                                     </td>
-                                    <td style="padding:5px;">
+                                    <td style="padding:10px;">
                                     <?php echo $order['status']; ?>
                                     </td>
-                                     <td style="padding:5px;">
+                                     <td style="padding:10px;">
                                     <?php echo $order['confirmed']; ?>
                                     </td>                                   
-                                    <td style="padding:5px;">
+                                    <td style="padding:10px;">
                                     <?php echo $order['created_at']; ?>
                                     </td>  
-                                    <td style="padding:5px;">
+                                    <td style="padding:10px;">
                                     <?php echo $order['due_date']; ?>
                                     </td>
-                                     <td style="padding:5px;">
+                                     <td style="padding:10px;">
                                     <?php echo $order['seller_gigcompleted']; ?>
                                     </td>
-                                     <td style="padding:5px;">
+                                     <td style="padding:10px;">
                                     <?php echo $order['buyer_gigcompleted']; ?>
                                     </td>   
                                      
