@@ -272,7 +272,7 @@ function getUserInfo($user_id)
                                     <!-- <span><i class="icon_pin_alt"></i>NY</span> -->
                                 </h6>
                             </div>
-                                    <span><i class="icon-bell-l"></i><h4><?php echo $name[0]['Credits'];?></h4></span>
+                                    <span><h4>Credits:</h4><h4><?php echo $name[0]['Credits'];?></h4></span>
                             <div>
 
                             </div>

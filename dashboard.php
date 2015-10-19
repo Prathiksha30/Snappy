@@ -182,9 +182,11 @@ function getAllCompletedSales($user_id)
     $stmt->execute();
     $stmt->store_result();
     $stmt->bind_result($order_id);
-    $stmt->fetch();
-    $stmt->close();
-    return $order_id;
+    while ($stmt->fetch()) {
+        $rows = array('order_id' => $order_id);
+      }
+      $stmt->close();
+      return $rows;
   }
   else {
     printf("Error message: %s\n", $conn->error);
@@ -255,7 +257,7 @@ function getUseridInToDomodal($order_id)
     $stmt->bind_result($user_id);
     $stmt->fetch();
     $stmt->close();
-    return $user;
+    return $user_id;
   }
       }
 }
@@ -291,10 +293,10 @@ function getPurchaseDetails($user_id)
      {
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($order_id,$status, $confirmed, $due_date, $category_id, $description, $price, $img, $deliverytime,$buyer_gigcompleted,$seller_gigcompleted);
+        $stmt->bind_result($order_id,$status, $confirmed,$due_date, $category_id, $description, $price, $img, $deliverytime,$buyer_gigcompleted,$seller_gigcompleted);
         while ($stmt->fetch()) 
         {
-          $rows[] = array('order_id' => $order_id, 'status' => $status, 'confirmed' => $confirmed, 'due_date' => $due_date, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'buyer_gigcompleted' => $buyer_gigcompleted,'seller_gigcompleted'=>$seller_gigcompleted);
+          $rows[] = array('order_id' => $order_id, 'status' => $status, 'confirmed' => $confirmed,'due_date' => $due_date, 'category_id' => $category_id, 'description' => $description, 'price' => $price, 'img' => $img, 'deliverytime' => $deliverytime, 'buyer_gigcompleted' => $buyer_gigcompleted,'seller_gigcompleted'=>$seller_gigcompleted);
         }
         $stmt->close();
         return $rows;
@@ -374,6 +376,19 @@ function updatesellerconfirminordertable($order_id)
       printf("Error message: %s\n", $conn->error);
     }
 }
+function updaterejectcolumn($order_id)
+{
+   global $conn;
+    if($stmt = $conn->prepare("UPDATE `order` SET rejected='1' WHERE order_id=?"))
+    {
+      $stmt->bind_param("i", $order_id);
+      $stmt->execute();
+    }
+    else
+    {
+      printf("Error message: %s\n", $conn->error);
+    }
+}
 function  deleteorderrow($order_id)
 {
   global $conn;
@@ -416,6 +431,7 @@ function getusercredit($userid)
         $stmt->fetch();
         $stmt->close();
         return $Credits;
+        echo "Credit".$Credits;
     }
     else {
         printf("Error message: %s\n", $conn->error);
@@ -428,9 +444,9 @@ function deductcreditfrombuyer($order_id)
    $userid=getbuyerid($order_id);
    $usercredits=getusercredit($userid);
    $updatedcredit=$usercredits-$Adcredit;
-   if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=? WHERE user_id=?"))
+      if($stmt = $conn->prepare(" UPDATE `userdetails` SET Credits=$updatedcredit WHERE user_id=$userid "))
     {
-      $stmt->bind_param("ii",$updatedcredit,$user_id);
+
       $stmt->execute();
     }
     else
@@ -463,16 +479,15 @@ function updatesellercredit($gig_id)
 {
   global $conn;
   $uID=getsellerID($gig_id);
-  echo $uID;
+  
   $sellercredit=getusercredit($uID);
-  echo $sellercredit;
+  
   $Adcredit=getGigprice($gig_id);
-  echo $Adcredit;
+  
   $updatedcredit=$sellercredit+$Adcredit;
-  echo $updatedcredit;
-    if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=? WHERE user_id=?"))
+  
+    if($stmt = $conn->prepare("UPDATE `userdetails` SET Credits=$updatedcredit WHERE user_id=$uID"))
     {
-      $stmt->bind_param("ii", $updatedcredit,$uID);
       $stmt->execute();
     }
     else
@@ -492,7 +507,7 @@ function getsellerID($gig_id)
       $stmt->fetch();
       $stmt->close();
       return $user_id;
-
+      echo "userid".$user_id;
     }
     else
     {
@@ -511,12 +526,17 @@ function getGigprice($gig_id)
       $stmt->fetch();
       $stmt->close();
       return $price;
+      echo "adcredit".$price;
 
     }
     else
     {
       printf("Error message: %s\n", $conn->error);
     }
+}
+if (isset($_POST['delete_order_id']))
+{
+   deleteorderrow($_POST['delete_order_id']);
 }
 if (isset($_POST['buyerconfirm']))
 {
@@ -526,15 +546,12 @@ if (isset($_POST['sellerconfirm']))
 {
   updatesellerconfirminordertable($_POST['sellerconfirm']);
 }
-if (isset($_POST['delete_order_id'])) 
-{
-  deleteorderrow($_POST['delete_order_id']);
-}
+
  
 if (isset($_POST['confirm_order_id'])) 
 {
   updateduedateinordertable($_POST['confirm_order_id']);
-  deductcreditfrombuyer($_POST['confirm_order_id']);
+  
   updateconfirminordertable($_POST['confirm_order_id']);
   
 }
@@ -705,9 +722,11 @@ if (isset($_POST['confirm_order_id']))
                                     <th style="padding:5px;"> Gig Descrption </th>
                                     <th style="padding:5px;"> Credit </th>                                
                               <?php
+                              if (!is_null(getAllCompletedSales($_SESSION['id']))) {
                                 foreach ( getAllCompletedSales($_SESSION['id']) as $compledsales ):
-                                  $gigid=getGigID($compledsales['order_id']);
-                                  $advertisement_details[]=getAdvertisementDetails($gigid['gig_id']);
+                                  // echo $compledsales;
+                                  $gigid=getGigID($compledsales);
+                                  $advertisement_details=getAdvertisementDetails($gigid);
                               ?>
                               
                                     <tr>
@@ -721,7 +740,7 @@ if (isset($_POST['confirm_order_id']))
                                     <?php echo $advertisement_details['price']; ?>
                                     </td>                                                                 
                                     </tr>                                 
-                                <?php endforeach; ?>
+                                <?php endforeach; } ?>
                             </table>
                           </div>
                           <div class="modal-footer">
@@ -772,8 +791,7 @@ if (isset($_POST['confirm_order_id']))
                                       <?php echo $advertisement_details['price']; ?>
                                       </td style="padding:5px;">
                                       </tr>
-                                  <?php endforeach; ?>
-                                <?php } ?> 
+                                  <?php endforeach;  } ?> 
                             </table>
                           </div>
                           <div class="modal-footer">
@@ -821,6 +839,7 @@ if (isset($_POST['confirm_order_id']))
 
 
                               <?php
+                               if (!is_null(getSoldDetails($_SESSION["id"]))) {
                                 foreach (getSoldDetails($_SESSION["id"]) as $Sold):
                                   $category_id=$Sold['category_id'];
                               ?>
@@ -833,16 +852,22 @@ if (isset($_POST['confirm_order_id']))
                                       <?php echo $Sold['description']; ?>
                                   </td>
                                   <td>
-                                      <?php echo $Sold['price']." ".$Sold['order_id']; ?>
+                                      <?php echo $Sold['price']; ?>
                                   </td>
 
                                   <td>
                                       <?php
+                                      
                                       if($Sold['seller_gigcompleted']=='1' && $Sold['buyer_gigcompleted']=='1')
                                       {
-                                        updatestatus($Sold['order_id']);
-                                        
-                                        updatesellercredit($Sold['gig_id']);
+                                      updatestatus($Sold['order_id']);
+                                      deductcreditfrombuyer($Sold['order_id']);
+                                      $gigid=getGigID($Sold['order_id']);
+                                       updatesellercredit($gigid); ?>
+                                       <script type="text/javascript">
+                                         window.location.href = "dashboard.php";
+                                        </script>
+                                        <?php
                                       }
                                       if ($Sold['confirmed'] == '1' && $Sold['seller_gigcompleted'] == '1' )
                                       {
@@ -853,7 +878,7 @@ if (isset($_POST['confirm_order_id']))
                                       
                                       else
                                       {
-                                        if ($Sold['confirmed'] != '0')
+                                        if ($Sold['confirmed'] != '0' )
                                           {
                                             ?><span class="badge bg-important"><?php echo "due on:".$Sold['due_date'];?></span>
 
@@ -866,40 +891,35 @@ if (isset($_POST['confirm_order_id']))
                                                                   <h4 class="modal-title">user details</h4>
                                                       </div>
                                                       <div class="modal-body">
-                                                        <table>
-
+                                                         <table>
+                                                          <?php
+                                                          $o_id=$Sold['order_id'];
+                                                          // echo $o_id;
+                                                          $u_id=getUseridInToDomodal($o_id);
+                                                          
+                                                          ?>
                                                           <th><center>Name</center></th>
-                                                          <!-- <th>Second Name</th> -->
+                                                       <!--    <th>Second Name</th> -->
                                                           <th><center>Course</center></th>
                                                           <th><center>Semester</center></th>
                                                           <th><center>Mobile Number</center></th>
                                                           <th><center>Email ID</center></th>
-                                                          
-                                                          <?php
-                                                          $o_id=$Sold['order_id'];
-                                                         
-                                                          $u_id_array=getUseridInToDomodal($o_id);
-                                                          $u_id = $u_id_array['user_id'];
-                                                         
-                                                          $userdetail = getUserdetails($u_id);?>
-                                                            <tr>
+                                                          <tr>
+                                                            <?php $userdetail = getUserdetails($u_id);?>
                                                             <td>
-                                                            <?php echo $userdetail['firstname']." ".$userdetail['secondname'];?>
-                                                            </td>
-                                                           <!--  <td>
-                                                            <?php echo $userdetail[0]['secondname'];?>
-                                                            </td> -->
-                                                            <td>
-                                                            <?php echo $userdetail['course'];?>
+                                                            <?php echo $userdetail[0]['firstname']."".$userdetail[0]['secondname'];?>
                                                             </td>
                                                             <td>
-                                                            <?php echo $userdetail['semester'];?>
+                                                            <?php echo $userdetail[0]['course'];?>
                                                             </td>
                                                             <td>
-                                                            <?php echo $userdetail['mobile'];?>
+                                                            <?php echo $userdetail[0]['semester'];?>
                                                             </td>
                                                             <td>
-                                                            <?php echo $userdetail['email'];?>
+                                                            <?php echo $userdetail[0]['mobile'];?>
+                                                            </td>
+                                                            <td>
+                                                            <?php echo $userdetail[0]['email'];?>
                                                             </td>
                                                           </tr>
                                                     </table>
@@ -952,14 +972,12 @@ if (isset($_POST['confirm_order_id']))
                                                               <h4 class="modal-title">User details</h4>
                                                   </div>
                                                   <div class="modal-body">
-
-                                                    <table>
+                                                        <table>
                                                           <?php
                                                           $o_id=$Sold['order_id'];
                                                           // echo $o_id;
-                                                          $u_id_array=getUseridInToDomodal($o_id);
-                                                          $u_id = $u_id_array['user_id'];
-                                                          // echo $u_id;
+                                                          $u_id=getUseridInToDomodal($o_id);
+                                                          
                                                           ?>
                                                           <th><center>Name</center></th>
                                                        <!--    <th>Second Name</th> -->
@@ -1011,7 +1029,7 @@ if (isset($_POST['confirm_order_id']))
                                                 ?>
                                                <span class="badge bg-important">delivered</span>
                                                <?php
-                                               }?> -->
+                                               }?> 
 
                                                   
                                   
@@ -1029,7 +1047,8 @@ if (isset($_POST['confirm_order_id']))
                               
                                  
                                 </tr>
-                              <?php endforeach; ?>
+                              <?php endforeach; 
+                              }?>
                               </tbody>
                           </table>
 
@@ -1146,11 +1165,15 @@ if (isset($_POST['confirm_order_id']))
                               <th><center>Gig Desciption</center></th>
                               <th><center>Credit</center></th>
                               <th><center>Confirm status</center></th>
+                              
+
                              <!--  <th>Delivery Status</th> -->
                               <?php
+if (!is_null(getPurchaseDetails($_SESSION['id']))) {
                                 foreach (getPurchaseDetails($_SESSION['id']) as $purchase):
                               ?>
                                 <tr>
+                                
                                   <td>
                                   <?php $category_id=$purchase['category_id']; 
                                     echo getCategoryName($category_id);
@@ -1158,55 +1181,62 @@ if (isset($_POST['confirm_order_id']))
                                   </td>
                                   <td><?php echo $purchase['description']; ?></td>
                                   <td>
-                                      <?php echo $purchase['price'];?>
+                                      <?php echo $purchase['price'];
+                                      
+                                      ?>
+
                                   </td>
                                    <!-- <td> -->
-                                   <?php
-                                   if($purchase['seller_gigcompleted']=='1' && $purchase['buyer_gigcompleted']=='1')
+                                 <?php
+                                   if($purchase['seller_gigcompleted'] =='1' && $purchase['buyer_gigcompleted'] =='1')
                                       {
-                                        updatestatus($purchase['order_id']);
-                                        updatesellercredit($purchase['order_id']);
-                                      }
-                                    if($purchase['confirmed']=='1')
-                                    {
-                                      deductcreditfrombuyer($purchase['order_id']);
-                                      // echo "Order confirmed and is expected by:".$purchase['due_date'];
+                                       
+                                        $gigid=getGigID($purchase['order_id']);
+                                        updatesellercredit($gigid);//error here
+                                         updatestatus($purchase['order_id']);
+                                         deductcreditfrombuyer($purchase['order_id']);?>
+                                         <script type="text/javascript">
+                                         window.location.href = "dashboard.php";
+                                        </script>
+
+
+                                      <?php 
                                     }
-                                   if($purchase['confirmed']=='1' && $purchase['buyer_gigcompleted']=='1')
-                                   { ?>
-                                    <td>
-                                    <span class="badge bg-important">
-                                    <?php echo "waiting for seller to acknowledge delivery";?>
-                                    </span>
-                                    </td>
-                                    <?php
-                                   }
-                                   else
-                                    {?>
-                                      <td>
-                                      <span class="badge bg-important">
-                                        <?php 
+                                  else
+                                    { ?><td><?php
                                         if ( $purchase['confirmed']=='1' )
-                                          echo "Order confirmed and is expected by:".$purchase['due_date'];
+                                        {
+                                          
+                                           ?><span class="badge bg-important"><?php echo "Order confirmed and is expected by:".$purchase['due_date'];?></span>
+                                         <?php 
+                                            if ($purchase['buyer_gigcompleted']=='1')
+                                           {
+                                            ?><span class="badge bg-important"><?php echo "waiting for seller to acknowledge delivery";?></span><?php
+                                          }
+                                          if ( $purchase['buyer_gigcompleted']=='0')
+                                          { ?>
+
+                                            <form  method="POST" action="">
+                                            <input type="hidden" name="buyerconfirm" value="<?php echo $purchase['order_id']; ?>">
+                                            <input type="submit" value="Confirm Delivery Recieved" class="btn btn-success">
+                                            </form> 
+                                          <?php
+                                          }
+                                        }
+                                        
                                         else
-                                          echo "Order confirmation pending";
-                                        ?>
-                                      </span>
-                                     </td>
-                                    <?php
-                                    }?>
-                                   
-                                    <td> 
+                                        {
+                                         ?><span class="badge bg-important"><?php echo "Order not confirmed";?></span>
                                         <?php
-                                        if ( $purchase['confirmed']=='1' && $purchase['buyer_gigcompleted']=='0' )
-                                        {?>
-                                          <form  method="POST" action="">
-                                          <input type="hidden" name="buyerconfirm" value="<?php echo $purchase['order_id']; ?>">
-                                          <input type="submit" value="Confirm Delivery Recieved" class="btn btn-success">
-                                          </form> 
-                                   <?php
-                                   }?>
-                                   </td>
+                                        }
+                                        
+                                   
+                                    ?>
+                                    </td><?php
+                                    }?>
+                                    
+                                   
+                                    
                                    <!-- /td> -->
                                       
                                                <!-- else
@@ -1227,7 +1257,7 @@ if (isset($_POST['confirm_order_id']))
                                           
 
                                 </tr>
-                              <?php endforeach; ?>
+                              <?php endforeach; } ?>
                               </tbody>
                           </table>
                       </section>
