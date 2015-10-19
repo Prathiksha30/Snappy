@@ -94,96 +94,6 @@ function getUserTable()
   }
              
 }
-function getcountofnewusers()
-{
-    global $conn;
-    $sum = 0;
-    if ($stmt = $conn->prepare("SELECT COUNT(*) FROM `user` WHERE admin_confirm =0")) 
-    {
-        
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($value);
-        $stmt->fetch();
-        $stmt->close();
-        return $value;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }
-}
-function getcountofgigs()
-{
-    global $conn;
-    $sum = 0;
-    if ($stmt = $conn->prepare("SELECT COUNT(*) FROM `advertisement`")) 
-    {
-        
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($value);
-        $stmt->fetch();
-        $stmt->close();
-        return $value;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }
-}
-function getcountofcategories()
-{
-    global $conn;
-    $sum = 0;
-    if ($stmt = $conn->prepare("SELECT COUNT(*) FROM `category`")) 
-    {
-        
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($value);
-        $stmt->fetch();
-        $stmt->close();
-        return $value;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }
-}
-function getcountoforders()
-{
-    global $conn;
-    $sum = 0;
-    if ($stmt = $conn->prepare("SELECT COUNT(*) FROM `order` ")) 
-    {
-        
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($value);
-        $stmt->fetch();
-        $stmt->close();
-        return $value;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }
-}
-function getcountofexistingusers()
-{
-    global $conn;
-    $sum = 0;
-    if ($stmt = $conn->prepare("SELECT COUNT(*) FROM `user` WHERE admin_confirm =1")) 
-    {
-        
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($value);
-        $stmt->fetch();
-        $stmt->close();
-        return $value;
-    }
-    else {
-        printf("Error message: %s\n", $conn->error);
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -205,59 +115,92 @@ function getcountofexistingusers()
       <section id="main-content">
           <section class="wrapper">
 		  <div class="row">
-				
+				<div class="col-lg-12">
+					<h3 class="page-header"><i class="fa fa-table"></i> EXISTING USERS ARE</h3>
+					<!-- <ol class="breadcrumb">
+						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+						<li><i class="fa fa-table"></i>Table</li>
+						<li><i class="fa fa-th-list"></i>Basic Table</li>
+					</ol> -->
+				</div>
 			</div>
-       <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box green-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
-                        
-                    <div class="count"> <?php echo $count = getcountofnewusers(); ?></div>
+              <!-- page start-->
+               
+         
+              <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          
+                          <div class="table-responsive">
+                            <table class="table"> 
+                            <th><i class="icon_star"></i> User_ID</th>
+                            <th><i class="icon_profile"></i> First Name</th>
+                            <th><i class="icon_profile"></i> Second Name</th>
+                            <th><i class="icon_mail_alt"></i> Email</th>
+                            <th><i class="icon_phone"></i> Mobile Number</th>
+                            <th><i class="icon_book"></i> Course</th> 
+                            <th><i class="icon_document"></i> Semester</th>
+                            <th><i class="icon_calendar"></i> DOB</th>
+                            <th><i class="icon_ribbon"></i> Gender</th>
+                            <th><i class="icon_currency"></i> Credits</th>
+                            <th><i class="icon_calendar"></i> Created At</th>
+                            <?php 
+                            foreach (getUserdetails() as $userdetails):
+                                ?>
+                                    <tr>
+                                    <td style="padding:10px;">
+                                    <?php echo $userdetails['user_id']; ?>
+                                    </td>                                    
+                                    <td style="padding:10px;">
+                                    <?php echo $userdetails['firstname']; ?>
+                                    </td>
+                                    <td style="padding:10px;">
+                                    <?php echo $userdetails['secondname']; ?>
+                                    </td>
+                                    <td style="padding:10px;">
+                                    <?php echo $userdetails['email']; ?>
+                                    </td>
+                                     <td style="padding:10px;">
+                                    <?php echo $userdetails['mobile']; ?>
+                                    </td>
+                                    <td style="padding:10px;">
+                                    <?php echo $userdetails['course']; ?>
+                                    </td>  
+                                    <td style="padding:10px;">
+                                    <?php echo $userdetails['semester']; ?>
+                                    </td>
+                                     <td style="padding:10px;">
+                                    <?php echo $userdetails['DOB']; ?>
+                                    </td>
+                                     <td style="padding:10px;">
+                                    <?php echo $userdetails['gender']; ?>
+                                    </td>   
+                                     
+                                     <td style="padding:10px;">
+                                    <?php echo $userdetails['Credits']; ?>
+                                    </td> 
+                                     <td style="padding:10px;">
+                                    <?php echo $userdetails['created_at']; ?>
+                                    </td>    
+                                    </tr>                                 
+                                <?php endforeach; ?>
+                            </table>
+                          </div>
 
-                        <div class="title">New Users</div>
-                    </div><!--/.info-box-->
-          </div>
-              
-         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box orange-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
-                        
-                    <div class="count"> <?php echo $count = getcountofexistingusers(); ?></div>
-
-                        <div class="title">Existing Users</div>
-                    </div><!--/.info-box-->
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box red-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
-                        
-                    <div class="count"> <?php echo $count = getcountofcategories(); ?></div>
-
-                        <div class="title">Number of Categories</div>
-                    </div><!--/.info-box-->
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box blue-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
-                        
-                    <div class="count"> <?php echo $count = getcountofgigs(); ?></div>
-
-                        <div class="title">Number of Gigs posted</div>
-                    </div><!--/.info-box-->
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                    <div class="info-box yellow-bg">
-                        <i class="fa fa-thumbs-o-up"></i>
-                        
-                    <div class="count"> <?php echo $count = getcountoforders(); ?></div>
-
-                        <div class="title">Number of Current orders</div>
-                    </div><!--/.info-box-->
-          </div>
-          
-              
+                      </section>
+                  </div>
+              </div>
               
              
-              
+              <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          
+<!-- <br> <br><br> <br><br> <br> -->
+                      </section>
+                  </div>
+              </div>
+             
               <!-- page end-->
           </section>
       </section>

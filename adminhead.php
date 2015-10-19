@@ -117,10 +117,13 @@
                            <ul class="dropdown-menu extended logout">
                                 <div class="log-arrow-up"></div>
                                 <li class="eborder-top">
+                                    <a href="admin_table.php"><i class="icon-form-l"></i> Over View</a>
+                                </li>
+                                <li class="eborder-top">
                                     <a href="newusers.php"><i class="icon_profile"></i> New Users</a>
                                 </li>
                                 <li>
-                                    <a href="admin_table.php"><i class="icon_contacts"></i>Existing Users</a>
+                                    <a href="existingusers.php"><i class="icon_contacts"></i>Existing Users</a>
                                 </li>
                                 <li>
                                     <a href="admin_others.php"><i class="icon-task-l"></i> Other details</a>
