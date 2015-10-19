@@ -47,6 +47,7 @@ else
     <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 </head>
 <body>
+<?php include_once("analyticstracking.php"); ?>
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

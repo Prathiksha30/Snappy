@@ -49,6 +49,7 @@ else
     <![endif]-->
 </head>
 <body>
+<?php include_once("analyticstracking.php"); ?>
 <!-- /.container-fluid --> 
 <!--   --><!-- find out another way to do this. -->
 <?php

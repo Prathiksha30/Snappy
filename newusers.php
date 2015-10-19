@@ -72,7 +72,7 @@ function getUserTable()
                                     <td> <?php echo $usertab['id']; ?> </td>
                               <td> <?php echo $usertab['email']; ?> </td>
                               <td> <?php echo $usertab['created_at']; ?> </td> 
-                              <td>  <img src="<?php echo 'GigUploads/'.$usertab['photoAd']; ?>" alt="Photo ID" height="200" width="200" align="center"> </td> 
+                              <td>  <img src="<?php echo 'upload/'.$usertab['photoAd']; ?>" alt="Photo ID" height="200" width="200" align="center"> </td> 
                                  <td>
                                   <div class="btn-group">
                                       <form method="POST" action="">

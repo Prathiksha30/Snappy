@@ -74,6 +74,7 @@ function getUserInfo($user_id)
   </head>
 
   <body>
+  <?php include_once("analyticstracking.php"); ?>
   <!-- container section start -->
   <section id="container" class="">
       <!--header start-->

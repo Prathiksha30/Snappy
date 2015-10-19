@@ -117,7 +117,7 @@ function getCredits($user_id)
 
 <!DOCTYPE html>
 
- 
+ <?php include_once("analyticstracking.php"); ?>
 <div class="container">
   <div class="row">  
     </div>

@@ -62,7 +62,7 @@ if(isset($_POST['sub']))
          }
 }
 ?>
-
+<?php include_once("analyticstracking.php"); ?>
 <div class="container">
   <div class="row">
   <h3 class="font-color" align="center"> Please fill in the form to start Selling! </h6>

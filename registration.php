@@ -192,7 +192,7 @@ include("head.php");
 
 <?php
 
-    $allowedExts = array("gif", "jpeg", "jpg", "png", "GIF". "JPEG", "JPG", "PNG");
+    $allowedExts = array("gif", "jpeg", "jpg", "png", "GIF", "JPEG", "JPG", "PNG");
     $temp = explode(".", $_FILES["file"]["name"]);
     $extension = end($temp);
 

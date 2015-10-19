@@ -593,6 +593,7 @@ if (isset($_POST['confirm_order_id']))
   </head>
 
   <body>
+  <?php include_once("analyticstracking.php"); ?>
   <!-- container section start -->
   <section id="container" class="">
       <header class="header dark-bg">

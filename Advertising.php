@@ -51,7 +51,7 @@ else
     <![endif]-->
 </head>
 <body>
-
+<?php include_once("analyticstracking.php"); ?>
  
 <?php
 if(!$rows)
